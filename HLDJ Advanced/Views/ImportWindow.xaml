@@ -1,0 +1,34 @@
+﻿<Window x:Class="HLDJ_Advanced.Views.ImportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="ImportWindow" Height="300" Width="300"
+        Loaded="ImportWindow_OnLoaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <ListView Name="lvNewSongs" ItemsSource="{Binding NewSounds}" SelectionMode="Multiple">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical">
+
+                        <TextBlock Text="{Binding Name}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        
+        <StackPanel Grid.Column="1">
+            <Button Name="btnAdd" Click="BtnAdd_OnClick">Add</Button>
+            <ComboBox Name="cbCategories" SelectedIndex="0" ItemsSource="{Binding Categories}">
+            </ComboBox>
+        </StackPanel>
+        
+       
+    </Grid>
+</Window>
