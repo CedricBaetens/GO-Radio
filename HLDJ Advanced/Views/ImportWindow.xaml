@@ -24,6 +24,7 @@
         </ListView>
         
         <StackPanel Grid.Column="1">
+            <Button Name="btnConvertAll" Click="BtnConvertAll_Click">Convert All</Button>
             <Button Name="btnAdd" Click="BtnAdd_OnClick">Add</Button>
             <ComboBox Name="cbCategories" SelectedIndex="0" ItemsSource="{Binding Categories}">
             </ComboBox>

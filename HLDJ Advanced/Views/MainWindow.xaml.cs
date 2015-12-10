@@ -24,7 +24,6 @@ using PropertyChanged;
 
 namespace HLDJ_Advanced
 {
-    /// 
     [ImplementPropertyChanged]
     public partial class MainWindow : Window
     {
@@ -47,6 +46,8 @@ namespace HLDJ_Advanced
         {
         }
 
+
+        // Window events
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             if (File.Exists("data.json"))
@@ -59,53 +60,37 @@ namespace HLDJ_Advanced
             //// Keyboard hool
             //keyboardHook = new KeyboardHook();
             //keyboardHook.KeyboardEvent += KeyboardHook_KeyboardEvent;
-            //keyboardHook.InstallHook();
-
-            //// Read Json
-            //var jsonRead = File.ReadAllText("data_format.json");
-            //var jsonArray = JsonConvert.DeserializeObject<List<Sound>>(jsonRead);
-
-            //foreach (var jsonItem in jsonArray)
-            //{
-            //    // Place item in correct category
-            //    bool found = false;
-            //    foreach (var category in Categories)
-            //    {
-            //        if (category.Name == jsonItem.Category)
-            //        {
-            //            category.Sounds.Add(jsonItem);
-            //            found = true;
-            //        }
-            //    }
-
-            //    // Create category if its new
-            //    if (!found)
-            //    {
-            //        Categories.Add(new Category()
-            //        {
-            //            Name = jsonItem.Category
-            //        });
-            //        Categories[Categories.Count - 1].Sounds.Add(jsonItem);
-            //    }
-            //}
-
-
-            //// Tree structure
-            ////Sounds = new ObservableCollection<Sound>(Helper.GetNewSounds(hldjPath));
-            ////var json = JsonConvert.SerializeObject(Sounds, Formatting.Indented);
-            ////File.WriteAllText("test.txt", json);
-
-
-
-            ////Sounds = JsonConvert.DeserializeObject<List<Sound>>(jsonRead);
-
-
-
-            //int a = 0;
-
-            //CreateFolderStructure();
+            //keyboardHook.InstallHook();      
+        }
+        private void MainWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            string json = JsonConvert.SerializeObject(Sounds);
+            File.WriteAllText("data.json",json);
         }
 
+        // Menu Events
+        private void miImport_Click(object sender, RoutedEventArgs e)
+        {
+            ImportWindow iw = new ImportWindow()
+            {
+                Sounds = Sounds
+            };
+            iw.ShowDialog();
+
+            Sounds = iw.Sounds;
+
+            int a = 0;
+        }
+        private void miCreateFolders_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to create the folder structure? This will delete all existing content!", "Verification", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                CreateFolderStructure();
+            }
+        }
+
+
+        // Custom functions
         private void CreateFolderStructure()
         {
             string pathnewsong = string.Format(@"{0}\{1}", Helper.HldjPath, "new");
@@ -129,23 +114,5 @@ namespace HLDJ_Advanced
             }
         }
 
-        private void BtnImport_OnClick(object sender, RoutedEventArgs e)
-        {
-            ImportWindow iw = new ImportWindow()
-            {
-                Sounds = Sounds
-            };           
-            iw.ShowDialog();
-
-            Sounds = iw.Sounds;
-
-            int a = 0;
-        }
-
-        private void MainWindow_OnClosing(object sender, CancelEventArgs e)
-        {
-            string json = JsonConvert.SerializeObject(Sounds);
-            File.WriteAllText("data.json",json);
-        }
     }
 }

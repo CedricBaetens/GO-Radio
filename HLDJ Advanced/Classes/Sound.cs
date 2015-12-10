@@ -15,8 +15,35 @@ namespace HLDJ_Advanced
         public string Path { get; set; }
         public string Category { get; set; }
 
+        private int sampleRate = 16000;
+        private int bits = 16;
+        private int channels = 1;
+
         public Sound(NewSound newSound, string category, int id)
         {
+            //// Resample
+            //if (String.IsNullOrEmpty(newSound.Path))
+            //{
+            //    return;
+            //}
+
+            //var saveFile = SelectSaveFile("resampled");
+            //if (saveFile == null)
+            //{
+            //    return;
+            //}
+
+            //// do the resample
+            //using (var reader = new MediaFoundationReader(inputFile))
+            //using (var resampler = new MediaFoundationResampler(reader, CreateOutputFormat(reader.WaveFormat)))
+            //{
+            //    WaveFileWriter.CreateWaveFile(saveFile, resampler);
+            //}
+            //MessageBox.Show("Resample complete");
+
+
+
+            // Name
             Name = newSound.Name.Replace(".wav","");
 
             // ID conversion

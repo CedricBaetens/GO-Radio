@@ -12,8 +12,19 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Button Name="btnImport" Click="BtnImport_OnClick">Import</Button>
-        
+        <Menu IsMainMenu="True">
+            <MenuItem Header="_File">
+                <MenuItem Header="Import" Name="miImport" Click="miImport_Click"/>
+                <Separator/>
+                <MenuItem Header="Create Folders" Name="miCreateFolders" Click="miCreateFolders_Click"/>
+                
+            </MenuItem>
+            <!--<MenuItem Header="_Edit" />
+            <MenuItem Header="_View" />
+            <MenuItem Header="_Window" />
+            <MenuItem Header="_Help" />-->
+        </Menu>
+
         <DataGrid Grid.Row="1" ItemsSource="{Binding Sounds}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}"></DataGridTextColumn>

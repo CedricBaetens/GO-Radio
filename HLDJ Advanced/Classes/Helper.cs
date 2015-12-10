@@ -11,6 +11,8 @@ namespace HLDJ_Advanced
 {
     static class Helper
     {
-        public static string HldjPath = @"C:\Users\Baellon\Desktop\HLDJ\audio";
+        //C:\Users\Cedric Baetens\Desktop
+        //C:\Users\Baellon\Desktop\HLDJ\audio
+        public static string HldjPath = @"C:\Users\Cedric Baetens\Desktop\temp";
     }
 }
