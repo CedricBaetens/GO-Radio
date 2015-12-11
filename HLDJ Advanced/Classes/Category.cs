@@ -12,13 +12,11 @@ namespace HLDJ_Advanced.Classes
     public class Category
     {
         public string Name { get; set; }
-        public string Path { get; set; }
+        public int StartId { get; set; }
         public ObservableCollection<SoundWAV> Sounds { get; set; }
 
-        public Category(string name)
+        public Category()
         {
-            Name = name;
-
             Sounds = new ObservableCollection<SoundWAV>();
         }
     }

@@ -36,11 +36,11 @@ namespace HLDJ_Advanced
             InitializeComponent();
 
             // Instance
-            //Categories = new ObservableCollection<Category>()
-            //{
-            //    new Category("Songs") { Path = "audio/Songs"},
-            //    new Category("Sounds") { Path = "audio/Sounds"}
-            //};
+            keyboardHook = new KeyboardHook();
+            keyboardHook.KeyboardEvent += KeyboardHook_KeyboardEvent;
+            keyboardHook.InstallHook();
+
+            Categories = new ObservableCollection<Category>();
 
             // Binding
             DataContext = this;
@@ -48,7 +48,9 @@ namespace HLDJ_Advanced
 
         private void KeyboardHook_KeyboardEvent(KeyboardEvents kEvent, System.Windows.Forms.Keys key)
         {
+            int a = 0;
         }
+
 
 
         // Window events
@@ -59,17 +61,15 @@ namespace HLDJ_Advanced
                 string json = File.ReadAllText("data.json");
                 Categories = JsonConvert.DeserializeObject<ObservableCollection<Category>>(json);
             }
-
-            //Sounds.Add(new Sound());
-            //// Keyboard hool
-            //keyboardHook = new KeyboardHook();
-            //keyboardHook.KeyboardEvent += KeyboardHook_KeyboardEvent;
-            //keyboardHook.InstallHook();      
         }
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
+            // Save data
             string json = JsonConvert.SerializeObject(Categories, Formatting.Indented);
             File.WriteAllText("data.json", json);
+
+            // Deinstal hook
+            keyboardHook.UninstallHook();
         }
 
         // Menu Events
@@ -82,6 +82,14 @@ namespace HLDJ_Advanced
             iw.ShowDialog();
 
             Categories = iw.Categories;
+        }
+
+        private void miCreateFolders_Click(object sender, RoutedEventArgs e)
+        {
+            AddCategoryWindow acw = new AddCategoryWindow();
+            acw.ShowDialog();
+
+            Categories.Add(acw.Category);
         }
     }
 }

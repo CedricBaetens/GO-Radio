@@ -1,0 +1,19 @@
+﻿<Window x:Class="HLDJ_Advanced.Views.AddCategoryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HLDJ_Advanced.Views"
+        mc:Ignorable="d"
+        Title="AddCategoryWindow" Height="300" Width="300">
+    <Grid>
+        <StackPanel>
+            <TextBlock>Category Name:</TextBlock>
+            <TextBox Text="{Binding Category.Name}"></TextBox>
+            <TextBlock>Start ID:</TextBlock>
+            <TextBox Text="{Binding Category.StartId}"></TextBox>
+            <Button Name="btnAdd" Click="btnAdd_Click">Add!</Button>
+        </StackPanel>
+        
+    </Grid>
+</Window>

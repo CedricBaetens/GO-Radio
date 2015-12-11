@@ -15,8 +15,8 @@
         <Menu IsMainMenu="True">
             <MenuItem Header="_File">
                 <MenuItem Header="Import" Name="miImport" Click="miImport_Click"/>
-                <!--<Separator/>
-                <MenuItem Header="Add Category" Name="miCreateFolders" />-->
+                <Separator/>
+                <MenuItem Header="Add Category" Name="miCreateFolders" Click="miCreateFolders_Click"/>
             </MenuItem>
             <!--<MenuItem Header="_Edit" />
             <MenuItem Header="_View" />

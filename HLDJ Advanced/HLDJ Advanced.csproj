@@ -37,7 +37,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Kennedy.ManagedHooks">
+    <Reference Include="Kennedy.ManagedHooks, Version=1.2.0.10, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\KennedyHooks\Kennedy.ManagedHooks.dll</HintPath>
     </Reference>
     <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
@@ -75,8 +76,12 @@
     </ApplicationDefinition>
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\Helper.cs" />
-    <Compile Include="Classes\NewSound.cs" />
-    <Compile Include="Classes\Sound.cs" />
+    <Compile Include="Classes\SoundMP3.cs" />
+    <Compile Include="Classes\SoundWAV.cs" />
+    <Page Include="Views\AddCategoryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ImportWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -88,6 +93,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\AddCategoryWindow.xaml.cs">
+      <DependentUpon>AddCategoryWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ImportWindow.xaml.cs">
       <DependentUpon>ImportWindow.xaml</DependentUpon>
