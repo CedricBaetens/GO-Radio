@@ -73,6 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\Helper.cs" />
     <Compile Include="Classes\NewSound.cs" />
     <Compile Include="Classes\Sound.cs" />

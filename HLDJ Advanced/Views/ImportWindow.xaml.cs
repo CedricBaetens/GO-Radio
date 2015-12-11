@@ -16,20 +16,15 @@ using HLDJ_Advanced.Classes;
 using PropertyChanged;
 using Microsoft.Win32;
 using NAudio.Wave;
+using System.IO;
 
 namespace HLDJ_Advanced.Views
 {
     [ImplementPropertyChanged]
     public partial class ImportWindow : Window
     {
-        public ObservableCollection<Sound> Sounds { get; set; }
-        public ObservableCollection<NewSound> NewSounds { get; set; }
-
-        public List<string> Categories { get; set; }
-
-        // NAudio
-        private string inputFile;
-        private string inputFileFormat;
+        public ObservableCollection<SoundMP3> Sounds { get; set; }
+        public ObservableCollection<Category> Categories { get; set; }
 
         private int sampleRate = 16000;
         private int bits = 16;
@@ -40,17 +35,7 @@ namespace HLDJ_Advanced.Views
             InitializeComponent();
 
             // Instanciate
-            NewSounds = new ObservableCollection<NewSound>();
-            Categories = new List<string>()
-            {
-                "Song (Full)",
-                "Song (Part)",
-                "Game",
-                "Greetings",
-                "Silence",
-                "MLG",
-                "Sound"
-            };
+            Sounds = new ObservableCollection<SoundMP3>();
 
             // Binding
             DataContext = this;
@@ -59,128 +44,48 @@ namespace HLDJ_Advanced.Views
         // Window events
         private void ImportWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            NewSounds = GetNewSounds();
+            Sounds = GetMP3Sounds();
+            int a = 0;
         }
 
-        // Button evens
-        private void BtnAdd_OnClick(object sender, RoutedEventArgs e)
+        // Button events
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            // Copy selected Items List
-            List<NewSound> selectedItems = new List<NewSound>(lvNewSongs.SelectedItems.Cast<NewSound>());
+            //Copy selected Items List
+            List<SoundMP3> selectedItems = new List<SoundMP3>(lvNewSongs.SelectedItems.Cast<SoundMP3>());
+            Category selectedCategory = (Category)cbCategories.SelectedItem;
 
             for (int i = 0; i < selectedItems.Count; i++)
             {
-                // Selected Item
-                NewSound newSound = (NewSound)selectedItems[i];
+                SoundMP3 newSound = (SoundMP3)selectedItems[i];
 
-                // Get Original index
-                int index = NewSounds.IndexOf(newSound);
+                // ReSample
+                string path = string.Format("audio\\{0}{1}", newSound.Name, ".wav");
+                using (var reader = new MediaFoundationReader(newSound.Path))
+                using (var resampler = new MediaFoundationResampler(reader, new WaveFormat(sampleRate, bits, channels)))
+                {
+                    WaveFileWriter.CreateWaveFile(path, resampler);
+                }
 
-                // Count active sounds
-                int count = Sounds.Count();
+                Sounds.RemoveAt(Sounds.IndexOf(newSound));
+                File.Delete(newSound.Path);
 
-                // Add newsound to soundlist
-                Sounds.Add(new Sound(newSound, cbCategories.SelectedValue.ToString(), count));     
-               
-                // Remove newsound from list
-                NewSounds.RemoveAt(index);
+                selectedCategory.Sounds.Add(new SoundWAV(path, selectedCategory.Sounds.Count()));
             }
 
-            if (NewSounds.Count == 0)
+            if (Sounds.Count == 0)
             {
                 Close();
             }
         }
-        private void BtnConvertAll_Click(object sender, RoutedEventArgs e)
-        {
-            //foreach (var newSound in NewSounds)
-            //{
-
-            //}
-            ////SelectInputFile();
-            //TryOpenInputFile(inputFile);
-            //Resample();
-        }
 
         // Custom methods
-        private ObservableCollection<NewSound> GetNewSounds()
+        private ObservableCollection<SoundMP3> GetMP3Sounds()
         {
-            string[] newSoundsStrings = System.IO.Directory.GetFiles(string.Format("{0}\\mp3", Helper.HldjPath), "*.*", System.IO.SearchOption.AllDirectories);
+            string[] newSoundsStrings = System.IO.Directory.GetFiles("mp3", "*.*", System.IO.SearchOption.AllDirectories);
 
             return
-                new ObservableCollection<NewSound>(newSoundsStrings.Select(newSound => new NewSound(newSound)).ToList());
+                new ObservableCollection<SoundMP3>(newSoundsStrings.Select(newSound => new SoundMP3(newSound)).ToList());
         }
-
-        private bool TryOpenInputFile(string file)
-        {
-            bool isValid = false;
-            try
-            {
-                using (var reader = new MediaFoundationReader(file))
-                {
-                    inputFileFormat = reader.WaveFormat.ToString();
-                    isValid = true;
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(String.Format("Not a supported input file ({0})", e.Message));
-            }
-            return isValid;
-        }
-
-        //private void SelectInputFile()
-        //{
-        //    var ofd = new OpenFileDialog();
-        //    ofd.Filter = "Audio files|*.mp3;*.wav;*.wma;*.aiff;*.aac";
-        //    if (ofd.ShowDialog() == true)
-        //    {
-        //        if (TryOpenInputFile(ofd.FileName))
-        //        {
-        //            inputFile = ofd.FileName;
-        //        }
-        //    }
-
-        //    inputFile = @"C:\Users\Cedric Baetens\Desktop\temp\mp3\new";
-        //}
-
-        private string SelectSaveFile(string desc)
-        {
-            var sfd = new SaveFileDialog();
-            sfd.FileName = @"C:\Users\Cedric Baetens\Desktop\temp\mp3\new";
-            sfd.Filter = "WAV File|*.wav";
-            //return (sfd.ShowDialog() == true) ? new Uri(sfd.FileName).AbsoluteUri : null;
-            return (sfd.ShowDialog() == true) ? sfd.FileName : null;
-        }
-
-        private void Resample()
-        {
-            if (String.IsNullOrEmpty(inputFile))
-            {
-                MessageBox.Show("Select a file first");
-                return;
-            }
-            var saveFile = SelectSaveFile("resampled");
-            if (saveFile == null)
-            {
-                return;
-            }
-
-            // do the resample
-            using (var reader = new MediaFoundationReader(inputFile))
-            using (var resampler = new MediaFoundationResampler(reader, CreateOutputFormat(reader.WaveFormat)))
-            {
-                WaveFileWriter.CreateWaveFile(saveFile, resampler);
-            }
-            MessageBox.Show("Resample complete");
-        }
-
-        private WaveFormat CreateOutputFormat(WaveFormat inputFormat)
-        {
-            WaveFormat waveFormat;
-            waveFormat = new WaveFormat(sampleRate, bits, channels);
-            return waveFormat;
-        }
-
     }
 }

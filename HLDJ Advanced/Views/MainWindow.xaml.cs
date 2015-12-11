@@ -21,6 +21,7 @@ using HLDJ_Advanced.Views;
 using Kennedy.ManagedHooks;
 using Newtonsoft.Json;
 using PropertyChanged;
+using HLDJ_Advanced.Classes;
 
 namespace HLDJ_Advanced
 {
@@ -28,15 +29,18 @@ namespace HLDJ_Advanced
     public partial class MainWindow : Window
     {
         private KeyboardHook keyboardHook;
-
-        public ObservableCollection<Sound> Sounds { get; set; }
+        public ObservableCollection<Category> Categories { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
 
             // Instance
-            Sounds = new ObservableCollection<Sound>();
+            //Categories = new ObservableCollection<Category>()
+            //{
+            //    new Category("Songs") { Path = "audio/Songs"},
+            //    new Category("Sounds") { Path = "audio/Sounds"}
+            //};
 
             // Binding
             DataContext = this;
@@ -53,7 +57,7 @@ namespace HLDJ_Advanced
             if (File.Exists("data.json"))
             {
                 string json = File.ReadAllText("data.json");
-                Sounds = JsonConvert.DeserializeObject<ObservableCollection<Sound>>(json);
+                Categories = JsonConvert.DeserializeObject<ObservableCollection<Category>>(json);
             }
 
             //Sounds.Add(new Sound());
@@ -64,8 +68,8 @@ namespace HLDJ_Advanced
         }
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
-            string json = JsonConvert.SerializeObject(Sounds);
-            File.WriteAllText("data.json",json);
+            string json = JsonConvert.SerializeObject(Categories, Formatting.Indented);
+            File.WriteAllText("data.json", json);
         }
 
         // Menu Events
@@ -73,46 +77,11 @@ namespace HLDJ_Advanced
         {
             ImportWindow iw = new ImportWindow()
             {
-                Sounds = Sounds
+                Categories = this.Categories
             };
             iw.ShowDialog();
 
-            Sounds = iw.Sounds;
-
-            int a = 0;
+            Categories = iw.Categories;
         }
-        private void miCreateFolders_Click(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show("Are you sure you want to create the folder structure? This will delete all existing content!", "Verification", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                CreateFolderStructure();
-            }
-        }
-
-
-        // Custom functions
-        private void CreateFolderStructure()
-        {
-            string pathnewsong = string.Format(@"{0}\{1}", Helper.HldjPath, "new");
-            Directory.CreateDirectory(pathnewsong);
-            for (int i = 0; i < 10; i++)
-            {
-                string pathl0 = string.Format(@"{0}\{1}", Helper.HldjPath, i);
-                Directory.CreateDirectory(pathl0);
-
-                for (int j = 0; j < 10; j++)
-                {
-                    string pathl1 = string.Format(@"{0}\{1}", pathl0, j);
-                    Directory.CreateDirectory(pathl1);
-
-                    for (int k = 0; k < 10; k++)
-                    {
-                        string pathl2 = string.Format(@"{0}\{1}", pathl1, k);
-                        Directory.CreateDirectory(pathl2);
-                    }
-                }
-            }
-        }
-
     }
 }

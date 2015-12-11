@@ -12,11 +12,10 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         
-        <ListView Name="lvNewSongs" ItemsSource="{Binding NewSounds}" SelectionMode="Multiple">
+        <ListView Name="lvNewSongs" ItemsSource="{Binding Sounds}" SelectionMode="Multiple">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical">
-
                         <TextBlock Text="{Binding Name}"/>
                     </StackPanel>
                 </DataTemplate>
@@ -24,9 +23,15 @@
         </ListView>
         
         <StackPanel Grid.Column="1">
-            <Button Name="btnConvertAll" Click="BtnConvertAll_Click">Convert All</Button>
-            <Button Name="btnAdd" Click="BtnAdd_OnClick">Add</Button>
+            <Button Name="btnAdd" Click="btnAdd_Click">Add</Button>
             <ComboBox Name="cbCategories" SelectedIndex="0" ItemsSource="{Binding Categories}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding Name}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
         </StackPanel>
         

@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PropertyChanged;
-using System.IO;
+using HLDJ_Advanced.Classes;
 
-namespace HLDJ_Advanced.Classes
+namespace HLDJ_Advanced
 {
-    [ImplementPropertyChanged]
-    public class NewSound
+    public class SoundWAV
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Path { get; set; }
         public string Directory { get; set; }
         public string Extension { get; set; }
 
-
-        public NewSound(string path)
+        public SoundWAV(string path, int id)
         {
             FileInfo file = new FileInfo(path);
 
@@ -27,7 +26,7 @@ namespace HLDJ_Advanced.Classes
             Name = System.IO.Path.GetFileNameWithoutExtension(path);
             Extension = System.IO.Path.GetExtension(path);
 
-            int a = 0;
+            Id = id;
         }
     }
 }
