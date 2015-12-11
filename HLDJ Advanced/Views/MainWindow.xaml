@@ -28,10 +28,10 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
-                        <TextBlock Text="{Binding Name}"></TextBlock>
-                        <DataGrid ItemsSource="{Binding Sounds}" AutoGenerateColumns="False">
+                        <TextBlock Text="{Binding Name}" Margin="10,10,10,0" />
+                        <DataGrid ItemsSource="{Binding Sounds}" AutoGenerateColumns="False" Margin="10,0,10,0">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
+                                <DataGridTextColumn Header="ID" Binding="{Binding IdFull}"></DataGridTextColumn>
                                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"></DataGridTextColumn>
                             </DataGrid.Columns>
                         </DataGrid>

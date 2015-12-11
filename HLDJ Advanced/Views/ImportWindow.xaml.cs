@@ -70,7 +70,7 @@ namespace HLDJ_Advanced.Views
                 Sounds.RemoveAt(Sounds.IndexOf(newSound));
                 File.Delete(newSound.Path);
 
-                selectedCategory.Sounds.Add(new SoundWAV(path, selectedCategory.Sounds.Count()));
+                selectedCategory.Sounds.Add(new SoundWAV(path, selectedCategory.GetNextId()));
             }
 
             if (Sounds.Count == 0)

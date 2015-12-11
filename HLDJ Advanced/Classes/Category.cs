@@ -19,5 +19,11 @@ namespace HLDJ_Advanced.Classes
         {
             Sounds = new ObservableCollection<SoundWAV>();
         }
+
+        public int GetNextId()
+        {
+            var nextId = Sounds.Count + StartId;
+            return nextId;
+        }
     }
 }

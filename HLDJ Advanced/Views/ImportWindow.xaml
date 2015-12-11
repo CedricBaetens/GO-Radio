@@ -7,12 +7,17 @@
         Title="ImportWindow" Height="300" Width="300"
         Loaded="ImportWindow_OnLoaded">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        
-        <ListView Name="lvNewSongs" ItemsSource="{Binding Sounds}" SelectionMode="Multiple">
+
+        <ListView Name="lvNewSongs" Grid.ColumnSpan="2" ItemsSource="{Binding Sounds}" SelectionMode="Multiple">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical">
@@ -21,20 +26,18 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        
-        <StackPanel Grid.Column="1">
-            <Button Name="btnAdd" Click="btnAdd_Click">Add</Button>
-            <ComboBox Name="cbCategories" SelectedIndex="0" ItemsSource="{Binding Categories}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="{Binding Name}"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-        </StackPanel>
-        
-       
+
+        <Button Grid.Row="1" Grid.Column="0" Name="btnAdd" Click="btnAdd_Click" Margin="5">Add</Button>
+        <ComboBox Grid.Row="1" Grid.Column="1" Name="cbCategories" SelectedIndex="0" ItemsSource="{Binding Categories}" Margin="5">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Name}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+
     </Grid>
 </Window>

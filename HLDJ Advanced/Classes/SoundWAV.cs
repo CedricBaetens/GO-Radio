@@ -11,6 +11,7 @@ namespace HLDJ_Advanced
     public class SoundWAV
     {
         public int Id { get; set; }
+        public string IdFull { get { return Id.ToString("0000"); } }
         public string Name { get; set; }
         public string Path { get; set; }
         public string Directory { get; set; }

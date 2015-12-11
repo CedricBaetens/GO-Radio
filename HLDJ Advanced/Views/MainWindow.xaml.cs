@@ -86,10 +86,13 @@ namespace HLDJ_Advanced
 
         private void miCreateFolders_Click(object sender, RoutedEventArgs e)
         {
-            AddCategoryWindow acw = new AddCategoryWindow();
+            AddCategoryWindow acw = new AddCategoryWindow()
+            {
+                Categories = this.Categories
+            };
             acw.ShowDialog();
 
-            Categories.Add(acw.Category);
+            this.Categories = acw.Categories;
         }
     }
 }

@@ -2,6 +2,7 @@
 using PropertyChanged;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace HLDJ_Advanced.Views
     [ImplementPropertyChanged]
     public partial class AddCategoryWindow : Window
     {
+        public ObservableCollection<Category> Categories { get; set; }
         public Category Category { get; set; }
 
         public AddCategoryWindow()
@@ -34,7 +36,15 @@ namespace HLDJ_Advanced.Views
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            if (!String.IsNullOrEmpty(Category.Name))
+            {
+                Categories.Add(Category);
+                Close();
+            }
+            else
+            {
+                MessageBox.Show("Category name is empty.","Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }  
         }
     }
 }
