@@ -38,13 +38,23 @@ namespace HLDJ_Advanced.Views
         {
             if (!String.IsNullOrEmpty(Category.Name))
             {
-                Categories.Add(Category);
+                Category cat = (Category)tvCategories.SelectedItem;
+                if (cat != null)
+                {
+                    cat.Categories.Add(Category);
+                }
+                else
+                {
+                    Categories.Add(Category);
+                }
+                
+                
                 Close();
             }
             else
             {
-                MessageBox.Show("Category name is empty.","Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }  
+                MessageBox.Show("Category name is empty.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

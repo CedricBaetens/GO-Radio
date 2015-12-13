@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:classes="clr-namespace:HLDJ_Advanced.Classes"
         mc:Ignorable="d"
         Title="ImportWindow" Height="300" Width="300"
         Loaded="ImportWindow_OnLoaded">
@@ -28,15 +29,13 @@
         </ListView>
 
         <Button Grid.Row="1" Grid.Column="0" Name="btnAdd" Click="btnAdd_Click" Margin="5">Add</Button>
-        <ComboBox Grid.Row="1" Grid.Column="1" Name="cbCategories" SelectedIndex="0" ItemsSource="{Binding Categories}" Margin="5">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="{Binding Name}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
+        <TreeView Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Categories}" Name="tvCategories" Margin="5">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type classes:Category}" ItemsSource="{Binding Categories}">
+                    <TextBlock Text="{Binding Name}" />
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
 
 
     </Grid>

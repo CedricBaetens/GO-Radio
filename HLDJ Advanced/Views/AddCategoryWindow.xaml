@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HLDJ_Advanced.Views"
+        xmlns:classes="clr-namespace:HLDJ_Advanced.Classes"
         mc:Ignorable="d"
-        Title="AddCategoryWindow" Height="180" Width="300" MaxHeight="180" MaxWidth="300">
+        Title="AddCategoryWindow" Height="400" Width="300" MaxHeight="400" MaxWidth="300">
     <Grid>
         <StackPanel>
             <TextBlock Text="Category Name" Margin="10,10,10,0" />
@@ -15,6 +16,14 @@
             <TextBox Text="{Binding Category.StartId}" Margin="10,2,10,0"/>
             
             <Button Name="btnAdd" Click="btnAdd_Click" Margin="10" Width="100" HorizontalAlignment="Left">Add!</Button>
+
+            <TreeView ItemsSource="{Binding Categories}" Name="tvCategories">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate DataType="{x:Type classes:Category}" ItemsSource="{Binding Categories}">
+                                <TextBlock Text="{Binding Name}" />
+                        </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
         </StackPanel>
         
     </Grid>

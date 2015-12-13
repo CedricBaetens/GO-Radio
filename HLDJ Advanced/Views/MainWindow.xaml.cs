@@ -32,7 +32,7 @@ namespace HLDJ_Advanced
         private KeyboardHook keyboardHook;
         public ObservableCollection<Category> Categories { get; set; }
 
-        private Dictionary<string, SoundWAV> AllSounds;
+        public Dictionary<string, SoundWAV> AllSounds;
 
 
         public string SelectedSound { get; set; }
@@ -132,15 +132,19 @@ namespace HLDJ_Advanced
             {
                 string json = File.ReadAllText(Helper.SoundPath + "data.json");
                 Categories = JsonConvert.DeserializeObject<ObservableCollection<Category>>(json);
-            }
 
-            foreach (var category in Categories)
-            {
-                foreach (var sound in category.Sounds)
+                foreach (var category in Categories)
                 {
-                    AllSounds.Add(sound.IdFull, sound);
+                    foreach (var sound in category.Sounds)
+                    {
+                        AllSounds.Add(sound.IdFull, sound);
+                    }
                 }
             }
+
+            UpdateAllSoundList();
+
+            
 
             // Install Hook
             keyboardHook.InstallHook();
@@ -209,13 +213,22 @@ namespace HLDJ_Advanced
         private void UpdateAllSoundList()
         {
             AllSounds.Clear();
-            foreach (var category in Categories)
+
+            AddSong(Categories);
+
+            int a = 0;
+        }
+
+        private void AddSong(ObservableCollection<Category> catList)
+        {
+            foreach (var category in catList)
             {
+                AddSong(category.Categories);
                 foreach (var sound in category.Sounds)
                 {
                     AllSounds.Add(sound.IdFull, sound);
                 }
-            }
+            }           
         }
     }
 }

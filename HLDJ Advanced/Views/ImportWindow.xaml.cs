@@ -53,7 +53,7 @@ namespace HLDJ_Advanced.Views
         {
             //Copy selected Items List
             List<SoundMP3> selectedItems = new List<SoundMP3>(lvNewSongs.SelectedItems.Cast<SoundMP3>());
-            Category selectedCategory = (Category)cbCategories.SelectedItem;
+            Category selectedCategory = (Category)tvCategories.SelectedItem;
 
             for (int i = 0; i < selectedItems.Count; i++) 
             {
