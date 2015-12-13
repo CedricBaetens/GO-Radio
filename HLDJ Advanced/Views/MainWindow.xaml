@@ -10,6 +10,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Menu IsMainMenu="True">
@@ -39,6 +40,10 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+        <StackPanel Grid.Row="2">
+            <TextBox Text="{Binding SelectedSound}"></TextBox>
+            <Button Name="btnLoadSong" Click="BtnLoadSong_OnClick">Load Song</Button>
+        </StackPanel>
 
 
         

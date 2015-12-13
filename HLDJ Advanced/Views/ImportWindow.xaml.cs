@@ -26,7 +26,7 @@ namespace HLDJ_Advanced.Views
         public ObservableCollection<SoundMP3> Sounds { get; set; }
         public ObservableCollection<Category> Categories { get; set; }
 
-        private int sampleRate = 16000;
+        private int sampleRate = 22050;
         private int bits = 16;
         private int channels = 1;
 
@@ -55,15 +55,16 @@ namespace HLDJ_Advanced.Views
             List<SoundMP3> selectedItems = new List<SoundMP3>(lvNewSongs.SelectedItems.Cast<SoundMP3>());
             Category selectedCategory = (Category)cbCategories.SelectedItem;
 
-            for (int i = 0; i < selectedItems.Count; i++)
+            for (int i = 0; i < selectedItems.Count; i++) 
             {
                 SoundMP3 newSound = (SoundMP3)selectedItems[i];
 
                 // ReSample
-                string path = string.Format("audio\\{0}{1}", newSound.Name, ".wav");
+                string path = string.Format("{0}audio\\{1}{2}", Helper.SoundPath,newSound.Name, ".wav");
                 using (var reader = new MediaFoundationReader(newSound.Path))
                 using (var resampler = new MediaFoundationResampler(reader, new WaveFormat(sampleRate, bits, channels)))
                 {
+                    resampler.ResamplerQuality = 60;
                     WaveFileWriter.CreateWaveFile(path, resampler);
                 }
 
@@ -82,7 +83,7 @@ namespace HLDJ_Advanced.Views
         // Custom methods
         private ObservableCollection<SoundMP3> GetMP3Sounds()
         {
-            string[] newSoundsStrings = System.IO.Directory.GetFiles("mp3", "*.*", System.IO.SearchOption.AllDirectories);
+            string[] newSoundsStrings = System.IO.Directory.GetFiles(Helper.SoundPath + "new", "*.*", System.IO.SearchOption.AllDirectories);
 
             return
                 new ObservableCollection<SoundMP3>(newSoundsStrings.Select(newSound => new SoundMP3(newSound)).ToList());

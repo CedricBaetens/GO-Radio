@@ -13,6 +13,10 @@ namespace HLDJ_Advanced
     {
         //C:\Users\Cedric Baetens\Desktop
         //C:\Users\Baellon\Desktop\HLDJ\audio
-        public static string HldjPath = @"C:\Users\Cedric Baetens\Desktop\temp";
+
+
+        public static string CsgoPath = @"C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\";
+
+        public static string SoundPath = @"C:\Users\Baellon\Desktop\Songs\";
     }
 }
