@@ -23,7 +23,10 @@ namespace HLDJ_Advanced.Views
     [ImplementPropertyChanged]
     public partial class ImportWindow : Window
     {
+        public Data Data { get; set; }
+
         public ObservableCollection<SoundMP3> Sounds { get; set; }
+
         public ObservableCollection<Category> Categories { get; set; }
 
         private int sampleRate = 22050;
@@ -44,6 +47,9 @@ namespace HLDJ_Advanced.Views
         // Window events
         private void ImportWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
+            Categories = new ObservableCollection<Category>();
+            Categories.Add(new Category());
+
             Sounds = GetMP3Sounds();
             int a = 0;
         }
@@ -53,14 +59,14 @@ namespace HLDJ_Advanced.Views
         {
             //Copy selected Items List
             List<SoundMP3> selectedItems = new List<SoundMP3>(lvNewSongs.SelectedItems.Cast<SoundMP3>());
-            Category selectedCategory = (Category)tvCategories.SelectedItem;
+            Category selectedCategory = (Category)cbCategories.SelectedItem;
 
-            for (int i = 0; i < selectedItems.Count; i++) 
+            for (int i = 0; i < selectedItems.Count; i++)
             {
                 SoundMP3 newSound = (SoundMP3)selectedItems[i];
 
                 // ReSample
-                string path = string.Format("{0}audio\\{1}{2}", Helper.SoundPath,newSound.Name, ".wav");
+                string path = string.Format("{0}audio\\{1}{2}", Helper.SoundPath, newSound.Name, ".wav");
                 using (var reader = new MediaFoundationReader(newSound.Path))
                 using (var resampler = new MediaFoundationResampler(reader, new WaveFormat(sampleRate, bits, channels)))
                 {

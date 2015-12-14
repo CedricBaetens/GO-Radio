@@ -30,14 +30,17 @@ namespace HLDJ_Advanced
     public partial class MainWindow : Window
     {
         private KeyboardHook keyboardHook;
-        public ObservableCollection<Category> Categories { get; set; }
 
         public Dictionary<string, SoundWAV> AllSounds;
+
 
 
         public string SelectedSound { get; set; }
 
         private bool keyDown = false;
+
+
+        public Data Data { get; set; }
 
         public MainWindow()
         {
@@ -49,9 +52,9 @@ namespace HLDJ_Advanced
             keyboardHook.InstallHook();
 
             SelectedSound = "";
-
-            Categories = new ObservableCollection<Category>();
             AllSounds = new Dictionary<string, SoundWAV>();
+
+            Data = new Data();
 
             // Binding
             DataContext = this;
@@ -131,9 +134,9 @@ namespace HLDJ_Advanced
             if (File.Exists(Helper.SoundPath + "data.json"))
             {
                 string json = File.ReadAllText(Helper.SoundPath + "data.json");
-                Categories = JsonConvert.DeserializeObject<ObservableCollection<Category>>(json);
+                Data = JsonConvert.DeserializeObject<Data>(json);
 
-                foreach (var category in Categories)
+                foreach (var category in Data.Categories)
                 {
                     foreach (var sound in category.Sounds)
                     {
@@ -142,9 +145,11 @@ namespace HLDJ_Advanced
                 }
             }
 
-            UpdateAllSoundList();
+            SortList();
 
-            
+            //UpdateAllSoundList();
+
+
 
             // Install Hook
             keyboardHook.InstallHook();
@@ -152,7 +157,7 @@ namespace HLDJ_Advanced
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
             // Save data
-            string json = JsonConvert.SerializeObject(Categories, Formatting.Indented);
+            string json = JsonConvert.SerializeObject(Data, Formatting.Indented);
             File.WriteAllText(Helper.SoundPath + "data.json", json);
 
             // Deinstal hook
@@ -164,23 +169,18 @@ namespace HLDJ_Advanced
         {
             ImportWindow iw = new ImportWindow()
             {
-                Categories = this.Categories
+                Data = this.Data
             };
             iw.ShowDialog();
-
-            Categories = iw.Categories;
-
-            UpdateAllSoundList();
         }
-        private void miCreateFolders_Click(object sender, RoutedEventArgs e)
+        private void miCategory_Click(object sender, RoutedEventArgs e)
         {
             AddCategoryWindow acw = new AddCategoryWindow()
             {
-                Categories = this.Categories
+                Data = this.Data
             };
             acw.ShowDialog();
-
-            this.Categories = acw.Categories;
+            Data = acw.Data;
         }
 
         // Button
@@ -210,25 +210,15 @@ namespace HLDJ_Advanced
 
 
         }
-        private void UpdateAllSoundList()
+
+        private void SortList()
         {
-            AllSounds.Clear();
-
-            AddSong(Categories);
-
-            int a = 0;
+            Data.Categories = new ObservableCollection<Category>(Data.Categories.OrderBy(s => s.Name).ToList());
         }
 
-        private void AddSong(ObservableCollection<Category> catList)
+        private void DataGrid_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            foreach (var category in catList)
-            {
-                AddSong(category.Categories);
-                foreach (var sound in category.Sounds)
-                {
-                    AllSounds.Add(sound.IdFull, sound);
-                }
-            }           
+            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
         }
     }
 }

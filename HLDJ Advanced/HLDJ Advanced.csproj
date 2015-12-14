@@ -87,6 +87,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Classes\Category.cs" />
+    <Compile Include="Classes\Data.cs" />
     <Compile Include="Classes\Helper.cs" />
     <Compile Include="Classes\SoundMP3.cs" />
     <Compile Include="Classes\SoundWAV.cs" />

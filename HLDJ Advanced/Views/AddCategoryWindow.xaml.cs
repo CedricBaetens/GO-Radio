@@ -20,15 +20,15 @@ namespace HLDJ_Advanced.Views
     [ImplementPropertyChanged]
     public partial class AddCategoryWindow : Window
     {
-        public ObservableCollection<Category> Categories { get; set; }
-        public Category Category { get; set; }
+        public Data Data { get; set; }
+        public Category NewCategory { get; set; }
 
         public AddCategoryWindow()
         {
             InitializeComponent();
 
             // Instanciate
-            Category = new Category();
+            NewCategory = new Category();
 
             // Binding
             DataContext = this;
@@ -36,19 +36,19 @@ namespace HLDJ_Advanced.Views
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (!String.IsNullOrEmpty(Category.Name))
+            if (!String.IsNullOrEmpty(NewCategory.Name))
             {
-                Category cat = (Category)tvCategories.SelectedItem;
-                if (cat != null)
+                Category rootCat = (Category)cbCategories.SelectedItem;
+
+                if (rootCat != null)
                 {
-                    cat.Categories.Add(Category);
+                    NewCategory.Name = string.Format("{0} -> {1}", rootCat.Name, NewCategory.Name);
                 }
-                else
-                {
-                    Categories.Add(Category);
-                }
-                
-                
+
+                Data.Categories.Add(NewCategory);
+
+
+
                 Close();
             }
             else

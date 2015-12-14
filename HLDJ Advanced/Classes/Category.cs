@@ -29,12 +29,10 @@ namespace HLDJ_Advanced.Classes
 
 
         public ObservableCollection<SoundWAV> Sounds { get; set; }
-        public ObservableCollection<Category> Categories { get; set; }
 
         public Category()
         {
             Sounds = new ObservableCollection<SoundWAV>();
-            Categories = new ObservableCollection<Category>();
         }
 
         public int GetNextId()
