@@ -31,14 +31,12 @@ namespace HLDJ_Advanced
     {
         // Public
         public Data Data { get; set; }
-        public Dictionary<string, SoundWAV> AllSounds;
         public string IdEntered { get; set; }
         public SoundWAV LoadedSound { get; set; }  
 
         // Private
         private KeyboardHook keyboardHook;
         private bool keyDown = false;
-        private bool loadFailed = false;
 
         // Constructor
         public MainWindow()
@@ -51,13 +49,13 @@ namespace HLDJ_Advanced
             keyboardHook.InstallHook();
 
             Data = new Data();
-            AllSounds = new Dictionary<string, SoundWAV>();
             LoadedSound = new SoundWAV();
             
             IdEntered = "";
             
             // Binding
             DataContext = this;
+
         }
 
 
@@ -135,6 +133,7 @@ namespace HLDJ_Advanced
         // Window events
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
+            //Properties.Settings.Default.Reset();
             Helper.Load();
 
             // Load Data
@@ -142,14 +141,6 @@ namespace HLDJ_Advanced
             {
                 string json = File.ReadAllText(Helper.PathSounds + "\\data.json");
                 Data = JsonConvert.DeserializeObject<Data>(json);
-
-                foreach (var category in Data.Categories)
-                {
-                    foreach (var sound in category.Sounds)
-                    {
-                        AllSounds.Add(sound.IdFull, sound);
-                    }
-                }
             }
 
             SortList();
@@ -192,17 +183,36 @@ namespace HLDJ_Advanced
         // Custom
         private bool LoadSound(string id)
         {
-            if (AllSounds.ContainsKey(IdEntered))
-            {
-                var song = AllSounds[id];
-                LoadedSound = song;
+            SoundWAV foundSound = null;
 
-                if (File.Exists(Helper.PathCsgo + "voice_input.wav"))
+            // Find item
+            foreach (var category in Data.Categories)
+            {
+                foreach (SoundWAV sound in category.Sounds)
                 {
-                    File.Delete(Helper.PathCsgo + "voice_input.wav");
+                    if (sound.IdFull == id)
+                    {
+                        foundSound = sound;
+                        sound.LoadCount++;
+                        break;
+                    }
                 }
-                File.Copy(song.Path, Helper.PathCsgo + "voice_input.wav");
+
+                if (foundSound != null)
+                {
+                    break;
+                }
+            }
+
+            if (foundSound != null)
+            {
+                if (File.Exists(Helper.PathCsgo + "\\voice_input.wav"))
+                {
+                    File.Delete(Helper.PathCsgo + "\\voice_input.wav");
+                }
+                File.Copy(foundSound.Path, Helper.PathCsgo + "\\voice_input.wav");
                 IdEntered = "";
+                LoadedSound = foundSound;
                 return true;
             }
             return false;

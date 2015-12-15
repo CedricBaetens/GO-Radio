@@ -30,12 +30,20 @@ namespace HLDJ_Advanced
             // Check values
             if (String.IsNullOrEmpty(PathCsgo))
             {
-                FolderBrowserDialog fbd = new FolderBrowserDialog()
+                if (Directory.Exists(@"C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive"))
                 {
-                    Description = "Please select the csgo folder."
-                };                
-                fbd.ShowDialog();
-                PathCsgo = fbd.SelectedPath;
+                    PathCsgo = @"C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive";
+                }
+                else
+                {
+                    FolderBrowserDialog fbd = new FolderBrowserDialog()
+                    {
+                        Description = "Please select the csgo folder."
+                    };
+                    fbd.ShowDialog();
+                    PathCsgo = fbd.SelectedPath;
+                }             
+                
             }
 
             if (String.IsNullOrEmpty(PathSounds))
