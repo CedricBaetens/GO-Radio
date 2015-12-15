@@ -26,41 +26,57 @@
             <MenuItem Header="_Help" />-->
         </Menu>
 
-        <ScrollViewer Grid.Row="1" Name="scrollViewer">
+        <ScrollViewer Grid.Row="1" Name="scrollViewer" VerticalScrollBarVisibility="Auto">
             <ItemsControl ItemsSource="{Binding Data.Categories}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
-                            <TextBlock FontSize="18" Margin="5">
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}{0} ({1})">
-                                        <Binding Path="Name" />
-                                        <Binding Path="StartId" />
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
-                            <DataGrid ItemsSource="{Binding Sounds}" AutoGenerateColumns="False" Margin="5,0,5,5" PreviewMouseWheel="DataGrid_PreviewMouseWheel">
+                        <Expander Margin="2" ExpandDirection="Down">
+                            <Expander.Header>
+                                <TextBlock Text="{Binding Path=Name}"/>
+                            </Expander.Header>
+                            <DataGrid ItemsSource="{Binding Sounds}" AutoGenerateColumns="False" Margin="5,0,5,5" PreviewMouseWheel="DataGrid_PreviewMouseWheel" CanUserAddRows="False">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Id" Binding="{Binding IdFull}" />
                                     <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
                                 </DataGrid.Columns>
+
+                                <DataGrid.Style>
+                                    <Style TargetType="ItemsControl">
+                                        <Style.Triggers>
+                                            <Trigger Property="HasItems" Value="false"   >
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate>
+                                                            <TextBlock Text="This categories cotains no songs." Margin="5"/>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.Style>
                             </DataGrid>
-                        </StackPanel>
+                        </Expander>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
+
+                <ItemsControl.Style>
+                    <Style TargetType="ItemsControl">
+                        <Style.Triggers>
+                            <Trigger Property="HasItems" Value="false"   >
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <TextBlock Text="You currently have no categories. Click file -> Add Category to create one." Margin="5"/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ItemsControl.Style>
+                
             </ItemsControl>
         </ScrollViewer>
-        
-
-
-
-        <StackPanel Grid.Row="2">
-            <TextBox Text="{Binding SelectedSound}"></TextBox>
-            <Button Name="btnLoadSong" Click="BtnLoadSong_OnClick">Load Song</Button>
-        </StackPanel>
-
-
-        
-
     </Grid>
 </Window>

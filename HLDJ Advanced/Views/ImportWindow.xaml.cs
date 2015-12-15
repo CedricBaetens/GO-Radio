@@ -23,12 +23,11 @@ namespace HLDJ_Advanced.Views
     [ImplementPropertyChanged]
     public partial class ImportWindow : Window
     {
+        // Public
         public Data Data { get; set; }
-
         public ObservableCollection<SoundMP3> Sounds { get; set; }
 
-        public ObservableCollection<Category> Categories { get; set; }
-
+        // Private
         private int sampleRate = 22050;
         private int bits = 16;
         private int channels = 1;
@@ -47,11 +46,7 @@ namespace HLDJ_Advanced.Views
         // Window events
         private void ImportWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            Categories = new ObservableCollection<Category>();
-            Categories.Add(new Category());
-
-            Sounds = GetMP3Sounds();
-            int a = 0;
+            Sounds = GetNewSounds();
         }
 
         // Button events
@@ -66,7 +61,7 @@ namespace HLDJ_Advanced.Views
                 SoundMP3 newSound = (SoundMP3)selectedItems[i];
 
                 // ReSample
-                string path = string.Format("{0}audio\\{1}{2}", Helper.SoundPath, newSound.Name, ".wav");
+                string path = string.Format("{0}\\audio\\{1}{2}", Helper.PathSounds, newSound.Name, ".wav");
                 using (var reader = new MediaFoundationReader(newSound.Path))
                 using (var resampler = new MediaFoundationResampler(reader, new WaveFormat(sampleRate, bits, channels)))
                 {
@@ -87,9 +82,9 @@ namespace HLDJ_Advanced.Views
         }
 
         // Custom methods
-        private ObservableCollection<SoundMP3> GetMP3Sounds()
+        private ObservableCollection<SoundMP3> GetNewSounds()
         {
-            string[] newSoundsStrings = System.IO.Directory.GetFiles(Helper.SoundPath + "new", "*.*", System.IO.SearchOption.AllDirectories);
+            string[] newSoundsStrings = System.IO.Directory.GetFiles(Helper.PathSounds + "\\new", "*.*", System.IO.SearchOption.AllDirectories);
 
             return
                 new ObservableCollection<SoundMP3>(newSoundsStrings.Select(newSound => new SoundMP3(newSound)).ToList());

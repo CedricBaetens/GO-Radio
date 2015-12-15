@@ -29,5 +29,10 @@ namespace HLDJ_Advanced
 
             Id = id;
         }
+
+        public SoundWAV()
+        {
+
+        }
     }
 }

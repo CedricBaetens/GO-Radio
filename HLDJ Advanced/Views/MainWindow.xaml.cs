@@ -29,19 +29,17 @@ namespace HLDJ_Advanced
     [ImplementPropertyChanged]
     public partial class MainWindow : Window
     {
-        private KeyboardHook keyboardHook;
-
+        // Public
+        public Data Data { get; set; }
         public Dictionary<string, SoundWAV> AllSounds;
+        public string IdEntered { get; set; }
+        public SoundWAV LoadedSound { get; set; }
 
-
-
-        public string SelectedSound { get; set; }
-
+        // Private
+        private KeyboardHook keyboardHook;
         private bool keyDown = false;
 
-
-        public Data Data { get; set; }
-
+        // Constructor
         public MainWindow()
         {
             InitializeComponent();
@@ -51,22 +49,22 @@ namespace HLDJ_Advanced
             keyboardHook.KeyboardEvent += KeyboardHook_KeyboardEvent;
             keyboardHook.InstallHook();
 
-            SelectedSound = "";
-            AllSounds = new Dictionary<string, SoundWAV>();
-
             Data = new Data();
-
+            AllSounds = new Dictionary<string, SoundWAV>();
+            LoadedSound = new SoundWAV();
+            
+            IdEntered = "";
+            
             // Binding
             DataContext = this;
         }
+
 
         // Hook
         private void KeyboardHook_KeyboardEvent(KeyboardEvents kEvent, System.Windows.Forms.Keys key)
         {
             if (kEvent == KeyboardEvents.KeyDown)
-            {
                 keyDown = true;
-            }
 
             if (keyDown == true && kEvent == KeyboardEvents.KeyUp)
             {
@@ -76,54 +74,50 @@ namespace HLDJ_Advanced
                 switch (key)
                 {
                     case Keys.NumPad0:
-                        SelectedSound += "0";
+                        IdEntered += "0";
                         break;
 
                     case Keys.NumPad1:
-                        SelectedSound += "1";
+                        IdEntered += "1";
                         break;
 
                     case Keys.NumPad2:
-                        SelectedSound += "2";
+                        IdEntered += "2";
                         break;
 
                     case Keys.NumPad3:
-                        SelectedSound += "3";
+                        IdEntered += "3";
                         break;
 
                     case Keys.NumPad4:
-                        SelectedSound += "4";
+                        IdEntered += "4";
                         break;
 
                     case Keys.NumPad5:
-                        SelectedSound += "5";
+                        IdEntered += "5";
                         break;
 
                     case Keys.NumPad6:
-                        SelectedSound += "6";
+                        IdEntered += "6";
                         break;
 
                     case Keys.NumPad7:
-                        SelectedSound += "7";
+                        IdEntered += "7";
                         break;
 
                     case Keys.NumPad8:
-                        SelectedSound += "8";
+                        IdEntered += "8";
                         break;
 
                     case Keys.NumPad9:
-                        SelectedSound += "9";
+                        IdEntered += "9";
                         break;
                 }
                 #endregion
 
-                if (SelectedSound.Count() == 4)
-                {
-                    LoadSound(SelectedSound);
-                }
-
-            }
-            
+                if (IdEntered.Count() == 4)
+                    LoadSound(IdEntered);
+            }            
         }
 
 
@@ -131,9 +125,12 @@ namespace HLDJ_Advanced
         // Window events
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (File.Exists(Helper.SoundPath + "data.json"))
+            Helper.Load();
+
+            // Load Data
+            if (File.Exists(Helper.PathSounds + "\\data.json"))
             {
-                string json = File.ReadAllText(Helper.SoundPath + "data.json");
+                string json = File.ReadAllText(Helper.PathSounds + "\\data.json");
                 Data = JsonConvert.DeserializeObject<Data>(json);
 
                 foreach (var category in Data.Categories)
@@ -147,10 +144,6 @@ namespace HLDJ_Advanced
 
             SortList();
 
-            //UpdateAllSoundList();
-
-
-
             // Install Hook
             keyboardHook.InstallHook();
         }
@@ -158,7 +151,8 @@ namespace HLDJ_Advanced
         {
             // Save data
             string json = JsonConvert.SerializeObject(Data, Formatting.Indented);
-            File.WriteAllText(Helper.SoundPath + "data.json", json);
+            File.WriteAllText(Helper.PathSounds + "\\data.json", json);
+            Helper.Save();
 
             // Deinstal hook
             keyboardHook.UninstallHook();
@@ -183,39 +177,31 @@ namespace HLDJ_Advanced
             Data = acw.Data;
         }
 
-        // Button
-        private void BtnLoadSong_OnClick(object sender, RoutedEventArgs e)
-        {
-            if (AllSounds.ContainsKey(SelectedSound))
-            {
-                LoadSound(SelectedSound);
-            }
-        }
+
 
         // Custom
         private void LoadSound(string id)
         {
-            if (AllSounds.ContainsKey(SelectedSound))
+            if (AllSounds.ContainsKey(IdEntered))
             {
                 var song = AllSounds[id];
 
-                if (File.Exists(Helper.CsgoPath + "voice_input.wav"))
+                if (File.Exists(Helper.PathCsgo + "voice_input.wav"))
                 {
-                    File.Delete(Helper.CsgoPath + "voice_input.wav");
+                    File.Delete(Helper.PathCsgo + "voice_input.wav");
                 }
-                File.Copy(song.Path, Helper.CsgoPath + "voice_input.wav");
+                File.Copy(song.Path, Helper.PathCsgo + "voice_input.wav");
             }
-
-            SelectedSound = "";
-
-
+            IdEntered = "";
         }
-
         private void SortList()
         {
             Data.Categories = new ObservableCollection<Category>(Data.Categories.OrderBy(s => s.Name).ToList());
         }
 
+
+
+        // Fix scrollwheel on datagrid
         private void DataGrid_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
