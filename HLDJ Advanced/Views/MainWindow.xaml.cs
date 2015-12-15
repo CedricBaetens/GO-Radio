@@ -14,7 +14,6 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -23,6 +22,7 @@ using Kennedy.ManagedHooks;
 using Newtonsoft.Json;
 using PropertyChanged;
 using HLDJ_Advanced.Classes;
+using System.Windows.Media;
 
 namespace HLDJ_Advanced
 {
@@ -33,11 +33,12 @@ namespace HLDJ_Advanced
         public Data Data { get; set; }
         public Dictionary<string, SoundWAV> AllSounds;
         public string IdEntered { get; set; }
-        public SoundWAV LoadedSound { get; set; }
+        public SoundWAV LoadedSound { get; set; }  
 
         // Private
         private KeyboardHook keyboardHook;
         private bool keyDown = false;
+        private bool loadFailed = false;
 
         // Constructor
         public MainWindow()
@@ -69,6 +70,11 @@ namespace HLDJ_Advanced
             if (keyDown == true && kEvent == KeyboardEvents.KeyUp)
             {
                 keyDown = false;
+
+                if (IdEntered.Count() >= 4)
+                {
+                    IdEntered = "";
+                }
 
                 #region keys
                 switch (key)
@@ -111,6 +117,10 @@ namespace HLDJ_Advanced
 
                     case Keys.NumPad9:
                         IdEntered += "9";
+                        break;
+
+                    case Keys.Delete:
+                        IdEntered = "";
                         break;
                 }
                 #endregion
@@ -180,19 +190,22 @@ namespace HLDJ_Advanced
 
 
         // Custom
-        private void LoadSound(string id)
+        private bool LoadSound(string id)
         {
             if (AllSounds.ContainsKey(IdEntered))
             {
                 var song = AllSounds[id];
+                LoadedSound = song;
 
                 if (File.Exists(Helper.PathCsgo + "voice_input.wav"))
                 {
                     File.Delete(Helper.PathCsgo + "voice_input.wav");
                 }
                 File.Copy(song.Path, Helper.PathCsgo + "voice_input.wav");
+                IdEntered = "";
+                return true;
             }
-            IdEntered = "";
+            return false;
         }
         private void SortList()
         {

@@ -4,9 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:classes="clr-namespace:HLDJ_Advanced.Classes"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="ImportWindow" Height="300" Width="300"
-        Loaded="ImportWindow_OnLoaded">
+        Loaded="ImportWindow_OnLoaded"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -18,26 +22,24 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <ListView Name="lvNewSongs" Grid.ColumnSpan="2" ItemsSource="{Binding Sounds}" SelectionMode="Multiple">
-            <ListView.ItemTemplate>
+        <ListBox Name="lvNewSongs" Grid.ColumnSpan="2" ItemsSource="{Binding Sounds}" SelectionMode="Multiple">
+            <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="{Binding Name}"/>
                     </StackPanel>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
         <Button Grid.Row="1" Grid.Column="0" Name="btnAdd" Click="btnAdd_Click" Margin="5">Add</Button>
 
-        <ComboBox Grid.Row="1" Grid.Column="1" Margin="5" ItemsSource="{Binding Data.Categories}" Name="cbCategories" SelectedIndex="0">
+        <ComboBox Grid.Row="1" Grid.Column="1" Margin="5" ItemsSource="{Binding Data.Categories}" Name="cbCategories" SelectedIndex="0" materialDesign:TextFieldAssist.Hint="Category" materialDesign:TextFieldAssist.HintOpacity=".26">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}"></TextBlock>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-
-
     </Grid>
 </Window>

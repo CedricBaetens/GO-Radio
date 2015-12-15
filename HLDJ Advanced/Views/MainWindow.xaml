@@ -5,78 +5,150 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HLDJ_Advanced"
         xmlns:classes="clr-namespace:HLDJ_Advanced.Classes"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525" Loaded="MainWindow_OnLoaded" Closing="MainWindow_OnClosing">
+        Title="CS:GO Radio" 
+        Height="350" Width="400" 
+        MaxWidth="400"
+        Loaded="MainWindow_OnLoaded" Closing="MainWindow_OnClosing"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.RadioButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <classes:InverseBooleanConverter x:Key="BoolInvers" />
+            <classes:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+            <classes:BooleanInversToVisibilityConverter x:Key="BoolInversToVisibility"/>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Menu IsMainMenu="True">
+        <!--<Menu IsMainMenu="True">
             <MenuItem Header="_File">
                 <MenuItem Header="Import" Name="miImport" Click="miImport_Click"/>
                 <Separator/>
                 <MenuItem Header="Add Category" Name="miCreateFolders" Click="miCategory_Click"/>
             </MenuItem>
-            <!--<MenuItem Header="_Edit" />
-            <MenuItem Header="_View" />
-            <MenuItem Header="_Window" />
-            <MenuItem Header="_Help" />-->
-        </Menu>
+        </Menu>-->
 
-        <ScrollViewer Grid.Row="1" Name="scrollViewer" VerticalScrollBarVisibility="Auto">
-            <ItemsControl ItemsSource="{Binding Data.Categories}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Expander Margin="2" ExpandDirection="Down">
-                            <Expander.Header>
-                                <TextBlock Text="{Binding Path=Name}"/>
-                            </Expander.Header>
-                            <DataGrid ItemsSource="{Binding Sounds}" AutoGenerateColumns="False" Margin="5,0,5,5" PreviewMouseWheel="DataGrid_PreviewMouseWheel" CanUserAddRows="False">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Id" Binding="{Binding IdFull}" />
-                                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
-                                </DataGrid.Columns>
+        <StackPanel Grid.Row="1" >
+            <materialDesign:ColorZone Mode="PrimaryMid">
+                <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}" Margin="20,10,10,10">Categories</TextBlock>
+            </materialDesign:ColorZone>
+            <ScrollViewer Name="scrollViewer" VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Data.Categories}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Expander Margin="10" ExpandDirection="Down">
+                                <Expander.Header>
+                                    <TextBlock>
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0}">
+                                                <Binding Path="Name" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                    
+                                </Expander.Header>
+                                <StackPanel>
+                                    <!--NO DATA-->
+                                    <TextBlock Visibility="{Binding Path=HasData, Converter={StaticResource BoolInversToVisibility}}">NO DATA</TextBlock>
+                                    
+                                    <!--DATA-->
+                                    <DataGrid ItemsSource="{Binding Sounds}" AutoGenerateColumns="False" PreviewMouseWheel="DataGrid_PreviewMouseWheel" CanUserAddRows="False"
+                                           materialDesign:DataGridAssist.CellPadding="13 8 8 8" materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                                          Visibility="{Binding Path=HasData, Converter={StaticResource BoolToVisibility}}">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Id" Binding="{Binding IdFull}" />
+                                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
+                            </Expander>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
 
-                                <DataGrid.Style>
-                                    <Style TargetType="ItemsControl">
-                                        <Style.Triggers>
-                                            <Trigger Property="HasItems" Value="false"   >
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate>
-                                                            <TextBlock Text="This categories cotains no songs." Margin="5"/>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </DataGrid.Style>
-                            </DataGrid>
-                        </Expander>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
+                    <ItemsControl.Style>
+                        <Style TargetType="ItemsControl">
+                            <Style.Triggers>
+                                <Trigger Property="HasItems" Value="false"   >
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <TextBlock Text="You currently have no categories. Click file -> Add Category to create one." Margin="5"/>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ItemsControl.Style>
 
-                <ItemsControl.Style>
-                    <Style TargetType="ItemsControl">
-                        <Style.Triggers>
-                            <Trigger Property="HasItems" Value="false"   >
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate>
-                                            <TextBlock Text="You currently have no categories. Click file -> Add Category to create one." Margin="5"/>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </ItemsControl.Style>
-                
-            </ItemsControl>
-        </ScrollViewer>
+                </ItemsControl>
+            </ScrollViewer>
+        </StackPanel>
+
+        <!--Add new items-->
+        <materialDesign:PopupBox Grid.Row="2" 
+                                 Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"                                        
+                                 PlacementMode="TopAndAlignCentres"                                         
+                                 ToolTipService.Placement="Left"
+                                 ToolTip="Add New Item"                                       
+                                 Margin="10"
+                                 HorizontalAlignment="Right">
+            <StackPanel>
+                <Button ToolTip="Import a new sound." Click="miImport_Click">
+                    <Image Source="/Images/music-w.png" Margin="5"/>
+                </Button>
+                <Button ToolTip="Create a new category." Click="miCategory_Click">
+                    <Image Source="/Images/folder-w.png" Margin="5"/>
+                </Button>
+            </StackPanel>
+        </materialDesign:PopupBox>
+
+         <!--Footer-->
+        <materialDesign:ColorZone Grid.Row="3" Mode="PrimaryMid">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="20,10,10,10">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0} {1}">
+                            <Binding Path="LoadedSound.IdFull" />
+                            <Binding Path="LoadedSound.Name" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+
+                <TextBlock Grid.Column="1" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="20,10,10,10">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0}">
+                            <Binding Path="IdEntered" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </Grid>
+            
+        </materialDesign:ColorZone>
     </Grid>
 </Window>

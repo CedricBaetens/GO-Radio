@@ -15,15 +15,15 @@ namespace HLDJ_Advanced.Classes
         public string Name { get; set; }
         public int StartId { get; set; }
 
-        public Visibility Show
+        public bool HasData
         {
             get
             {
                 if (Sounds.Count > 0)
                 {
-                    return Visibility.Visible;
+                    return true;
                 }
-                return Visibility.Collapsed;
+                return false;
             }
         }
 
