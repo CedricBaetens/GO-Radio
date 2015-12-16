@@ -12,13 +12,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using HLDJ_Advanced.Views;
-using Kennedy.ManagedHooks;
 using Newtonsoft.Json;
 using PropertyChanged;
 using HLDJ_Advanced.Classes;
@@ -32,10 +30,10 @@ namespace HLDJ_Advanced
         // Public
         public Data Data { get; set; }
         public string IdEntered { get; set; }
-        public SoundWAV LoadedSound { get; set; }  
+        public SoundWAV LoadedSound { get; set; }
 
         // Private
-        private KeyboardHook keyboardHook;
+        private LowLevelKeyboardListener keyboardHook;
         private bool keyDown = false;
 
         // Constructor
@@ -44,90 +42,78 @@ namespace HLDJ_Advanced
             InitializeComponent();
 
             // Instance
-            keyboardHook = new KeyboardHook();
-            keyboardHook.KeyboardEvent += KeyboardHook_KeyboardEvent;
-            keyboardHook.InstallHook();
+            keyboardHook = new LowLevelKeyboardListener();
+            keyboardHook.OnKeyPressed += KeyboardHook_OnKeyPressed;
 
             Data = new Data();
             LoadedSound = new SoundWAV();
-            
+
             IdEntered = "";
-            
+
             // Binding
             DataContext = this;
 
         }
 
-
-        // Hook
-        private void KeyboardHook_KeyboardEvent(KeyboardEvents kEvent, System.Windows.Forms.Keys key)
+        private void KeyboardHook_OnKeyPressed(object sender, KeyPressedArgs e)
         {
-            if (kEvent == KeyboardEvents.KeyDown)
-                keyDown = true;
-
-            if (keyDown == true && kEvent == KeyboardEvents.KeyUp)
+            if (IdEntered.Count() >= 4)
             {
-                keyDown = false;
+                IdEntered = "";
+            }
 
-                if (IdEntered.Count() >= 4)
-                {
+            #region keys
+            switch (e.KeyPressed)
+            {
+                case Key.NumPad0:
+                    IdEntered += "0";
+                    break;
+
+                case Key.NumPad1:
+                    IdEntered += "1";
+                    break;
+
+                case Key.NumPad2:
+                    IdEntered += "2";
+                    break;
+
+                case Key.NumPad3:
+                    IdEntered += "3";
+                    break;
+
+                case Key.NumPad4:
+                    IdEntered += "4";
+                    break;
+
+                case Key.NumPad5:
+                    IdEntered += "5";
+                    break;
+
+                case Key.NumPad6:
+                    IdEntered += "6";
+                    break;
+
+                case Key.NumPad7:
+                    IdEntered += "7";
+                    break;
+
+                case Key.NumPad8:
+                    IdEntered += "8";
+                    break;
+
+                case Key.NumPad9:
+                    IdEntered += "9";
+                    break;
+
+                case Key.Delete:
                     IdEntered = "";
-                }
+                    break;
+            }
+            #endregion
 
-                #region keys
-                switch (key)
-                {
-                    case Keys.NumPad0:
-                        IdEntered += "0";
-                        break;
-
-                    case Keys.NumPad1:
-                        IdEntered += "1";
-                        break;
-
-                    case Keys.NumPad2:
-                        IdEntered += "2";
-                        break;
-
-                    case Keys.NumPad3:
-                        IdEntered += "3";
-                        break;
-
-                    case Keys.NumPad4:
-                        IdEntered += "4";
-                        break;
-
-                    case Keys.NumPad5:
-                        IdEntered += "5";
-                        break;
-
-                    case Keys.NumPad6:
-                        IdEntered += "6";
-                        break;
-
-                    case Keys.NumPad7:
-                        IdEntered += "7";
-                        break;
-
-                    case Keys.NumPad8:
-                        IdEntered += "8";
-                        break;
-
-                    case Keys.NumPad9:
-                        IdEntered += "9";
-                        break;
-
-                    case Keys.Delete:
-                        IdEntered = "";
-                        break;
-                }
-                #endregion
-
-                if (IdEntered.Count() == 4)
-                    LoadSound(IdEntered);
-            }            
+            if (IdEntered.Count() == 4)
+                LoadSound(IdEntered);
         }
-
 
 
         // Window events
@@ -146,8 +132,9 @@ namespace HLDJ_Advanced
             SortList();
 
             // Install Hook
-            keyboardHook.InstallHook();
+            keyboardHook.HookKeyboard();
         }
+
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
             // Save data
@@ -156,7 +143,7 @@ namespace HLDJ_Advanced
             Helper.Save();
 
             // Deinstal hook
-            keyboardHook.UninstallHook();
+            keyboardHook.UnHookKeyboard();
         }
 
         // Menu Events
@@ -227,7 +214,7 @@ namespace HLDJ_Advanced
         // Fix scrollwheel on datagrid
         private void DataGrid_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
+            //scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
         }
     }
 }
