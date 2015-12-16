@@ -32,6 +32,10 @@ namespace HLDJ_Advanced
         public string IdEntered { get; set; }
         public SoundWAV LoadedSound { get; set; }
 
+        public bool ShowList { get; set; }
+
+        public ObservableCollection<KeyValuePair<string, SoundWAV>> SoundsList { get; set; }
+
         // Private
         private LowLevelKeyboardListener keyboardHook;
         private bool keyDown = false;
@@ -47,11 +51,14 @@ namespace HLDJ_Advanced
 
             Data = new Data();
             LoadedSound = new SoundWAV();
+            SoundsList = new ObservableCollection<KeyValuePair<string, SoundWAV>>();
 
             IdEntered = "";
+            ShowList = false;
 
             // Binding
             DataContext = this;
+            
 
         }
 
@@ -130,6 +137,7 @@ namespace HLDJ_Advanced
             }
 
             SortList();
+            CreateBigList();
 
             // Install Hook
             keyboardHook.HookKeyboard();
@@ -163,6 +171,15 @@ namespace HLDJ_Advanced
             };
             acw.ShowDialog();
             Data = acw.Data;
+        }
+        private void miViewCategories_Click(object sender, RoutedEventArgs e)
+        {
+            ShowList = false;
+        }
+        private void miViewList_Click(object sender, RoutedEventArgs e)
+        {
+            ShowList = true;
+            CreateBigList();
         }
 
 
@@ -208,13 +225,31 @@ namespace HLDJ_Advanced
         {
             Data.Categories = new ObservableCollection<Category>(Data.Categories.OrderBy(s => s.Name).ToList());
         }
-
-
+        private void CreateBigList(string filter = "")
+        {
+            SoundsList.Clear();
+            foreach (var category in Data.Categories)
+            {
+                foreach (var sound in category.Sounds)
+                {
+                    if (sound.Name.Contains(filter))
+                    {
+                        SoundsList.Add(new KeyValuePair<string, SoundWAV>(category.Name, sound));
+                    }
+                }
+            }
+        }
 
         // Fix scrollwheel on datagrid
         private void DataGrid_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            //scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
+            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox temp = (TextBox)sender;
+            CreateBigList(temp.Text);
         }
     }
 }

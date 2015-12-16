@@ -34,88 +34,110 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!--<Menu IsMainMenu="True">
-            <MenuItem Header="_File">
+        <!--Header-->
+        <materialDesign:ColorZone Mode="PrimaryMid" Grid.Row="1">
+            <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}" Margin="20,10,10,10">CS:GO Radio</TextBlock>
+        </materialDesign:ColorZone>
+
+        <!--Menu-->
+        <Menu Grid.Row="0" IsMainMenu="True">
+            <MenuItem Header="File" Height="25">
                 <MenuItem Header="Import" Name="miImport" Click="miImport_Click"/>
                 <Separator/>
                 <MenuItem Header="Add Category" Name="miCreateFolders" Click="miCategory_Click"/>
             </MenuItem>
-        </Menu>-->
+            <MenuItem Header="View" Height="25">
+                <MenuItem Header="Categories" Name="miViewCategories" Click="miViewCategories_Click"/>
+                <MenuItem Header="List" Name="miViewList" Click="miViewList_Click"/>
+            </MenuItem>
+        </Menu>
 
-        <materialDesign:ColorZone Mode="PrimaryMid" Grid.Row="0">
-            <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}" Margin="20,10,10,10">Categories</TextBlock>
-        </materialDesign:ColorZone>
+        <!--Collection-->
+        <ScrollViewer Grid.Row="2" Name="scrollViewer" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <StackPanel  Visibility="{Binding Path=ShowList, Converter={StaticResource BoolToVisibility}}">
+                    <TextBox TextChanged="TextBox_TextChanged" Margin="10" materialDesign:TextFieldAssist.Hint="Filter..." />
+                    <DataGrid Name="dgList" ItemsSource="{Binding SoundsList}" 
+                          AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Id" Binding="{Binding Value.IdFull}" Width="auto"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Value.Name}" Width="auto" />
+                            <DataGridTextColumn Header="Count" Binding="{Binding Value.LoadCount}" Width="auto" />
+                            <DataGridTextColumn Header="Date" Binding="{Binding Value.Date}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+                <ItemsControl ItemsSource="{Binding Data.Categories}"  Visibility="{Binding Path=ShowList, Converter={StaticResource BoolInversToVisibility}}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Expander Margin="10" ExpandDirection="Down">
+                                <Expander.Header>
+                                    <TextBlock>
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0}">
+                                                <Binding Path="Name" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
 
+                                </Expander.Header>
+                                <StackPanel>
+                                    <!--NO DATA-->
+                                    <TextBlock Visibility="{Binding Path=HasData, Converter={StaticResource BoolInversToVisibility}}">NO DATA</TextBlock>
 
-        <ScrollViewer Grid.Row="1" Name="scrollViewer" VerticalScrollBarVisibility="Auto">
-            <ItemsControl ItemsSource="{Binding Data.Categories}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Expander Margin="10" ExpandDirection="Down">
-                            <Expander.Header>
-                                <TextBlock>
-                                    <TextBlock.Text>
-                                        <MultiBinding StringFormat="{}{0}">
-                                            <Binding Path="Name" />
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-
-                            </Expander.Header>
-                            <StackPanel>
-                                <!--NO DATA-->
-                                <TextBlock Visibility="{Binding Path=HasData, Converter={StaticResource BoolInversToVisibility}}">NO DATA</TextBlock>
-
-                                <!--DATA-->
-                                <DataGrid ItemsSource="{Binding Sounds}" AutoGenerateColumns="False" PreviewMouseWheel="DataGrid_PreviewMouseWheel" CanUserAddRows="False"
+                                    <!--DATA-->
+                                    <DataGrid ItemsSource="{Binding Sounds}" AutoGenerateColumns="False" PreviewMouseWheel="DataGrid_PreviewMouseWheel" CanUserAddRows="False"
                                            materialDesign:DataGridAssist.CellPadding="13 8 8 8" materialDesign:DataGridAssist.ColumnHeaderPadding="8"
                                           Visibility="{Binding Path=HasData, Converter={StaticResource BoolToVisibility}}">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Id" Binding="{Binding IdFull}" Width="auto"/>
-                                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="auto" />
-                                        <DataGridTextColumn Header="Count" Binding="{Binding LoadCount}" Width="auto" />
-                                        <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="*" />
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </StackPanel>
-                        </Expander>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Id" Binding="{Binding IdFull}" Width="auto"/>
+                                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="auto" />
+                                            <DataGridTextColumn Header="Count" Binding="{Binding LoadCount}" Width="auto" />
+                                            <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="*" />
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
+                            </Expander>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
 
-                <ItemsControl.Style>
-                    <Style TargetType="ItemsControl">
-                        <Style.Triggers>
-                            <Trigger Property="HasItems" Value="false"   >
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate>
-                                            <TextBlock Text="You currently have no categories. Click file -> Add Category to create one." Margin="5"/>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </ItemsControl.Style>
+                    <ItemsControl.Style>
+                        <Style TargetType="ItemsControl">
+                            <Style.Triggers>
+                                <Trigger Property="HasItems" Value="false"   >
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <TextBlock Text="You currently have no categories. Click file -> Add Category to create one." Margin="5"/>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ItemsControl.Style>
 
-            </ItemsControl>
+                </ItemsControl>
+            </StackPanel>
+            
         </ScrollViewer>
 
         <!--Add new items-->
-        <materialDesign:PopupBox Grid.Row="1" 
-                                 Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"                                        
+        <materialDesign:PopupBox Grid.Row="2" 
+                                 Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}"                                        
                                  PlacementMode="TopAndAlignCentres"                                         
                                  ToolTipService.Placement="Left"
                                  ToolTip="Add New Item"                                       
-                                 Margin="10"
+                                 Margin="15"
                                  HorizontalAlignment="Right"
-                                 VerticalAlignment="Bottom">
+                                 VerticalAlignment="Bottom"
+                                 Width="40"
+                                 Height="40">
             <StackPanel>
                 <Button ToolTip="Import a new sound." Click="miImport_Click">
                     <Image Source="/Images/music-w.png" Margin="5"/>
