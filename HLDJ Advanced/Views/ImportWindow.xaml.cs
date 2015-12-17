@@ -61,7 +61,7 @@ namespace HLDJ_Advanced.Views
                 SoundMP3 newSound = (SoundMP3)selectedItems[i];
 
                 // ReSample
-                string path = string.Format("{0}\\audio\\{1}{2}", Helper.PathSounds, newSound.Name, ".wav");
+                string path = string.Format("{0}\\audio\\{1}{2}", ProgramSettings.PathSounds, newSound.Name, ".wav");
                 using (var reader = new MediaFoundationReader(newSound.Path))
                 using (var resampler = new MediaFoundationResampler(reader, new WaveFormat(sampleRate, bits, channels)))
                 {
@@ -73,6 +73,7 @@ namespace HLDJ_Advanced.Views
                 File.Delete(newSound.Path);
 
                 selectedCategory.Sounds.Add(new SoundWAV(path, selectedCategory.GetNextId()));
+
             }
 
             if (Sounds.Count == 0)
@@ -84,10 +85,10 @@ namespace HLDJ_Advanced.Views
         // Custom methods
         private ObservableCollection<SoundMP3> GetNewSounds()
         {
-            string[] newSoundsStrings = System.IO.Directory.GetFiles(Helper.PathSounds + "\\new", "*.*", System.IO.SearchOption.AllDirectories);
+            string[] newSoundsStrings = System.IO.Directory.GetFiles(ProgramSettings.PathSounds + "\\new", "*.*", System.IO.SearchOption.AllDirectories);
 
             return
                 new ObservableCollection<SoundMP3>(newSoundsStrings.Select(newSound => new SoundMP3(newSound)).ToList());
-        }
+        }       
     }
 }

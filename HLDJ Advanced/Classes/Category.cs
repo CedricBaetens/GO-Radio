@@ -27,7 +27,7 @@ namespace HLDJ_Advanced.Classes
             }
         }
 
-
+        [AlsoNotifyFor("HasData")]
         public ObservableCollection<SoundWAV> Sounds { get; set; }
 
         public Category()

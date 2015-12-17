@@ -12,7 +12,6 @@ namespace HLDJ_Advanced.Classes
     public class Data
     {
         public ObservableCollection<Category> Categories { get; set; }
-
         public Data()
         {
             Categories = new ObservableCollection<Category>();

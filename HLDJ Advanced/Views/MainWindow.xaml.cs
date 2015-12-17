@@ -31,14 +31,11 @@ namespace HLDJ_Advanced
         public Data Data { get; set; }
         public string IdEntered { get; set; }
         public SoundWAV LoadedSound { get; set; }
-
         public bool ShowList { get; set; }
-
         public ObservableCollection<KeyValuePair<string, SoundWAV>> SoundsList { get; set; }
 
         // Private
         private LowLevelKeyboardListener keyboardHook;
-        private bool keyDown = false;
 
         // Constructor
         public MainWindow()
@@ -62,13 +59,9 @@ namespace HLDJ_Advanced
 
         }
 
+        // Hook
         private void KeyboardHook_OnKeyPressed(object sender, KeyPressedArgs e)
         {
-            if (IdEntered.Count() >= 4)
-            {
-                IdEntered = "";
-            }
-
             #region keys
             switch (e.KeyPressed)
             {
@@ -118,37 +111,34 @@ namespace HLDJ_Advanced
             }
             #endregion
 
-            if (IdEntered.Count() == 4)
+            if (IdEntered.Count() >= 4)
                 LoadSound(IdEntered);
         }
-
 
         // Window events
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            //Properties.Settings.Default.Reset();
-            Helper.Load();
+            ProgramSettings.Load();
 
             // Load Data
-            if (File.Exists(Helper.PathSounds + "\\data.json"))
+            if (File.Exists(ProgramSettings.PathSounds + "\\data.json"))
             {
-                string json = File.ReadAllText(Helper.PathSounds + "\\data.json");
+                string json = File.ReadAllText(ProgramSettings.PathSounds + "\\data.json");
                 Data = JsonConvert.DeserializeObject<Data>(json);
             }
 
             SortList();
-            CreateBigList();
+            CategoriesToSounds();
 
             // Install Hook
             keyboardHook.HookKeyboard();
         }
-
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
             // Save data
             string json = JsonConvert.SerializeObject(Data, Formatting.Indented);
-            File.WriteAllText(Helper.PathSounds + "\\data.json", json);
-            Helper.Save();
+            File.WriteAllText(ProgramSettings.PathSounds + "\\data.json", json);
+            ProgramSettings.Save();
 
             // Deinstal hook
             keyboardHook.UnHookKeyboard();
@@ -162,6 +152,7 @@ namespace HLDJ_Advanced
                 Data = this.Data
             };
             iw.ShowDialog();
+            int a = 0;
         }
         private void miCategory_Click(object sender, RoutedEventArgs e)
         {
@@ -179,13 +170,13 @@ namespace HLDJ_Advanced
         private void miViewList_Click(object sender, RoutedEventArgs e)
         {
             ShowList = true;
-            CreateBigList();
+            CategoriesToSounds();
         }
 
 
 
         // Custom
-        private bool LoadSound(string id)
+        private void LoadSound(string id)
         {
             SoundWAV foundSound = null;
 
@@ -210,22 +201,24 @@ namespace HLDJ_Advanced
 
             if (foundSound != null)
             {
-                if (File.Exists(Helper.PathCsgo + "\\voice_input.wav"))
+                if (File.Exists(ProgramSettings.PathCsgo + "\\voice_input.wav"))
                 {
-                    File.Delete(Helper.PathCsgo + "\\voice_input.wav");
+                    File.Delete(ProgramSettings.PathCsgo + "\\voice_input.wav");
                 }
-                File.Copy(foundSound.Path, Helper.PathCsgo + "\\voice_input.wav");
+                File.Copy(foundSound.Path, ProgramSettings.PathCsgo + "\\voice_input.wav");
                 IdEntered = "";
                 LoadedSound = foundSound;
-                return true;
             }
-            return false;
+
+            if (IdEntered.Count() >= 4)
+                IdEntered = "";
+
         }
         private void SortList()
         {
             Data.Categories = new ObservableCollection<Category>(Data.Categories.OrderBy(s => s.Name).ToList());
         }
-        private void CreateBigList(string filter = "")
+        private void CategoriesToSounds(string filter = "")
         {
             SoundsList.Clear();
             foreach (var category in Data.Categories)
@@ -249,7 +242,7 @@ namespace HLDJ_Advanced
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             TextBox temp = (TextBox)sender;
-            CreateBigList(temp.Text);
+            CategoriesToSounds(temp.Text);
         }
     }
 }

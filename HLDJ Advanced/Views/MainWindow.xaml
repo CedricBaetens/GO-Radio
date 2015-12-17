@@ -29,6 +29,8 @@
             <classes:InverseBooleanConverter x:Key="BoolInvers" />
             <classes:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
             <classes:BooleanInversToVisibilityConverter x:Key="BoolInversToVisibility"/>
+            <classes:IntToVisibilityConverter x:Key="IntToVisibility"/>
+            <classes:IntInversToVisibilityConverter x:Key="IntInversToVisibility"/>
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -88,12 +90,12 @@
                                 </Expander.Header>
                                 <StackPanel>
                                     <!--NO DATA-->
-                                    <TextBlock Visibility="{Binding Path=HasData, Converter={StaticResource BoolInversToVisibility}}">NO DATA</TextBlock>
+                                    <TextBlock Visibility="{Binding Path=Sounds.Count, Converter={StaticResource IntInversToVisibility}}">NO DATA</TextBlock>
 
                                     <!--DATA-->
                                     <DataGrid ItemsSource="{Binding Sounds}" AutoGenerateColumns="False" PreviewMouseWheel="DataGrid_PreviewMouseWheel" CanUserAddRows="False"
                                            materialDesign:DataGridAssist.CellPadding="13 8 8 8" materialDesign:DataGridAssist.ColumnHeaderPadding="8"
-                                          Visibility="{Binding Path=HasData, Converter={StaticResource BoolToVisibility}}">
+                                          Visibility="{Binding Path=Sounds.Count, Converter={StaticResource IntToVisibility}}">
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Id" Binding="{Binding IdFull}" Width="auto"/>
                                             <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="auto" />

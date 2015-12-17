@@ -10,12 +10,8 @@ using System.Windows.Forms;
 
 namespace HLDJ_Advanced
 {
-    static class Helper
+    static class ProgramSettings
     {
-        /*
-        public static string PathCsgo = @"C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\";
-        public static string PathSounds = @"C:\Users\Baellon\Desktop\Songs\";*/
-
         public static string PathCsgo;
         public static string PathSounds;
 
@@ -60,12 +56,11 @@ namespace HLDJ_Advanced
         }   
         public static void Save()
         {
-            // Load settings
             Properties.Settings.Default.PathCsgo = PathCsgo;
             Properties.Settings.Default.PathSounds = PathSounds;
             Properties.Settings.Default.Save();
         }
-        
+                
         private static void CreateFolders()
         {
             Directory.CreateDirectory(PathSounds + "\\audio");
