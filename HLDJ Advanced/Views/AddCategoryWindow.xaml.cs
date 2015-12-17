@@ -34,7 +34,7 @@ namespace HLDJ_Advanced.Views
             DataContext = this;
         }
 
-        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        private void AddCategory()
         {
             if (!String.IsNullOrEmpty(NewCategory.Name))
             {
@@ -56,5 +56,12 @@ namespace HLDJ_Advanced.Views
                 MessageBox.Show("Category name is empty.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        private void CloseWindow()
+        {
+            Close();
+        }
+
+        public ICommand CommandAddCategory { get { return new RelayCommand(AddCategory); } }
+        public ICommand CommandCloseWindow { get { return new RelayCommand(CloseWindow); } }
     }
 }

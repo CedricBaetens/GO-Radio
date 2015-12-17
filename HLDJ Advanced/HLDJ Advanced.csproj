@@ -90,13 +90,23 @@
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\Convertors.cs" />
     <Compile Include="Classes\Data.cs" />
-    <Compile Include="Classes\Helper.cs" />
+    <Compile Include="Classes\ProgramSettings.cs" />
     <Compile Include="Classes\KeyboardHook.cs" />
     <Compile Include="Classes\ObservableDictionary.cs" />
     <Compile Include="Classes\RellayCommand.cs" />
     <Compile Include="Classes\SoundMP3.cs" />
     <Compile Include="Classes\SoundWAV.cs" />
+    <Compile Include="Views\CategoryWindow.xaml.cs">
+      <DependentUpon>CategoryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\AddCategoryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CategoryWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -122,6 +132,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

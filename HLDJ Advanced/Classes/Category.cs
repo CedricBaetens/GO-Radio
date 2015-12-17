@@ -1,4 +1,5 @@
-﻿using PropertyChanged;
+﻿using HLDJ_Advanced.Views;
+using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -44,10 +45,18 @@ namespace HLDJ_Advanced.Classes
                 Sounds[i].Id = StartId + i;
             }
         }
+        private void EditCategory()
+        {
+            CategoryWindow cw = new CategoryWindow();
+            cw.SelectedCategory = this;
+            cw.ShowDialog();
+        }
 
         // Command Binding
         public ICommand CommandRemoveSound { get { return new RelayCommand(RemoveSound); } }
         public ICommand CommandRecalculateIds { get { return new RelayCommand(RecalculateIds); } }
+        public ICommand CommandEditCategory { get { return new RelayCommand(EditCategory); } }
+        
  
     }
 }

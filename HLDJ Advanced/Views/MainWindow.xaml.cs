@@ -28,12 +28,11 @@ namespace HLDJ_Advanced
     public partial class MainWindow : Window
     {
         // Public
-        public Data Data { get; set; }
+        public Data Data { get; set; }    
         public string IdEntered { get; set; }
         public SoundWAV LoadedSound { get; set; }
         public bool ShowList { get; set; }
         public ObservableCollection<KeyValuePair<string, SoundWAV>> SoundsList { get; set; }
-        public IInputElement Test { get; set; }
 
         // Private
         private LowLevelKeyboardListener keyboardHook;
@@ -138,7 +137,16 @@ namespace HLDJ_Advanced
         {
             // Save data
             string json = JsonConvert.SerializeObject(Data, Formatting.Indented);
-            File.WriteAllText(ProgramSettings.PathSounds + "\\data.json", json);
+
+            try
+            {
+                File.WriteAllText(ProgramSettings.PathSounds + "\\data.json", json);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error writing data, please make sure the sound folder exists.");
+            }
+
             ProgramSettings.Save();
 
             // Deinstal hook
@@ -172,6 +180,12 @@ namespace HLDJ_Advanced
         {
             ShowList = true;
             CategoriesToSounds();
+        }
+
+        private void ShowSettingsWindow()
+        {
+            SettingsWindow sw = new SettingsWindow();
+            sw.ShowDialog();
         }
 
         // Custom
@@ -250,7 +264,8 @@ namespace HLDJ_Advanced
         public ICommand CommandAddSound{ get { return new RelayCommand(AddSound); } }
         public ICommand CommandViewCategories { get { return new RelayCommand(ViewCategories); } }
         public ICommand CommandViewList { get { return new RelayCommand(ViewList); } }
+        public ICommand CommandSettings { get { return new RelayCommand(ShowSettingsWindow); } }
 
-        
+
     }
 }

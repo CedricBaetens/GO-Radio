@@ -57,11 +57,14 @@
                 <MenuItem Header="Categories" Command="{Binding CommandViewCategories}"/>
                 <MenuItem Header="List" Command="{Binding CommandViewList}"/>
             </MenuItem>
+            <MenuItem Header="Settings" Height="25" Command="{Binding CommandSettings}"></MenuItem>
         </Menu>
 
         <!--Collection-->
         <ScrollViewer Grid.Row="2" Name="scrollViewer" VerticalScrollBarVisibility="Auto">
             <StackPanel>
+                
+                <!--LIST-->
                 <StackPanel  Visibility="{Binding Path=ShowList, Converter={StaticResource BoolToVisibility}}">
                     <TextBox TextChanged="TextBox_TextChanged" Margin="10" materialDesign:TextFieldAssist.Hint="Filter..." />
                     <DataGrid Name="dgList" ItemsSource="{Binding SoundsList}" 
@@ -74,10 +77,14 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>
+                
+                <!--CATEGORIES-->
                 <ItemsControl ItemsSource="{Binding Data.Categories}"  Visibility="{Binding Path=ShowList, Converter={StaticResource BoolInversToVisibility}}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Expander Margin="10" ExpandDirection="Down">
+                                
+                                <!--CATEGORY NAME-->
                                 <Expander.Header>
                                     <TextBlock>
                                         <TextBlock.Text>
@@ -87,14 +94,16 @@
                                         </TextBlock.Text>
                                         <TextBlock.ContextMenu>
                                             <ContextMenu >
+                                                <MenuItem Header="Edit" Command="{Binding CommandEditCategory}"/>
                                                 <MenuItem Header="Recalculate Id's" Command="{Binding CommandRecalculateIds}"/>
                                             </ContextMenu>
                                         </TextBlock.ContextMenu>
                                     </TextBlock>
                                 </Expander.Header>
+                                
                                 <StackPanel>
                                     <!--NO DATA-->
-                                    <TextBlock Visibility="{Binding Path=Sounds.Count, Converter={StaticResource IntInversToVisibility}}">NO DATA</TextBlock>
+                                    <TextBlock Visibility="{Binding Path=Sounds.Count, Converter={StaticResource IntInversToVisibility}}">This category doesnt have any songs in.</TextBlock>
 
                                     <!--DATA-->
                                     <DataGrid ItemsSource="{Binding Sounds}" AutoGenerateColumns="False" PreviewMouseWheel="DataGrid_PreviewMouseWheel" CanUserAddRows="False"

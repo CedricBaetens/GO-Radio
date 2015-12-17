@@ -6,7 +6,7 @@
         xmlns:classes="clr-namespace:HLDJ_Advanced.Classes"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="ImportWindow" Height="300" Width="300"
+        Title="CS:GO Radio - Import Sound" Height="300" Width="300"
         Loaded="ImportWindow_OnLoaded"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"

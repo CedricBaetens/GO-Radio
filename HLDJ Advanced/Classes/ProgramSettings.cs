@@ -7,13 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 using HLDJ_Advanced.Classes;
 using System.Windows.Forms;
+using PropertyChanged;
 
 namespace HLDJ_Advanced
 {
-    static class ProgramSettings
+    [ImplementPropertyChanged]
+    public static class ProgramSettings
     {
-        public static string PathCsgo;
-        public static string PathSounds;
+        public static string PathCsgo { get; set; }
+        public static string PathSounds { get; set; }
 
         public static void Load()
         {
