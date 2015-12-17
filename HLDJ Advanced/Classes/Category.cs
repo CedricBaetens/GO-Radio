@@ -14,20 +14,6 @@ namespace HLDJ_Advanced.Classes
     {
         public string Name { get; set; }
         public int StartId { get; set; }
-
-        public bool HasData
-        {
-            get
-            {
-                if (Sounds.Count > 0)
-                {
-                    return true;
-                }
-                return false;
-            }
-        }
-
-        [AlsoNotifyFor("HasData")]
         public ObservableCollection<SoundWAV> Sounds { get; set; }
 
         public Category()
