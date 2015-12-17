@@ -1,9 +1,11 @@
 ﻿using HLDJ_Advanced.Views;
+using Newtonsoft.Json;
 using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,12 +14,19 @@ using System.Windows.Input;
 namespace HLDJ_Advanced.Classes
 {
     [ImplementPropertyChanged]
+    [DataContract]
     public class Category
     {
         // Properties
+        [DataMember]
         public string Name { get; set; }
+
+        [DataMember]
         public int StartId { get; set; }
+
+        [DataMember]
         public ObservableCollection<SoundWAV> Sounds { get; set; }
+
         public SoundWAV SelectedSound { get; set; }
 
         // Constructor
@@ -40,10 +49,10 @@ namespace HLDJ_Advanced.Classes
         }
         private void RecalculateIds()
         {
-            for (int i = 0; i < Sounds.Count; i++)
-            {
-                Sounds[i].Id = StartId + i;
-            }
+            //for (int i = 0; i < Sounds.Count; i++)
+            //{
+            //    Sounds[i].Id = StartId + i;
+            //}
         }
         private void EditCategory()
         {

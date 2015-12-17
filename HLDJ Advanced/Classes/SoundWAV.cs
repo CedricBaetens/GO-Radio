@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HLDJ_Advanced.Classes;
 using PropertyChanged;
+using Newtonsoft.Json;
 
 namespace HLDJ_Advanced
 {
@@ -13,6 +14,7 @@ namespace HLDJ_Advanced
     public class SoundWAV
     {
         public int Id { get; set; }
+        [JsonIgnore]
         public string IdFull { get { return Id.ToString("0000"); } }
         public string Name { get; set; }
         public string Path { get; set; }

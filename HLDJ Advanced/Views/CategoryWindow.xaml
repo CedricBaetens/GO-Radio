@@ -10,6 +10,8 @@
         <StackPanel>
             <TextBlock>NAME</TextBlock>
             <TextBox Text="{Binding SelectedCategory.Name}"></TextBox>
+            <TextBlock>startid</TextBlock>
+            <TextBox Text="{Binding SelectedCategory.StartId}"></TextBox>
         </StackPanel>
 
     </Grid>

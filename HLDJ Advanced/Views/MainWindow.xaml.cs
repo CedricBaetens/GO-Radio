@@ -111,8 +111,7 @@ namespace HLDJ_Advanced
             }
             #endregion
 
-            if (IdEntered.Count() >= 4)
-                LoadSound(IdEntered);
+            LoadSound(IdEntered);
         }
 
         // Window events
@@ -196,18 +195,11 @@ namespace HLDJ_Advanced
             // Find item
             foreach (var category in Data.Categories)
             {
-                foreach (SoundWAV sound in category.Sounds)
-                {
-                    if (sound.IdFull == id)
-                    {
-                        foundSound = sound;
-                        sound.LoadCount++;
-                        break;
-                    }
-                }
+                foundSound = category.Sounds.Where(x => x.IdFull == id).FirstOrDefault();
 
                 if (foundSound != null)
                 {
+                    foundSound.LoadCount++;
                     break;
                 }
             }
