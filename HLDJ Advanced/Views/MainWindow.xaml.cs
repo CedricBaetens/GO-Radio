@@ -33,6 +33,7 @@ namespace HLDJ_Advanced
         public SoundWAV LoadedSound { get; set; }
         public bool ShowList { get; set; }
         public ObservableCollection<KeyValuePair<string, SoundWAV>> SoundsList { get; set; }
+        public IInputElement Test { get; set; }
 
         // Private
         private LowLevelKeyboardListener keyboardHook;
@@ -145,7 +146,7 @@ namespace HLDJ_Advanced
         }
 
         // Menu Events
-        private void miImport_Click(object sender, RoutedEventArgs e)
+        private void AddSound()
         {
             ImportWindow iw = new ImportWindow()
             {
@@ -154,7 +155,7 @@ namespace HLDJ_Advanced
             iw.ShowDialog();
             int a = 0;
         }
-        private void miCategory_Click(object sender, RoutedEventArgs e)
+        private void AddCategory()
         {
             AddCategoryWindow acw = new AddCategoryWindow()
             {
@@ -163,17 +164,15 @@ namespace HLDJ_Advanced
             acw.ShowDialog();
             Data = acw.Data;
         }
-        private void miViewCategories_Click(object sender, RoutedEventArgs e)
+        private void ViewCategories()
         {
             ShowList = false;
         }
-        private void miViewList_Click(object sender, RoutedEventArgs e)
+        private void ViewList()
         {
             ShowList = true;
             CategoriesToSounds();
         }
-
-
 
         // Custom
         private void LoadSound(string id)
@@ -244,5 +243,14 @@ namespace HLDJ_Advanced
             TextBox temp = (TextBox)sender;
             CategoriesToSounds(temp.Text);
         }
+
+
+        // Command Binding
+        public ICommand CommandAddCategory { get { return new RelayCommand(AddCategory); } }
+        public ICommand CommandAddSound{ get { return new RelayCommand(AddSound); } }
+        public ICommand CommandViewCategories { get { return new RelayCommand(ViewCategories); } }
+        public ICommand CommandViewList { get { return new RelayCommand(ViewList); } }
+
+        
     }
 }
