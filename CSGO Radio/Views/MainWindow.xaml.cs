@@ -119,6 +119,10 @@ namespace HLDJ_Advanced
                 case Key.Enter:
                     LoadedSound.PlayCount++;
                     break;
+
+                //case Key.Add:
+                //    IdEntered += "+";
+                //    break;
             }
             #endregion
 
@@ -289,6 +293,7 @@ namespace HLDJ_Advanced
                 }
             }
 
+            // Return
             return foundSound;
         }
 
