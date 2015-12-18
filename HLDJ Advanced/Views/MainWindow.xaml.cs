@@ -21,6 +21,8 @@ using Newtonsoft.Json;
 using PropertyChanged;
 using HLDJ_Advanced.Classes;
 using System.Windows.Media;
+using System.Speech.Synthesis;
+using System.Speech.AudioFormat;
 
 namespace HLDJ_Advanced
 {
@@ -111,7 +113,7 @@ namespace HLDJ_Advanced
             }
             #endregion
 
-            LoadSound(IdEntered);
+            LoadSound(FindSoundById(IdEntered));
         }
 
         // Window events
@@ -180,15 +182,70 @@ namespace HLDJ_Advanced
             ShowList = true;
             CategoriesToSounds();
         }
-
         private void ShowSettingsWindow()
         {
             SettingsWindow sw = new SettingsWindow();
             sw.ShowDialog();
         }
+        private void TextToSpeech()
+        {
+            var dialog = new TextToSpeechWindow();
+            dialog.ShowDialog();
+
+            if (!dialog.Canceled)
+            {
+                using (var synth = new SpeechSynthesizer())
+                {
+                    string path = ProgramSettings.PathSounds + "\\audio\\tts.wav";
+
+                    // Configure the audio output. 
+                    synth.SetOutputToWaveFile(path,
+                        new SpeechAudioFormatInfo(22050, AudioBitsPerSample.Sixteen, AudioChannel.Mono));
+
+                    // Build a prompt.
+                    PromptBuilder builder = new PromptBuilder();
+                    builder.AppendText(dialog.SpeechText);
+                    //builder.AppendText("12543");
+
+                    synth.Rate = -2;
+
+                    // Change voice
+                    synth.SelectVoiceByHints(dialog.SelectedGender);
+
+                    // Speak the prompt.
+                    synth.Speak(builder);
+
+                    LoadedSound = new SoundWAV()
+                    {
+                        Id = -1,
+                        Name = "Text To Speech",
+                        Path = path
+                    };
+
+                    LoadSound(LoadedSound);
+                }
+            }
+        }
 
         // Custom
-        private void LoadSound(string id)
+        private void LoadSound(SoundWAV sound)
+        {        
+            if (sound != null)
+            {
+                if (File.Exists(ProgramSettings.PathCsgo + "\\voice_input.wav"))
+                {
+                    File.Delete(ProgramSettings.PathCsgo + "\\voice_input.wav");
+                }
+                File.Copy(sound.Path, ProgramSettings.PathCsgo + "\\voice_input.wav");
+                IdEntered = "";
+                LoadedSound = sound;
+            }
+
+            if (IdEntered.Count() >= 4)
+                IdEntered = "";
+
+        }
+        private SoundWAV FindSoundById(string id)
         {
             SoundWAV foundSound = null;
 
@@ -204,21 +261,9 @@ namespace HLDJ_Advanced
                 }
             }
 
-            if (foundSound != null)
-            {
-                if (File.Exists(ProgramSettings.PathCsgo + "\\voice_input.wav"))
-                {
-                    File.Delete(ProgramSettings.PathCsgo + "\\voice_input.wav");
-                }
-                File.Copy(foundSound.Path, ProgramSettings.PathCsgo + "\\voice_input.wav");
-                IdEntered = "";
-                LoadedSound = foundSound;
-            }
-
-            if (IdEntered.Count() >= 4)
-                IdEntered = "";
-
+            return foundSound;
         }
+
         private void SortList()
         {
             Data.Categories = new ObservableCollection<Category>(Data.Categories.OrderBy(s => s.Name).ToList());
@@ -257,7 +302,9 @@ namespace HLDJ_Advanced
         public ICommand CommandViewCategories { get { return new RelayCommand(ViewCategories); } }
         public ICommand CommandViewList { get { return new RelayCommand(ViewList); } }
         public ICommand CommandSettings { get { return new RelayCommand(ShowSettingsWindow); } }
+        public ICommand CommandTextToSpeech { get { return new RelayCommand(TextToSpeech); } }
 
 
+        
     }
 }

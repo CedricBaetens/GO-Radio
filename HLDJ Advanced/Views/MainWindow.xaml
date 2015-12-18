@@ -57,7 +57,12 @@
                 <MenuItem Header="Categories" Command="{Binding CommandViewCategories}"/>
                 <MenuItem Header="List" Command="{Binding CommandViewList}"/>
             </MenuItem>
-            <MenuItem Header="Settings" Height="25" Command="{Binding CommandSettings}"></MenuItem>
+            <MenuItem Header="Extra" Height="25">
+                <MenuItem Header="Text To Speech" Command="{Binding CommandTextToSpeech}"/>
+                <Separator/>
+                <MenuItem Header="Settings" Height="25" Command="{Binding CommandSettings}"></MenuItem>
+            </MenuItem>
+            
         </Menu>
 
         <!--Collection-->
