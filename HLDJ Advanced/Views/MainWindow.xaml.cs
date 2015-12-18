@@ -110,6 +110,10 @@ namespace HLDJ_Advanced
                 case Key.Delete:
                     IdEntered = "";
                     break;
+
+                case Key.Enter:
+                    LoadedSound.PlayCount++;
+                    break;
             }
             #endregion
 
@@ -288,7 +292,6 @@ namespace HLDJ_Advanced
         {
             scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
         }
-
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             TextBox temp = (TextBox)sender;

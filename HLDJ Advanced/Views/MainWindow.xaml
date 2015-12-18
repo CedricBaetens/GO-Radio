@@ -78,6 +78,7 @@
                             <DataGridTextColumn Header="Id" Binding="{Binding Value.IdFull}" Width="auto"/>
                             <DataGridTextColumn Header="Name" Binding="{Binding Value.Name}" Width="auto" />
                             <DataGridTextColumn Header="Count" Binding="{Binding Value.LoadCount}" Width="auto" />
+                            <DataGridTextColumn Header="Count" Binding="{Binding Value.PlayCount}" Width="auto" />
                             <DataGridTextColumn Header="Date" Binding="{Binding Value.Date}" Width="*" />
                         </DataGrid.Columns>
                     </DataGrid>
@@ -118,7 +119,8 @@
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Id" Binding="{Binding Id, StringFormat='0000'}"  Width="auto"/>
                                             <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="auto" />
-                                            <DataGridTextColumn Header="Count" Binding="{Binding LoadCount}" Width="auto" />
+                                            <DataGridTextColumn Header="# Loaded" Binding="{Binding LoadCount}" Width="auto" />
+                                            <DataGridTextColumn Header="# Played" Binding="{Binding PlayCount}" Width="*" />
                                             <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="*" />
                                         </DataGrid.Columns>
                                         <DataGrid.ContextMenu>

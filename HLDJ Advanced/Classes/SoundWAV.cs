@@ -30,6 +30,7 @@ namespace HLDJ_Advanced
         public string Directory { get; set; }
         public string Extension { get; set; }
         public int LoadCount { get; set; }
+        public int PlayCount { get; set; }
         public DateTime Date { get; set; }
 
         public SoundWAV(string path, int id)

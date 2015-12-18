@@ -34,7 +34,7 @@ namespace HLDJ_Advanced.Views
             DataContext = this; 
         }
 
-        public bool Canceled { get; set; }
+        public bool Canceled { get; set; } = true;
 
         private void BtnCancel_Click(object sender, System.Windows.RoutedEventArgs e)
         {
