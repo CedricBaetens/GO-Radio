@@ -23,6 +23,7 @@ using HLDJ_Advanced.Classes;
 using System.Windows.Media;
 using System.Speech.Synthesis;
 using System.Speech.AudioFormat;
+using System.Media;
 
 namespace HLDJ_Advanced
 {
@@ -35,9 +36,11 @@ namespace HLDJ_Advanced
         public SoundWAV LoadedSound { get; set; }
         public bool ShowList { get; set; }
         public ObservableCollection<KeyValuePair<string, SoundWAV>> SoundsList { get; set; }
+        public bool SoundIsPlaying { get; set; }
 
         // Private
         private LowLevelKeyboardListener keyboardHook;
+        private SoundPlayer soundPlayer;
 
         // Constructor
         public MainWindow()
@@ -54,6 +57,8 @@ namespace HLDJ_Advanced
 
             IdEntered = "";
             ShowList = false;
+
+            soundPlayer = new SoundPlayer();
 
             // Binding
             DataContext = this;
@@ -231,6 +236,23 @@ namespace HLDJ_Advanced
             }
         }
 
+        private void PlayPauzeSound()
+        {
+            if (soundPlayer.IsLoadCompleted)
+            {
+                if (SoundIsPlaying)
+                {
+                    soundPlayer.Stop();
+                    SoundIsPlaying = false;
+                }
+                else
+                {
+                    soundPlayer.Play();
+                    SoundIsPlaying = true;
+                }
+            }
+        }
+
         // Custom
         private void LoadSound(SoundWAV sound)
         {        
@@ -243,6 +265,8 @@ namespace HLDJ_Advanced
                 File.Copy(sound.Path, ProgramSettings.PathCsgo + "\\voice_input.wav");
                 IdEntered = "";
                 LoadedSound = sound;
+                soundPlayer.SoundLocation = sound.Path;
+                soundPlayer.Load();
             }
 
             if (IdEntered.Count() >= 4)
@@ -306,8 +330,9 @@ namespace HLDJ_Advanced
         public ICommand CommandViewList { get { return new RelayCommand(ViewList); } }
         public ICommand CommandSettings { get { return new RelayCommand(ShowSettingsWindow); } }
         public ICommand CommandTextToSpeech { get { return new RelayCommand(TextToSpeech); } }
+        public ICommand CommandPlayPauzeSound { get { return new RelayCommand(PlayPauzeSound); } }
 
 
-        
+
     }
 }

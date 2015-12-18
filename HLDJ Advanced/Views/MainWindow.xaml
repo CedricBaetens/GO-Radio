@@ -180,11 +180,26 @@
         <materialDesign:ColorZone Grid.Row="3" Mode="PrimaryMid">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="20,10,10,10">
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
+                        Margin="0 0 8 0" HorizontalAlignment="Left"
+                        ToolTip="Play/Stop selected sound."
+                        Command="{Binding CommandPlayPauzeSound}">
+                        <Viewbox Width="24" Height="24">
+                            <StackPanel>
+                                <Image Visibility="{Binding Path=SoundIsPlaying, Converter={StaticResource BoolInversToVisibility}}" Source="/Images/play.png"></Image>
+                                <Image Visibility="{Binding Path=SoundIsPlaying, Converter={StaticResource BoolToVisibility}}" Source="/Images/stop.png"></Image>
+                            </StackPanel>
+                        </Viewbox>
+                    </Button>
+                </StackPanel>
+                
+                <TextBlock Grid.Column="1" Style="{StaticResource MaterialDesignBody2TextBlock}" VerticalAlignment="Center">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0} {1}">
                             <Binding Path="LoadedSound.IdFull" />
@@ -193,7 +208,7 @@
                     </TextBlock.Text>
                 </TextBlock>
 
-                <TextBlock Grid.Column="1" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="20,10,10,10">
+                <TextBlock Grid.Column="2" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="20,10,10,10" VerticalAlignment="Center">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0}">
                             <Binding Path="IdEntered" />
