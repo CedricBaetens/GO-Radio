@@ -12,13 +12,13 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using HLDJ_Advanced.Classes;
+using CSGO_Radio.Classes;
 using PropertyChanged;
 using Microsoft.Win32;
 using NAudio.Wave;
 using System.IO;
 
-namespace HLDJ_Advanced.Views
+namespace CSGO_Radio.Views
 {
     [ImplementPropertyChanged]
     public partial class ImportWindow : Window

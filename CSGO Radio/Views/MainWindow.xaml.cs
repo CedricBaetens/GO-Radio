@@ -16,16 +16,16 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using HLDJ_Advanced.Views;
+using CSGO_Radio.Views;
 using Newtonsoft.Json;
 using PropertyChanged;
-using HLDJ_Advanced.Classes;
+using CSGO_Radio.Classes;
 using System.Windows.Media;
 using System.Speech.Synthesis;
 using System.Speech.AudioFormat;
 using System.Media;
 
-namespace HLDJ_Advanced
+namespace CSGO_Radio
 {
     [ImplementPropertyChanged]
     public partial class MainWindow : Window

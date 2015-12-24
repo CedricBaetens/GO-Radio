@@ -1,4 +1,4 @@
-﻿using HLDJ_Advanced.Views;
+﻿using CSGO_Radio.Views;
 using Newtonsoft.Json;
 using PropertyChanged;
 using System;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace HLDJ_Advanced.Classes
+namespace CSGO_Radio.Classes
 {
     [ImplementPropertyChanged]
     [DataContract]

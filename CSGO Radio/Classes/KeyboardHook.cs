@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace HLDJ_Advanced.Classes
+namespace CSGO_Radio.Classes
 {
     public class LowLevelKeyboardListener
     {

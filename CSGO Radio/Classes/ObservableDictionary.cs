@@ -35,7 +35,7 @@ using System.ComponentModel;
 using System.Runtime.Serialization;
 using System.Runtime.InteropServices;
 
-namespace HLDJ_Advanced.Classes
+namespace CSGO_Radio.Classes
 {
     [Serializable]
     public class ObservableDictionary<TKey, TValue> :
