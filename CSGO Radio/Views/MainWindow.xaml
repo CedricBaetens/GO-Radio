@@ -125,6 +125,7 @@
                                         </DataGrid.Columns>
                                         <DataGrid.ContextMenu>
                                             <ContextMenu >
+                                                <MenuItem Header="Trim" Command="{Binding CommandTrimSound}"/>
                                                 <MenuItem Header="Delete" Command="{Binding CommandRemoveSound}"/>
                                             </ContextMenu>
                                         </DataGrid.ContextMenu>
