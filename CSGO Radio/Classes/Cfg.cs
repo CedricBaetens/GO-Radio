@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MiscUtil.IO;
 
-namespace HLDJ_Advanced.Classes
+namespace CSGO_Radio.Classes
 {
     static class Cfg
     {
