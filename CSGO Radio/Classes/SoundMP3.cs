@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using PropertyChanged;
 using System.IO;
 
-namespace HLDJ_Advanced.Classes
+namespace CSGO_Radio.Classes
 {
     [ImplementPropertyChanged]
     public class SoundMP3

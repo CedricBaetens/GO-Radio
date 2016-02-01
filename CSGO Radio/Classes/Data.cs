@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PropertyChanged;
 
-namespace HLDJ_Advanced.Classes
+namespace CSGO_Radio.Classes
 {
     [ImplementPropertyChanged]
     public class Data

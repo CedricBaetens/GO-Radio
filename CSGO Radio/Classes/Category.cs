@@ -1,4 +1,4 @@
-﻿using HLDJ_Advanced.Views;
+﻿using CSGO_Radio.Views;
 using Newtonsoft.Json;
 using PropertyChanged;
 using System;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace HLDJ_Advanced.Classes
+namespace CSGO_Radio.Classes
 {
     [ImplementPropertyChanged]
     [DataContract]
@@ -49,10 +49,10 @@ namespace HLDJ_Advanced.Classes
         }
         private void RecalculateIds()
         {
-            //for (int i = 0; i < Sounds.Count; i++)
-            //{
-            //    Sounds[i].Id = StartId + i;
-            //}
+            for (int i = 0; i < Sounds.Count; i++)
+            {
+                Sounds[i].Id = StartId + i;
+            }
         }
         private void EditCategory()
         {
@@ -61,11 +61,19 @@ namespace HLDJ_Advanced.Classes
             cw.ShowDialog();
         }
 
+
+        private void TrimSound()
+        {
+            NAudioHelper.TrimWavFile(SelectedSound.Path, string.Format("{0}/{1}(trimmed).wav", SelectedSound.Directory, SelectedSound.Name), new TimeSpan(0, 0, 5), new TimeSpan(0, 0, 5));
+        }
+
+
         // Command Binding
         public ICommand CommandRemoveSound { get { return new RelayCommand(RemoveSound); } }
         public ICommand CommandRecalculateIds { get { return new RelayCommand(RecalculateIds); } }
         public ICommand CommandEditCategory { get { return new RelayCommand(EditCategory); } }
-        
- 
+        public ICommand CommandTrimSound { get { return new RelayCommand(TrimSound); } }
+
+
     }
 }

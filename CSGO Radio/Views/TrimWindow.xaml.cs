@@ -1,6 +1,4 @@
-﻿using CSGO_Radio.Classes;
-using PropertyChanged;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,16 +14,14 @@ using System.Windows.Shapes;
 
 namespace CSGO_Radio.Views
 {
-    [ImplementPropertyChanged]
-    public partial class CategoryWindow : Window
+    /// <summary>
+    /// Interaction logic for TrimWindow.xaml
+    /// </summary>
+    public partial class TrimWindow : Window
     {
-        public Category SelectedCategory { get; set; }
-
-        public CategoryWindow()
+        public TrimWindow()
         {
             InitializeComponent();
-
-            DataContext = this;
         }
     }
 }

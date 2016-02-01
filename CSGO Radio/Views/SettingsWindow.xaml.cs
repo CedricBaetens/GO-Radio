@@ -1,4 +1,4 @@
-﻿using HLDJ_Advanced.Classes;
+﻿using CSGO_Radio.Classes;
 using PropertyChanged;
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace HLDJ_Advanced.Views
+namespace CSGO_Radio.Views
 {
     [ImplementPropertyChanged]
     public partial class SettingsWindow : Window

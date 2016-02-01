@@ -4,11 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HLDJ_Advanced.Classes;
+using CSGO_Radio.Classes;
 using PropertyChanged;
 using Newtonsoft.Json;
 
-namespace HLDJ_Advanced
+namespace CSGO_Radio
 {
     [ImplementPropertyChanged]
     public class SoundWAV

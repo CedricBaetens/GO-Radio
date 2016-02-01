@@ -5,11 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HLDJ_Advanced.Classes;
+using CSGO_Radio.Classes;
 using System.Windows.Forms;
 using PropertyChanged;
 
-namespace HLDJ_Advanced
+namespace CSGO_Radio
 {
     [ImplementPropertyChanged]
     public static class ProgramSettings
