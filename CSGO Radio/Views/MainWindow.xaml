@@ -43,7 +43,15 @@
 
         <!--Header-->
         <materialDesign:ColorZone Mode="PrimaryMid" Grid.Row="1">
-            <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}" Margin="20,10,10,10">CS:GO Radio</TextBlock>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}" Margin="20,10,10,10">CS:GO Radio</TextBlock>
+                
+            </Grid>
         </materialDesign:ColorZone>
 
         <!--Menu-->

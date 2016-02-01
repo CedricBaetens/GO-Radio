@@ -24,6 +24,10 @@ using System.Windows.Media;
 using System.Speech.Synthesis;
 using System.Speech.AudioFormat;
 using System.Media;
+using System.Reflection;
+using System.Threading;
+using AutoUpdate;
+using NAudio.Wave;
 
 namespace HLDJ_Advanced
 {
@@ -41,6 +45,8 @@ namespace HLDJ_Advanced
         // Private
         private LowLevelKeyboardListener keyboardHook;
         private SoundPlayer soundPlayer;
+        System.Timers.Timer ttsTimer = new System.Timers.Timer();
+        AUpdate Updater;
 
         // Constructor
         public MainWindow()
@@ -55,15 +61,33 @@ namespace HLDJ_Advanced
             LoadedSound = new SoundWAV();
             SoundsList = new ObservableCollection<KeyValuePair<string, SoundWAV>>();
 
+            Updater = new AUpdate(@"http://baellon.com/csgoradio", Assembly.GetEntryAssembly().GetName().Version);
+            Updater.CheckVersion();
+
             IdEntered = "";
             ShowList = false;
 
             soundPlayer = new SoundPlayer();
 
+            ttsTimer.Elapsed += TtsTimer_Elapsed;
+            ttsTimer.Interval = 100;
+            ttsTimer.Enabled = true;
+
             // Binding
             DataContext = this;
+
             
 
+
+        }
+
+        private void TtsTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            var text = Cfg.GetTtsText();
+            if (!string.IsNullOrEmpty(text))
+            {
+                StringToTTS(text);
+            }
         }
 
         // Hook
@@ -146,6 +170,10 @@ namespace HLDJ_Advanced
 
             // Install Hook
             keyboardHook.HookKeyboard();
+
+            // Cfg
+            Cfg.CreateInit();
+            Cfg.CreateSongList(SoundsList);
         }
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
@@ -165,6 +193,9 @@ namespace HLDJ_Advanced
 
             // Deinstal hook
             keyboardHook.UnHookKeyboard();
+
+            // Cfg
+            Cfg.RemoveInit();
         }
 
         // Menu Events
@@ -207,39 +238,9 @@ namespace HLDJ_Advanced
 
             if (!dialog.Canceled)
             {
-                using (var synth = new SpeechSynthesizer())
-                {
-                    string path = ProgramSettings.PathSounds + "\\audio\\tts.wav";
-
-                    // Configure the audio output. 
-                    synth.SetOutputToWaveFile(path,
-                        new SpeechAudioFormatInfo(22050, AudioBitsPerSample.Sixteen, AudioChannel.Mono));
-
-                    // Build a prompt.
-                    PromptBuilder builder = new PromptBuilder();
-                    builder.AppendText(dialog.SpeechText);
-                    //builder.AppendText("12543");
-
-                    synth.Rate = -2;
-
-                    // Change voice
-                    synth.SelectVoiceByHints(dialog.SelectedGender);
-
-                    // Speak the prompt.
-                    synth.Speak(builder);
-
-                    LoadedSound = new SoundWAV()
-                    {
-                        Id = -1,
-                        Name = "Text To Speech",
-                        Path = path
-                    };
-
-                    LoadSound(LoadedSound);
-                }
+                StringToTTS(dialog.SpeechText);
             }
         }
-
         private void PlayPauzeSound()
         {
             if (soundPlayer.IsLoadCompleted)
@@ -296,7 +297,6 @@ namespace HLDJ_Advanced
             // Return
             return foundSound;
         }
-
         private void SortList()
         {
             Data.Categories = new ObservableCollection<Category>(Data.Categories.OrderBy(s => s.Name).ToList());
@@ -314,6 +314,54 @@ namespace HLDJ_Advanced
                     }
                 }
             }
+        }
+
+        private void StringToTTS(string input)
+        {
+            string pathNotConv = ProgramSettings.PathSounds + "\\audio\\ttsNotConv.wav";
+
+            using (var synth = new SpeechSynthesizer())
+            {
+                // Configure the audio output. 
+                synth.SetOutputToWaveFile(pathNotConv);
+
+                // Build a prompt.
+                //PromptBuilder builder = new PromptBuilder();
+                //builder.AppendText(input);
+                synth.Rate = -2;
+
+                // Change voice
+                //synth.SelectVoiceByHints(dialog.SelectedGender);
+
+                // Speak the prompt.
+                synth.Speak(input);
+                synth.SetOutputToNull();
+                synth.Dispose();
+            }
+
+
+            // ReSample
+            string path = string.Format("{0}\\audio\\{1}{2}", ProgramSettings.PathSounds, "tts", ".wav");
+
+            using (var reader = new WaveFileReader(pathNotConv))
+            {
+                using (var resampler = new MediaFoundationResampler(reader, new WaveFormat(22050, 16, 1)))
+                {
+                    resampler.ResamplerQuality = 60;
+                    WaveFileWriter.CreateWaveFile(path, resampler);
+                    resampler.Dispose();
+                }
+            }
+
+            LoadedSound = new SoundWAV()
+            {
+                Name = "Text To Speech",
+                Path =  path
+            };
+
+            LoadSound(LoadedSound);
+
+            File.Delete(pathNotConv);
         }
 
         // Fix scrollwheel on datagrid
