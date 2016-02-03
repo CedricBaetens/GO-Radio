@@ -121,10 +121,10 @@ namespace CSGO_Radio.Classes
         {
             AddCategoryWindow acw = new AddCategoryWindow()
             {
-                //Data = this.SoundController
+                //SoundController = this.SoundController
             };
             acw.ShowDialog();
-            //SoundController = acw.Data;
+            //SoundController = acw.SoundController;
         }
 
         // Command

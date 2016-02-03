@@ -45,7 +45,7 @@ namespace CSGO_Radio
 
         #region Variables
         private LowLevelKeyboardListener keyboardHook;
-        private SoundPlayer soundPlayer;
+        //private SoundPlayer soundPlayer;
         #endregion
 
         #region Constructor
@@ -59,7 +59,7 @@ namespace CSGO_Radio
 
             // Instanciate
             SoundController = new SoundController();
-            soundPlayer = new SoundPlayer();
+            //soundPlayer = new SoundPlayer();
 
             // Binding
             DataContext = this;
@@ -73,7 +73,7 @@ namespace CSGO_Radio
             // Settings
             ProgramSettings.Init();
 
-            // Data
+            // SoundController
             SoundController.Load();
 
             // Install Hook
@@ -94,7 +94,7 @@ namespace CSGO_Radio
             // Settings
             ProgramSettings.Save();
 
-            // Data
+            // SoundController
             SoundController.Save();
 
             // Deinstal hook
@@ -161,7 +161,7 @@ namespace CSGO_Radio
                     break;
 
                     //case Key.Add:
-                    //    Data.IdEntered += "+";
+                    //    SoundController.IdEntered += "+";
                     //    break;
             }
             #endregion
@@ -176,20 +176,22 @@ namespace CSGO_Radio
         {
             ImportWindow iw = new ImportWindow()
             {
-                Data = this.SoundController
+                SoundController = this.SoundController
             };
+            SoundController = iw.SoundController;
             iw.ShowDialog();
-            int a = 0;
         }
         private void AddCategory()
         {
             AddCategoryWindow acw = new AddCategoryWindow()
             {
-                Data = this.SoundController
+                SoundController = this.SoundController
             };
             acw.ShowDialog();
-            SoundController = acw.Data;
+            SoundController = acw.SoundController;
         }
+
+
         //private void ViewCategories()
         //{
         //    ShowList = false;
@@ -213,24 +215,24 @@ namespace CSGO_Radio
                 StringToTTS(dialog.SpeechText);
             }
         }
-        private void PlayPauzeSound()
-        {
-            if (soundPlayer.IsLoadCompleted)
-            {
-                if (SoundIsPlaying)
-                {
-                    soundPlayer.Stop();
-                    SoundIsPlaying = false;
-                }
-                else
-                {
-                    soundPlayer.Play();
-                    SoundIsPlaying = true;
-                }
-            }
-        }
+        //private void PlayPauzeSound()
+        //{
+        //    if (soundPlayer.IsLoadCompleted)
+        //    {
+        //        if (SoundIsPlaying)
+        //        {
+        //            soundPlayer.Stop();
+        //            SoundIsPlaying = false;
+        //        }
+        //        else
+        //        {
+        //            soundPlayer.Play();
+        //            SoundIsPlaying = true;
+        //        }
+        //    }
+        //}
 
-        private void StringToTTS(string input)
+        private void StringToTTS(string input) 
         {
             string pathNotConv = ProgramSettings.PathSounds + "\\audio\\ttsNotConv.wav";
 
@@ -287,12 +289,12 @@ namespace CSGO_Radio
 
         // Command Binding
         //public ICommand CommandAddCategory { get { return new RelayCommand(AddCategory); } }
-        public ICommand CommandAddSound{ get { return new RelayCommand(AddSound); } }
+        //public ICommand CommandAddSound{ get { return new RelayCommand(AddSound); } }
         //public ICommand CommandViewCategories { get { return new RelayCommand(ViewCategories); } }
         //public ICommand CommandViewList { get { return new RelayCommand(ViewList); } }
-        public ICommand CommandSettings { get { return new RelayCommand(ShowSettingsWindow); } }
-        public ICommand CommandTextToSpeech { get { return new RelayCommand(TextToSpeech); } }
-        public ICommand CommandPlayPauzeSound { get { return new RelayCommand(PlayPauzeSound); } }
+        //public ICommand CommandSettings { get { return new RelayCommand(ShowSettingsWindow); } }
+        //public ICommand CommandTextToSpeech { get { return new RelayCommand(TextToSpeech); } }
+        //public ICommand CommandPlayPauzeSound { get { return new RelayCommand(PlayPauzeSound); } }
 
 
 

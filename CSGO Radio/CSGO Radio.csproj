@@ -121,7 +121,7 @@
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\Cfg.cs" />
     <Compile Include="Classes\Convertors.cs" />
-    <Compile Include="Classes\Data.cs" />
+    <Compile Include="Classes\SoundController.cs" />
     <Compile Include="Classes\NAudioHelper.cs" />
     <Compile Include="Classes\ProgramSettings.cs" />
     <Compile Include="Classes\KeyboardHook.cs" />

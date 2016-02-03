@@ -20,7 +20,7 @@ namespace CSGO_Radio.Views
     [ImplementPropertyChanged]
     public partial class AddCategoryWindow : Window
     {
-        public SoundController Data { get; set; }
+        public SoundController SoundController { get; set; }
         public Category NewCategory { get; set; }
 
         public AddCategoryWindow()
@@ -45,7 +45,7 @@ namespace CSGO_Radio.Views
                     NewCategory.Name = string.Format("{0} -> {1}", rootCat.Name, NewCategory.Name);
                 }
 
-                Data.Categories.Add(NewCategory);
+                SoundController.Categories.Add(NewCategory);
 
 
 
