@@ -20,7 +20,7 @@ namespace CSGO_Radio.Views
     [ImplementPropertyChanged]
     public partial class AddCategoryWindow : Window
     {
-        public Data Data { get; set; }
+        public SoundController Data { get; set; }
         public Category NewCategory { get; set; }
 
         public AddCategoryWindow()

@@ -24,7 +24,7 @@ namespace CSGO_Radio.Views
     public partial class ImportWindow : Window
     {
         // Public
-        public Data Data { get; set; }
+        public SoundController Data { get; set; }
         public ObservableCollection<SoundMP3> Sounds { get; set; }
 
         // Private

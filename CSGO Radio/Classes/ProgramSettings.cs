@@ -11,22 +11,41 @@ using PropertyChanged;
 
 namespace CSGO_Radio
 {
+    /// <summary>
+    /// Class that contains where the CS folder and sound folder is.
+    /// </summary>
     [ImplementPropertyChanged]
     public static class ProgramSettings
     {
+        // Properties
         public static string PathCsgo { get; set; }
         public static string PathSounds { get; set; }
 
-        public static void Load()
+        // Public Methods
+        public static void Init()
+        {
+            Load();
+            Check();
+        }
+        public static void Save()
+        {
+            Properties.Settings.Default.PathCsgo = PathCsgo;
+            Properties.Settings.Default.PathSounds = PathSounds;
+            Properties.Settings.Default.Save();
+        }
+
+        // Private Methods
+        private static void Load()
         {
             var set = Properties.Settings.Default;
 
-            // Load settings
             PathCsgo = set.PathCsgo;
             PathSounds = set.PathSounds;
-
-            // Check values
-            if (String.IsNullOrEmpty(PathCsgo))
+        }
+        private static void Check()
+        {
+            // CSGO Path
+            if (string.IsNullOrEmpty(PathCsgo))
             {
                 if (Directory.Exists(@"C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive"))
                 {
@@ -40,11 +59,12 @@ namespace CSGO_Radio
                     };
                     fbd.ShowDialog();
                     PathCsgo = fbd.SelectedPath;
-                }             
-                
+                }
+
             }
 
-            if (String.IsNullOrEmpty(PathSounds))
+            // Sound Path
+            if (string.IsNullOrEmpty(PathSounds))
             {
                 FolderBrowserDialog fbd = new FolderBrowserDialog()
                 {
@@ -55,14 +75,7 @@ namespace CSGO_Radio
                 PathSounds = path;
                 CreateFolders();
             }
-        }   
-        public static void Save()
-        {
-            Properties.Settings.Default.PathCsgo = PathCsgo;
-            Properties.Settings.Default.PathSounds = PathSounds;
-            Properties.Settings.Default.Save();
-        }
-                
+        }  
         private static void CreateFolders()
         {
             Directory.CreateDirectory(PathSounds + "\\audio");

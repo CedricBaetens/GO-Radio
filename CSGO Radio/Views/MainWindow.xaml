@@ -7,7 +7,7 @@
         xmlns:classes="clr-namespace:CSGO_Radio.Classes"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="CS:GO Radio" 
+        Title="{Binding AppName}" 
         Height="350" Width="600" 
         Loaded="MainWindow_OnLoaded" Closing="MainWindow_OnClosing"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -61,10 +61,10 @@
                 <Separator/>
                 <MenuItem Header="Add Category" Command="{Binding CommandAddCategory}"/>
             </MenuItem>
-            <MenuItem Header="View" Height="25">
+            <!--<MenuItem Header="View" Height="25">
                 <MenuItem Header="Categories" Command="{Binding CommandViewCategories}"/>
                 <MenuItem Header="List" Command="{Binding CommandViewList}"/>
-            </MenuItem>
+            </MenuItem>-->
             <MenuItem Header="Extra" Height="25">
                 <MenuItem Header="Text To Speech" Command="{Binding CommandTextToSpeech}"/>
                 <Separator/>
@@ -79,7 +79,7 @@
                 
                 <!--LIST-->
                 <StackPanel  Visibility="{Binding Path=ShowList, Converter={StaticResource BoolToVisibility}}">
-                    <TextBox TextChanged="TextBox_TextChanged" Margin="10" materialDesign:TextFieldAssist.Hint="Filter..." />
+                    <!--<TextBox TextChanged="TextBox_TextChanged" Margin="10" materialDesign:TextFieldAssist.Hint="Filter..." />-->
                     <DataGrid Name="dgList" ItemsSource="{Binding SoundsList}" 
                           AutoGenerateColumns="False">
                         <DataGrid.Columns>
