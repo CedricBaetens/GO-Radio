@@ -130,6 +130,7 @@
     <Compile Include="Classes\SoundMP3.cs" />
     <Compile Include="Classes\SoundWAV.cs" />
     <Compile Include="Classes\Tts.cs" />
+    <Compile Include="Classes\WatchDog.cs" />
     <Compile Include="Views\CategoryWindow.xaml.cs">
       <DependentUpon>CategoryWindow.xaml</DependentUpon>
     </Compile>

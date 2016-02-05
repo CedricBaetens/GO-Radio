@@ -62,7 +62,7 @@ namespace CSGO_Radio
             //soundPlayer = new SoundPlayer();
 
             // Binding
-            DataContext = this;
+            DataContext = SoundController;
         }
         #endregion
 
@@ -170,36 +170,6 @@ namespace CSGO_Radio
         }
         #endregion
 
-
-        // Menu Events
-        private void AddSound()
-        {
-            ImportWindow iw = new ImportWindow()
-            {
-                SoundController = this.SoundController
-            };
-            SoundController = iw.SoundController;
-            iw.ShowDialog();
-        }
-        private void AddCategory()
-        {
-            AddCategoryWindow acw = new AddCategoryWindow()
-            {
-                SoundController = this.SoundController
-            };
-            acw.ShowDialog();
-            SoundController = acw.SoundController;
-        }
-
-
-        //private void ViewCategories()
-        //{
-        //    ShowList = false;
-        //}
-        //private void ViewList()
-        //{
-        //    ShowList = true;
-        //}
         private void ShowSettingsWindow()
         {
             SettingsWindow sw = new SettingsWindow();
@@ -207,13 +177,13 @@ namespace CSGO_Radio
         }
         private void TextToSpeech()
         {
-            var dialog = new TextToSpeechWindow();
-            dialog.ShowDialog();
+            //var dialog = new TextToSpeechWindow();
+            //dialog.ShowDialog();
 
-            if (!dialog.Canceled)
-            {
-                StringToTTS(dialog.SpeechText);
-            }
+            //if (!dialog.Canceled)
+            //{
+            //    StringToTTS(dialog.SpeechText);
+            //}
         }
         //private void PlayPauzeSound()
         //{
@@ -232,54 +202,6 @@ namespace CSGO_Radio
         //    }
         //}
 
-        private void StringToTTS(string input) 
-        {
-            string pathNotConv = ProgramSettings.PathSounds + "\\audio\\ttsNotConv.wav";
-
-            using (var synth = new SpeechSynthesizer())
-            {
-                // Configure the audio output. 
-                synth.SetOutputToWaveFile(pathNotConv);
-
-                // Build a prompt.
-                //PromptBuilder builder = new PromptBuilder();
-                //builder.AppendText(input);
-                synth.Rate = -2;
-
-                // Change voice
-                //synth.SelectVoiceByHints(dialog.SelectedGender);
-
-                // Speak the prompt.
-                synth.Speak(input);
-                synth.SetOutputToNull();
-                synth.Dispose();
-            }
-
-
-            // ReSample
-            string path = string.Format("{0}\\audio\\{1}{2}", ProgramSettings.PathSounds, "tts", ".wav");
-
-            using (var reader = new WaveFileReader(pathNotConv))
-            {
-                using (var resampler = new MediaFoundationResampler(reader, new WaveFormat(22050, 16, 1)))
-                {
-                    resampler.ResamplerQuality = 60;
-                    WaveFileWriter.CreateWaveFile(path, resampler);
-                    resampler.Dispose();
-                }
-            }
-
-            //LoadedSound = new SoundWAV()
-            //{
-            //    Name = "Text To Speech",
-            //    Path =  path
-            //};
-
-            //SoundController.LoadSong(LoadedSound);
-
-            File.Delete(pathNotConv);
-        }
-
         // Fix scrollwheel on datagrid
         private void DataGrid_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
@@ -288,8 +210,6 @@ namespace CSGO_Radio
 
 
         // Command Binding
-        //public ICommand CommandAddCategory { get { return new RelayCommand(AddCategory); } }
-        //public ICommand CommandAddSound{ get { return new RelayCommand(AddSound); } }
         //public ICommand CommandViewCategories { get { return new RelayCommand(ViewCategories); } }
         //public ICommand CommandViewList { get { return new RelayCommand(ViewList); } }
         //public ICommand CommandSettings { get { return new RelayCommand(ShowSettingsWindow); } }

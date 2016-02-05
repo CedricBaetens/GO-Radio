@@ -93,7 +93,7 @@
                 </StackPanel>
                 
                 <!--CATEGORIES-->
-                <ItemsControl ItemsSource="{Binding Data.Categories}"  Visibility="{Binding Path=ShowList, Converter={StaticResource BoolInversToVisibility}}">
+                <ItemsControl ItemsSource="{Binding Categories}"  Visibility="{Binding Path=ShowList, Converter={StaticResource BoolInversToVisibility}}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Expander Margin="10" ExpandDirection="Down">
@@ -194,7 +194,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Orientation="Horizontal" Margin="5">
+                <StackPanel Orientation="Horizontal" Margin="5" Visibility="Hidden">
                     <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
                         Margin="0 0 8 0" HorizontalAlignment="Left"
                         ToolTip="Play/Stop selected sound."

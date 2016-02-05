@@ -26,10 +26,14 @@ namespace CSGO_Radio.Classes
         public ObservableCollection<Category> Categories { get; set; }
         public ObservableCollection<KeyValuePair<string, SoundWAV>> SoundsList { get; set; }
 
+        private Tts TextToSpeech;
+
         // Constructor
         public SoundController()
         {
             Categories = new ObservableCollection<Category>();
+            SoundsList = new ObservableCollection<KeyValuePair<string, SoundWAV>>();
+            TextToSpeech = new Tts();
         }
 
         // Public Functions
@@ -121,13 +125,25 @@ namespace CSGO_Radio.Classes
         {
             AddCategoryWindow acw = new AddCategoryWindow()
             {
-                //SoundController = this.SoundController
+                Categories = Categories
             };
             acw.ShowDialog();
-            //SoundController = acw.SoundController;
+            Categories = acw.Categories;
+
+            int a = 0;
+        }
+        private void AddSound()
+        {
+            ImportWindow iw = new ImportWindow()
+            {
+                Categories = Categories
+            };
+            iw.ShowDialog();
+            Categories = iw.Categories;
         }
 
         // Command
         public ICommand CommandAddCategory { get { return new RelayCommand(AddCategory); } }
+        public ICommand CommandAddSound { get { return new RelayCommand(AddSound); } }
     }
 }

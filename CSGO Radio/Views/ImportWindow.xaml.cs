@@ -24,7 +24,7 @@ namespace CSGO_Radio.Views
     public partial class ImportWindow : Window
     {
         // Public
-        public SoundController SoundController { get; set; }
+        public ObservableCollection<Category> Categories { get; set; }
         public ObservableCollection<SoundMP3> Sounds { get; set; }
 
         // Private
@@ -85,7 +85,7 @@ namespace CSGO_Radio.Views
         // Custom methods
         private ObservableCollection<SoundMP3> GetNewSounds()
         {
-            string[] newSoundsStrings = System.IO.Directory.GetFiles(ProgramSettings.PathSounds + "\\new", "*.*", System.IO.SearchOption.AllDirectories);
+            string[] newSoundsStrings = System.IO.Directory.GetFiles(ProgramSettings.PathSounds + "\\Sounds\\new", "*.*", System.IO.SearchOption.AllDirectories);
 
             return
                 new ObservableCollection<SoundMP3>(newSoundsStrings.Select(newSound => new SoundMP3(newSound)).ToList());

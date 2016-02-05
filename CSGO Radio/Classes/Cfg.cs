@@ -42,15 +42,6 @@ namespace CSGO_Radio.Classes
             File.WriteAllLines(ProgramSettings.PathCsgo + "\\csgo\\cfg\\radio_songs.cfg", content);
         }
 
-        public static string GetTtsText()
-        {
-            if (File.Exists(ProgramSettings.PathCsgo + "\\csgo\\condump000.txt"))
-            {
-                var lastLine = File.ReadLines(ProgramSettings.PathCsgo + "\\csgo\\condump000.txt").Last().Remove(0,6);
-                File.Delete(ProgramSettings.PathCsgo + "\\csgo\\condump000.txt");
-                return lastLine;
-            }
-            return "";
-        }
+        
     }
 }
