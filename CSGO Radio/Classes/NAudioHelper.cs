@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace CSGO_Radio.Classes
 {
@@ -46,6 +47,25 @@ namespace CSGO_Radio.Classes
                     }
                 }
             }
+        }
+
+        public static SoundNew Convert(SoundUnconverted unconvertedSound)
+        {
+             int sampleRate = 22050;
+             int bits = 16;
+             int channels = 1;
+
+            // ReSample
+            string path = string.Format("{0}\\audio\\{1}{2}", ProgramSettings.PathSounds, unconvertedSound.Name, ".wav");
+            using (var reader = new MediaFoundationReader(unconvertedSound.Path))
+            using (var resampler = new MediaFoundationResampler(reader, new WaveFormat(sampleRate, bits, channels)))
+            {
+                resampler.ResamplerQuality = 60;
+                WaveFileWriter.CreateWaveFile(path, resampler);
+            }
+
+            File.Delete(unconvertedSound.Path);
+            return new SoundNew(path);
         }
     }
 }

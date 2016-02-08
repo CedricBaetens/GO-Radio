@@ -30,13 +30,13 @@ namespace CSGO_Radio.Classes
             }
         }
 
-        public static void CreateSongList(ObservableCollection<KeyValuePair<string, SoundWAV>> list)
+        public static void CreateSongList(ObservableCollection<KeyValuePair<int, SoundNew>> list)
         {
             List<string> content = new List<string>();
 
             foreach (var sound in list)
             {
-                 content.Add(string.Format("echo {0}: {1}", sound.Value.IdFull, sound.Value.Name));
+                 content.Add(string.Format("echo {0}: {1}", sound.Key.ToString("0000"), sound.Value.Name));
             }
 
             File.WriteAllLines(ProgramSettings.PathCsgo + "\\csgo\\cfg\\radio_songs.cfg", content);

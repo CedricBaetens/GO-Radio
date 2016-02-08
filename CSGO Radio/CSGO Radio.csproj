@@ -128,7 +128,7 @@
     <Compile Include="Classes\ObservableDictionary.cs" />
     <Compile Include="Classes\RellayCommand.cs" />
     <Compile Include="Classes\SoundControllerNew.cs" />
-    <Compile Include="Classes\SoundMP3.cs" />
+    <Compile Include="Classes\SoundUnconverted.cs" />
     <Compile Include="Classes\SoundNew.cs" />
     <Compile Include="Classes\SoundWAV.cs" />
     <Compile Include="Classes\Tts.cs" />

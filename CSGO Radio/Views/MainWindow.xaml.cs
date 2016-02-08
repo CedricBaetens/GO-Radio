@@ -44,19 +44,10 @@ namespace CSGO_Radio
         public bool SoundIsPlaying { get; set; }
         #endregion
 
-        #region Variables
-        private LowLevelKeyboardListener keyboardHook;
-        //private SoundPlayer soundPlayer;
-        #endregion
-
         #region Constructor
         public MainWindow()
         {
             InitializeComponent();
-
-            // Hook
-            keyboardHook = new LowLevelKeyboardListener();
-            keyboardHook.OnKeyPressed += KeyboardHook_OnKeyPressed;
 
             // Instanciate
             SoundController = new SoundController();
@@ -78,12 +69,9 @@ namespace CSGO_Radio
             // SoundController
             SoundControllerNew.Load();
 
-            // Install Hook
-            //keyboardHook.HookKeyboard();
-
             // Cfg
             Cfg.Create.Init();
-            Cfg.CreateSongList(SoundController.SoundsList);
+            //Cfg.CreateSongList(SoundController.SoundsList);
 
             // Add application name and version
             if (ApplicationDeployment.IsNetworkDeployed)
@@ -99,22 +87,10 @@ namespace CSGO_Radio
             // SoundController
             SoundControllerNew.Save();
 
-            // Deinstal hook
-            keyboardHook.UnHookKeyboard();
-
             // Cfg
             Cfg.Remove.Init();
         }
 
-        #endregion
-
-        #region Keyboard Hook
-        private void KeyboardHook_OnKeyPressed(object sender, KeyPressedArgs e)
-        {
-
-
-            SoundController.LoadSong();
-        }
         #endregion
 
         private void ShowSettingsWindow()

@@ -9,7 +9,7 @@ using System.IO;
 namespace CSGO_Radio.Classes
 {
     [ImplementPropertyChanged]
-    public class SoundMP3
+    public class SoundUnconverted
     {
         public string Name { get; set; }
         public string Path { get; set; }
@@ -17,7 +17,7 @@ namespace CSGO_Radio.Classes
         public string Extension { get; set; }
 
 
-        public SoundMP3(string path)
+        public SoundUnconverted(string path)
         {
             FileInfo file = new FileInfo(path);
 

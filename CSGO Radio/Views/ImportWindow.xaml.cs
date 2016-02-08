@@ -25,7 +25,7 @@ namespace CSGO_Radio.Views
     {
         // Public
         public ObservableCollection<Category> Categories { get; set; }
-        public ObservableCollection<SoundMP3> Sounds { get; set; }
+        public ObservableCollection<SoundUnconverted> Sounds { get; set; }
 
         // Private
         private int sampleRate = 22050;
@@ -37,7 +37,7 @@ namespace CSGO_Radio.Views
             InitializeComponent();
 
             // Instanciate
-            Sounds = new ObservableCollection<SoundMP3>();
+            Sounds = new ObservableCollection<SoundUnconverted>();
 
             this.Categories = categories;
 
@@ -55,27 +55,18 @@ namespace CSGO_Radio.Views
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             //Copy selected Items List
-            List<SoundMP3> selectedItems = new List<SoundMP3>(lvNewSongs.SelectedItems.Cast<SoundMP3>());
+            List<SoundUnconverted> selectedItems = new List<SoundUnconverted>(lvNewSongs.SelectedItems.Cast<SoundUnconverted>());
             Category selectedCategory = (Category)cbCategories.SelectedItem;
 
             for (int i = 0; i < selectedItems.Count; i++)
             {
-                SoundMP3 newSound = (SoundMP3)selectedItems[i];
+                SoundUnconverted newSound = (SoundUnconverted)selectedItems[i];
 
-                // ReSample
-                string path = string.Format("{0}\\audio\\{1}{2}", ProgramSettings.PathSounds, newSound.Name, ".wav");
-                using (var reader = new MediaFoundationReader(newSound.Path))
-                using (var resampler = new MediaFoundationResampler(reader, new WaveFormat(sampleRate, bits, channels)))
-                {
-                    resampler.ResamplerQuality = 60;
-                    WaveFileWriter.CreateWaveFile(path, resampler);
-                }
+                var convSound = NAudioHelper.Convert(newSound);
 
                 Sounds.RemoveAt(Sounds.IndexOf(newSound));
-                File.Delete(newSound.Path);
 
-                selectedCategory.AddSound(new SoundNew(path));
-
+                selectedCategory.AddSound(convSound);
             }
 
             if (Sounds.Count == 0)
@@ -85,12 +76,12 @@ namespace CSGO_Radio.Views
         }
 
         // Custom methods
-        private ObservableCollection<SoundMP3> GetNewSounds()
+        private ObservableCollection<SoundUnconverted> GetNewSounds()
         {
             string[] newSoundsStrings = System.IO.Directory.GetFiles(ProgramSettings.PathSounds + "\\new", "*.*", System.IO.SearchOption.AllDirectories);
 
             return
-                new ObservableCollection<SoundMP3>(newSoundsStrings.Select(newSound => new SoundMP3(newSound)).ToList());
+                new ObservableCollection<SoundUnconverted>(newSoundsStrings.Select(newSound => new SoundUnconverted(newSound)).ToList());
         }       
     }
 }
