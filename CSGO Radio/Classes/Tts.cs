@@ -85,7 +85,7 @@ namespace CSGO_Radio.Classes
 
             //SoundController.LoadSong(LoadedSound);
 
-            WatchDog.Add()
+//
 
             File.Delete(pathNotConv);
         }

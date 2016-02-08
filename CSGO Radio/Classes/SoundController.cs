@@ -93,10 +93,10 @@ namespace CSGO_Radio.Classes
             {
                 foreach (var sound in category.Sounds)
                 {
-                    if (sound.Name.Contains(""))
-                    {
-                        SoundsList.Add(new KeyValuePair<string, SoundWAV>(category.Name, sound));
-                    }
+                    //if (sound.Name.Contains(""))
+                    //{
+                    //    SoundsList.Add(new KeyValuePair<string, SoundWAV>(category.Name, sound));
+                    //}
                 }
             }
         }
@@ -107,13 +107,13 @@ namespace CSGO_Radio.Classes
             // Find item
             foreach (var category in Categories)
             {
-                foundSound = category.Sounds.Where(x => x.IdFull == id).FirstOrDefault();
+                //foundSound = category.Sounds.Where(x => x.IdFull == id).FirstOrDefault();
 
-                if (foundSound != null)
-                {
-                    foundSound.LoadCount++;
-                    break;
-                }
+                //if (foundSound != null)
+                //{
+                //    foundSound.LoadCount++;
+                //    break;
+                //}
             }
 
             // Return
@@ -123,23 +123,23 @@ namespace CSGO_Radio.Classes
         // Window Events
         private void AddCategory()
         {
-            AddCategoryWindow acw = new AddCategoryWindow()
-            {
-                Categories = Categories
-            };
-            acw.ShowDialog();
-            Categories = acw.Categories;
+            //AddCategoryWindow acw = new AddCategoryWindow()
+            //{
+            //    //Categories = Categories
+            //};
+            //acw.ShowDialog();
+            ////Categories = acw.Categories;
 
             int a = 0;
         }
         private void AddSound()
         {
-            ImportWindow iw = new ImportWindow()
-            {
-                Categories = Categories
-            };
-            iw.ShowDialog();
-            Categories = iw.Categories;
+            //ImportWindow iw = new ImportWindow()
+            //{
+            //    Categories = Categories
+            //};
+            //iw.ShowDialog();
+            //Categories = iw.Categories;
         }
 
         // Command

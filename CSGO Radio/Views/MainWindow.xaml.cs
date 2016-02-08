@@ -37,8 +37,9 @@ namespace CSGO_Radio
     {
         #region Properties
         public string AppName { get; set; }
-        public SoundController SoundController { get; set; }  
-                
+        public SoundController SoundController { get; set; }
+        public SoundControllerNew SoundControllerNew { get; set; }
+
         public bool ShowList { get; set; } = false;
         public bool SoundIsPlaying { get; set; }
         #endregion
@@ -59,10 +60,11 @@ namespace CSGO_Radio
 
             // Instanciate
             SoundController = new SoundController();
+            SoundControllerNew = new SoundControllerNew();
             //soundPlayer = new SoundPlayer();
 
             // Binding
-            DataContext = SoundController;
+            DataContext = SoundControllerNew;
         }
         #endregion
 
@@ -74,10 +76,10 @@ namespace CSGO_Radio
             ProgramSettings.Init();
 
             // SoundController
-            SoundController.Load();
+            //SoundController.Load();
 
             // Install Hook
-            keyboardHook.HookKeyboard();
+            //keyboardHook.HookKeyboard();
 
             // Cfg
             Cfg.Create.Init();
@@ -95,7 +97,7 @@ namespace CSGO_Radio
             ProgramSettings.Save();
 
             // SoundController
-            SoundController.Save();
+            //SoundController.Save();
 
             // Deinstal hook
             keyboardHook.UnHookKeyboard();

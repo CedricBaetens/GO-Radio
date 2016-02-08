@@ -18,61 +18,65 @@ namespace CSGO_Radio.Classes
     public class Category
     {
         // Properties
-        [DataMember]
+        //[DataMember]
         public string Name { get; set; }
 
-        [DataMember]
+        //[DataMember]
         public int StartId { get; set; }
 
-        [DataMember]
-        public ObservableCollection<SoundWAV> Sounds { get; set; }
-
-        public SoundWAV SelectedSound { get; set; }
+        //[DataMember]
+        public ObservableDictionary<string, SoundNew> Sounds { get; set; }
 
         // Constructor
         public Category()
         {
-            Sounds = new ObservableCollection<SoundWAV>();
+            Sounds = new ObservableDictionary<string, SoundNew>();
         }
 
-        // Public Methods
-        public int GetNextId()
+        public void AddSound(SoundNew sound)
         {
             var nextId = Sounds.Count + StartId;
-            return nextId;
+            Sounds.Add(nextId.ToString("0000"), sound);
         }
 
-        // Private Methods
-        private void RemoveSound()
-        {
-            Sounds.Remove(SelectedSound);
-        }
-        private void RecalculateIds()
-        {
-            for (int i = 0; i < Sounds.Count; i++)
-            {
-                Sounds[i].Id = StartId + i;
-            }
-        }
-        private void EditCategory()
-        {
-            CategoryWindow cw = new CategoryWindow();
-            cw.SelectedCategory = this;
-            cw.ShowDialog();
-        }
+        //// Public Methods
+        //public int GetNextId()
+        //{
+        //    var nextId = Sounds.Count + StartId;
+        //    return nextId;
+        //}
+
+        //// Private Methods
+        //private void RemoveSound()
+        //{
+        //    Sounds.Remove(SelectedSound);
+        //}
+        //private void RecalculateIds()
+        //{
+        //    for (int i = 0; i < Sounds.Count; i++)
+        //    {
+        //        Sounds[i].Id = StartId + i;
+        //    }
+        //}
+        //private void EditCategory()
+        //{
+        //    CategoryWindow cw = new CategoryWindow();
+        //    cw.SelectedCategory = this;
+        //    cw.ShowDialog();
+        //}
 
 
-        private void TrimSound()
-        {
-            NAudioHelper.TrimWavFile(SelectedSound.Path, string.Format("{0}/{1}(trimmed).wav", SelectedSound.Directory, SelectedSound.Name), new TimeSpan(0, 0, 5), new TimeSpan(0, 0, 5));
-        }
+        //private void TrimSound()
+        //{
+        //    NAudioHelper.TrimWavFile(SelectedSound.Path, string.Format("{0}/{1}(trimmed).wav", SelectedSound.Directory, SelectedSound.Name), new TimeSpan(0, 0, 5), new TimeSpan(0, 0, 5));
+        //}
 
 
-        // Command Binding
-        public ICommand CommandRemoveSound { get { return new RelayCommand(RemoveSound); } }
-        public ICommand CommandRecalculateIds { get { return new RelayCommand(RecalculateIds); } }
-        public ICommand CommandEditCategory { get { return new RelayCommand(EditCategory); } }
-        public ICommand CommandTrimSound { get { return new RelayCommand(TrimSound); } }
+        //// Command Binding
+        //public ICommand CommandRemoveSound { get { return new RelayCommand(RemoveSound); } }
+        //public ICommand CommandRecalculateIds { get { return new RelayCommand(RecalculateIds); } }
+        //public ICommand CommandEditCategory { get { return new RelayCommand(EditCategory); } }
+        //public ICommand CommandTrimSound { get { return new RelayCommand(TrimSound); } }
 
 
     }

@@ -20,10 +20,11 @@ namespace CSGO_Radio.Views
     [ImplementPropertyChanged]
     public partial class AddCategoryWindow : Window
     {
-        public ObservableCollection<Category> Categories { get; set; }
         public Category NewCategory { get; set; }
 
-        public AddCategoryWindow()
+        private ObservableCollection<Category> categories;
+
+        public AddCategoryWindow(ObservableCollection<Category> categories)
         {
             InitializeComponent();
 
@@ -32,23 +33,15 @@ namespace CSGO_Radio.Views
 
             // Binding
             DataContext = this;
+
+            this.categories = categories;
         }
 
         private void AddCategory()
         {
             if (!String.IsNullOrEmpty(NewCategory.Name))
             {
-                Category rootCat = (Category)cbCategories.SelectedItem;
-
-                if (rootCat != null)
-                {
-                    NewCategory.Name = string.Format("{0} -> {1}", rootCat.Name, NewCategory.Name);
-                }
-
-                Categories.Add(NewCategory);
-
-
-
+                categories.Add(NewCategory);
                 Close();
             }
             else
@@ -56,12 +49,8 @@ namespace CSGO_Radio.Views
                 MessageBox.Show("Category name is empty.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        private void CloseWindow()
-        {
-            Close();
-        }
 
         public ICommand CommandAddCategory { get { return new RelayCommand(AddCategory); } }
-        public ICommand CommandCloseWindow { get { return new RelayCommand(CloseWindow); } }
+        public ICommand CommandCloseWindow { get { return new RelayCommand(Close); } }
     }
 }

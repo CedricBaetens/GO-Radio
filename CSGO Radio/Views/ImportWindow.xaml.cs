@@ -32,12 +32,14 @@ namespace CSGO_Radio.Views
         private int bits = 16;
         private int channels = 1;
 
-        public ImportWindow()
+        public ImportWindow(ObservableCollection<Category> categories)
         {
             InitializeComponent();
 
             // Instanciate
             Sounds = new ObservableCollection<SoundMP3>();
+
+            this.Categories = categories;
 
             // Binding
             DataContext = this;
@@ -72,7 +74,7 @@ namespace CSGO_Radio.Views
                 Sounds.RemoveAt(Sounds.IndexOf(newSound));
                 File.Delete(newSound.Path);
 
-                selectedCategory.Sounds.Add(new SoundWAV(path, selectedCategory.GetNextId()));
+                //selectedCategory.Sounds.Add(new SoundWAV(path, selectedCategory.GetNextId()));
 
             }
 
