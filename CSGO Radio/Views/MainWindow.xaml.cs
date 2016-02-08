@@ -76,7 +76,7 @@ namespace CSGO_Radio
             ProgramSettings.Init();
 
             // SoundController
-            //SoundController.Load();
+            SoundControllerNew.Load();
 
             // Install Hook
             //keyboardHook.HookKeyboard();
@@ -97,7 +97,7 @@ namespace CSGO_Radio
             ProgramSettings.Save();
 
             // SoundController
-            //SoundController.Save();
+            SoundControllerNew.Save();
 
             // Deinstal hook
             keyboardHook.UnHookKeyboard();
@@ -111,62 +111,7 @@ namespace CSGO_Radio
         #region Keyboard Hook
         private void KeyboardHook_OnKeyPressed(object sender, KeyPressedArgs e)
         {
-            #region keys
-            switch (e.KeyPressed)
-            {
-                case Key.NumPad0:
-                    SoundController.IdEntered += "0";
-                    break;
 
-                case Key.NumPad1:
-                    SoundController.IdEntered += "1";
-                    break;
-
-                case Key.NumPad2:
-                    SoundController.IdEntered += "2";
-                    break;
-
-                case Key.NumPad3:
-                    SoundController.IdEntered += "3";
-                    break;
-
-                case Key.NumPad4:
-                    SoundController.IdEntered += "4";
-                    break;
-
-                case Key.NumPad5:
-                    SoundController.IdEntered += "5";
-                    break;
-
-                case Key.NumPad6:
-                    SoundController.IdEntered += "6";
-                    break;
-
-                case Key.NumPad7:
-                    SoundController.IdEntered += "7";
-                    break;
-
-                case Key.NumPad8:
-                    SoundController.IdEntered += "8";
-                    break;
-
-                case Key.NumPad9:
-                    SoundController.IdEntered += "9";
-                    break;
-
-                case Key.Delete:
-                    SoundController.IdEntered = "";
-                    break;
-
-                case Key.Enter:
-                    SoundController.LoadedSound.PlayCount++;
-                    break;
-
-                    //case Key.Add:
-                    //    SoundController.IdEntered += "+";
-                    //    break;
-            }
-            #endregion
 
             SoundController.LoadSong();
         }

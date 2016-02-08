@@ -18,39 +18,29 @@ namespace CSGO_Radio.Classes
     public class Category
     {
         // Properties
-        //[DataMember]
+        [DataMember]
         public string Name { get; set; }
 
-        //[DataMember]
+        [DataMember]
         public int StartId { get; set; }
 
-        //[DataMember]
-        public ObservableDictionary<string, SoundNew> Sounds { get; set; }
+        [DataMember]
+        public ObservableCollection<KeyValuePair<int, SoundNew>> Sounds { get; set; }
+
+        public KeyValuePair<int, SoundNew> SelectedSound { get; set; }
 
         // Constructor
         public Category()
         {
-            Sounds = new ObservableDictionary<string, SoundNew>();
+            Sounds = new ObservableCollection<KeyValuePair<int, SoundNew>>();
         }
 
         public void AddSound(SoundNew sound)
         {
             var nextId = Sounds.Count + StartId;
-            Sounds.Add(nextId.ToString("0000"), sound);
+            Sounds.Add(new KeyValuePair<int, SoundNew>(nextId, sound));
         }
 
-        //// Public Methods
-        //public int GetNextId()
-        //{
-        //    var nextId = Sounds.Count + StartId;
-        //    return nextId;
-        //}
-
-        //// Private Methods
-        //private void RemoveSound()
-        //{
-        //    Sounds.Remove(SelectedSound);
-        //}
         //private void RecalculateIds()
         //{
         //    for (int i = 0; i < Sounds.Count; i++)
@@ -73,7 +63,11 @@ namespace CSGO_Radio.Classes
 
 
         //// Command Binding
-        //public ICommand CommandRemoveSound { get { return new RelayCommand(RemoveSound); } }
+        public ICommand CommandRemoveSound => new RelayCommand(RemoveSound);
+        private void RemoveSound()
+        {
+            Sounds.Remove(SelectedSound);
+        }
         //public ICommand CommandRecalculateIds { get { return new RelayCommand(RecalculateIds); } }
         //public ICommand CommandEditCategory { get { return new RelayCommand(EditCategory); } }
         //public ICommand CommandTrimSound { get { return new RelayCommand(TrimSound); } }

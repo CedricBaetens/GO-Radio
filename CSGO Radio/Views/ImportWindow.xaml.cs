@@ -74,7 +74,7 @@ namespace CSGO_Radio.Views
                 Sounds.RemoveAt(Sounds.IndexOf(newSound));
                 File.Delete(newSound.Path);
 
-                //selectedCategory.Sounds.Add(new SoundWAV(path, selectedCategory.GetNextId()));
+                selectedCategory.AddSound(new SoundNew(path));
 
             }
 
@@ -87,7 +87,7 @@ namespace CSGO_Radio.Views
         // Custom methods
         private ObservableCollection<SoundMP3> GetNewSounds()
         {
-            string[] newSoundsStrings = System.IO.Directory.GetFiles(ProgramSettings.PathSounds + "\\Sounds\\new", "*.*", System.IO.SearchOption.AllDirectories);
+            string[] newSoundsStrings = System.IO.Directory.GetFiles(ProgramSettings.PathSounds + "\\new", "*.*", System.IO.SearchOption.AllDirectories);
 
             return
                 new ObservableCollection<SoundMP3>(newSoundsStrings.Select(newSound => new SoundMP3(newSound)).ToList());
