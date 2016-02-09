@@ -11,13 +11,14 @@ namespace CSGO_Radio.Classes
     [ImplementPropertyChanged]
     public class SoundNew
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Path { get; set; }
         public string Directory { get; set; }
         public string Extension { get; set; }
         public DateTime Date { get; set; }
 
-        public SoundNew(string path)
+        public SoundNew(string path, int id = -1)
         {
             FileInfo file = new FileInfo(path);
 

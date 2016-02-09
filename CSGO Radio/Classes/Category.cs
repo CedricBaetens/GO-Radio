@@ -25,20 +25,21 @@ namespace CSGO_Radio.Classes
         public int StartId { get; set; }
 
         [DataMember]
-        public ObservableCollection<KeyValuePair<int, SoundNew>> Sounds { get; set; }
+        public ObservableCollection<SoundNew> Sounds { get; set; }
 
-        public KeyValuePair<int, SoundNew> SelectedSound { get; set; }
+        public SoundNew SelectedSound { get; set; }
 
         // Constructor
         public Category()
         {
-            Sounds = new ObservableCollection<KeyValuePair<int, SoundNew>>();
+            Sounds = new ObservableCollection<SoundNew>();
         }
 
         public void AddSound(SoundNew sound)
         {
             var nextId = Sounds.Count + StartId;
-            Sounds.Add(new KeyValuePair<int, SoundNew>(nextId, sound));
+            sound.Id = nextId;
+            Sounds.Add(sound);
         }
 
         //private void RecalculateIds()

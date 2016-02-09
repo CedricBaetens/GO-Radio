@@ -38,7 +38,6 @@ namespace CSGO_Radio
         #region Properties
         public string AppName { get; set; }
         public SoundController SoundController { get; set; }
-        public SoundControllerNew SoundControllerNew { get; set; }
 
         public bool ShowList { get; set; } = false;
         public bool SoundIsPlaying { get; set; }
@@ -51,11 +50,9 @@ namespace CSGO_Radio
 
             // Instanciate
             SoundController = new SoundController();
-            SoundControllerNew = new SoundControllerNew();
-            //soundPlayer = new SoundPlayer();
 
             // Binding
-            DataContext = SoundControllerNew;
+            DataContext = SoundController;
         }
         #endregion
 
@@ -67,7 +64,7 @@ namespace CSGO_Radio
             ProgramSettings.Init();
 
             // SoundController
-            SoundControllerNew.Load();
+            SoundController.Load();
 
             // Cfg
             Cfg.Create.Init();
@@ -85,7 +82,7 @@ namespace CSGO_Radio
             ProgramSettings.Save();
 
             // SoundController
-            SoundControllerNew.Save();
+            SoundController.Save();
 
             // Cfg
             Cfg.Remove.Init();
@@ -98,32 +95,6 @@ namespace CSGO_Radio
             SettingsWindow sw = new SettingsWindow();
             sw.ShowDialog();
         }
-        private void TextToSpeech()
-        {
-            //var dialog = new TextToSpeechWindow();
-            //dialog.ShowDialog();
-
-            //if (!dialog.Canceled)
-            //{
-            //    StringToTTS(dialog.SpeechText);
-            //}
-        }
-        //private void PlayPauzeSound()
-        //{
-        //    if (soundPlayer.IsLoadCompleted)
-        //    {
-        //        if (SoundIsPlaying)
-        //        {
-        //            soundPlayer.Stop();
-        //            SoundIsPlaying = false;
-        //        }
-        //        else
-        //        {
-        //            soundPlayer.Play();
-        //            SoundIsPlaying = true;
-        //        }
-        //    }
-        //}
 
         // Fix scrollwheel on datagrid
         private void DataGrid_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
@@ -131,15 +102,11 @@ namespace CSGO_Radio
             scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
         }
 
-
         // Command Binding
         //public ICommand CommandViewCategories { get { return new RelayCommand(ViewCategories); } }
         //public ICommand CommandViewList { get { return new RelayCommand(ViewList); } }
         //public ICommand CommandSettings { get { return new RelayCommand(ShowSettingsWindow); } }
         //public ICommand CommandTextToSpeech { get { return new RelayCommand(TextToSpeech); } }
         //public ICommand CommandPlayPauzeSound { get { return new RelayCommand(PlayPauzeSound); } }
-
-
-
     }
 }

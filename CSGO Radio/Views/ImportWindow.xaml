@@ -15,6 +15,7 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -32,9 +33,14 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Button Grid.Row="1" Grid.Column="0" Name="btnAdd" Click="btnAdd_Click" Margin="5">Add</Button>
+        <StackPanel  Grid.Row="1" Grid.Column="0">
+            <Button Name="btnYt" Margin="5" Click="btnYt_Click">Youtube!</Button>
+            <TextBlock Name="val"></TextBlock>
+        </StackPanel>
+        
+        <Button Grid.Row="2" Grid.Column="0" Name="btnAdd" Click="btnAdd_Click" Margin="5">Add</Button>
 
-        <ComboBox Grid.Row="1" Grid.Column="1" Margin="5" ItemsSource="{Binding Categories}" Name="cbCategories" SelectedIndex="0" materialDesign:TextFieldAssist.Hint="Category" materialDesign:TextFieldAssist.HintOpacity=".26">
+        <ComboBox Grid.Row="2" Grid.Column="1" Margin="5" ItemsSource="{Binding Categories}" Name="cbCategories" SelectedIndex="0" materialDesign:TextFieldAssist.Hint="Category" materialDesign:TextFieldAssist.HintOpacity=".26">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}"></TextBlock>

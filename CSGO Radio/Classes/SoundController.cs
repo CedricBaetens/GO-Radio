@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PropertyChanged;
 using System.IO;
+using System.Media;
 using Newtonsoft.Json;
 using System.Windows;
 using System.Windows.Input;
@@ -13,137 +14,195 @@ using CSGO_Radio.Views;
 
 namespace CSGO_Radio.Classes
 {
-    /// <summary>
-    /// Class that contains all the diffrent categories with songs.
-    /// </summary>
     [ImplementPropertyChanged]
     public class SoundController
     {
-        //// Properties
-        //public string IdEntered { get; set; } = "";
-        //public SoundWAV LoadedSound { get; set; }
+        // Properties
+        public ObservableCollection<Category> Categories { get; set; }
+        public Dictionary<int, SoundNew> Sounds { get; set; }   // Used for easy finding of songs
+        public string IdEntered { get; set; } = "";
+        public KeyValuePair<int, SoundNew> SelectedSound { get; set; }
 
-        //public ObservableCollection<Category> Categories { get; set; }
-        //public ObservableCollection<KeyValuePair<string, SoundWAV>> SoundsList { get; set; }
+        // Varaibles
+        private LowLevelKeyboardListener keyboardHook;
+        private SoundPlayer soundPlayer;
+        private bool soundIsPlaying = false;
 
-        //private Tts TextToSpeech;
+        // Constructor
+        public SoundController()
+        {
+            Sounds = new Dictionary<int, SoundNew>();
+            Categories = new ObservableCollection<Category>();
 
-        //// Constructor
-        //public SoundController()
-        //{
-        //    Categories = new ObservableCollection<Category>();
-        //    SoundsList = new ObservableCollection<KeyValuePair<string, SoundWAV>>();
-        //    TextToSpeech = new Tts();
-        //}
+            keyboardHook = new LowLevelKeyboardListener();
+            keyboardHook.OnKeyPressed += KeyboardHook_OnKeyPressed;
+            soundPlayer = new SoundPlayer();
+        }
 
-        //// Public Functions
-        //public void Load()
-        //{
-        //    if (File.Exists(ProgramSettings.PathSounds + "\\data.json"))
-        //    {
-        //        string json = File.ReadAllText(ProgramSettings.PathSounds + "\\data.json");
-        //        Categories = JsonConvert.DeserializeObject<ObservableCollection<Category>>(json);
-        //        Sort();
-        //        CategoriesToSoundList();
-        //    }
-        //}
-        //public void Save()
-        //{
-        //    string json = JsonConvert.SerializeObject(Categories, Formatting.Indented);
+        // Public methods
+        public void Load()
+        {
+            if (File.Exists(ProgramSettings.PathSounds + "\\data.json"))
+            {
+                string json = File.ReadAllText(ProgramSettings.PathSounds + "\\data.json");
+                Categories = JsonConvert.DeserializeObject<ObservableCollection<Category>>(json);
+                UpdateDictionary();
+            }
 
-        //    try
-        //    {
-        //        File.WriteAllText(ProgramSettings.PathSounds + "\\data.json", json);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        MessageBox.Show("Error writing data, please make sure the sound folder exists.");
-        //    }
-        //}
-        //public void LoadSong()
-        //{
-        //    var sound = FindSoundById(IdEntered);
-        //    if (sound != null)
-        //    {
-        //        if (File.Exists(ProgramSettings.PathCsgo + "\\voice_input.wav"))
-        //        {
-        //            File.Delete(ProgramSettings.PathCsgo + "\\voice_input.wav");
-        //        }
-        //        File.Copy(sound.Path, ProgramSettings.PathCsgo + "\\voice_input.wav");
+            keyboardHook.HookKeyboard();
+        }
+        public void Save()
+        {
+            string json = JsonConvert.SerializeObject(Categories, Formatting.Indented);
 
-        //        IdEntered = "";
-        //        LoadedSound = sound;
-        //        //soundPlayer.SoundLocation = sound.Path;
-        //        //soundPlayer.Load();
-        //    }
+            try
+            {
+                File.WriteAllText(ProgramSettings.PathSounds + "\\data.json", json);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error writing data, please make sure the sound folder exists.");
+            }
+            keyboardHook.UnHookKeyboard();
+        }
 
-        //    //if (IdEntered.Count() >= 4)
-        //    //    IdEntered = "";
-        //}
+        // Private methods
+        private void LoadSong(int id)
+        {
+            try
+            {
+                var sound = Sounds[id];
+                if (sound != null)
+                {
+                    if (File.Exists(ProgramSettings.PathCsgo + "\\voice_input.wav"))
+                    {
+                        File.Delete(ProgramSettings.PathCsgo + "\\voice_input.wav");
+                    }
+                    File.Copy(sound.Path, ProgramSettings.PathCsgo + "\\voice_input.wav");
 
-        //// Private Function
-        //private void Sort()
-        //{
-        //    Categories = new ObservableCollection<Category>(Categories.OrderBy(s => s.Name).ToList());
-        //}
-        //private void CategoriesToSoundList()
-        //{
-        //    SoundsList.Clear();
-        //    foreach (var category in Categories)
-        //    {
-        //        foreach (var sound in category.Sounds)
-        //        {
-        //            //if (sound.Name.Contains(""))
-        //            //{
-        //            //    SoundsList.Add(new KeyValuePair<string, SoundWAV>(category.Name, sound));
-        //            //}
-        //        }
-        //    }
-        //}
-        //private SoundWAV FindSoundById(string id)
-        //{
-        //    SoundWAV foundSound = null;
+                    IdEntered = "";
+                    SelectedSound = new KeyValuePair<int, SoundNew>(id,sound);
 
-        //    // Find item
-        //    foreach (var category in Categories)
-        //    {
-        //        //foundSound = category.Sounds.Where(x => x.IdFull == id).FirstOrDefault();
+                    // Load for player
+                    soundPlayer.SoundLocation = sound.Path;
+                    soundPlayer.Load();
+                }
 
-        //        //if (foundSound != null)
-        //        //{
-        //        //    foundSound.LoadCount++;
-        //        //    break;
-        //        //}
-        //    }
+                //if (IdEntered.Count() >= 4)
+                //    IdEntered = "";
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+        private void UpdateDictionary()
+        {
+            Dictionary<int, SoundNew> dic = new Dictionary<int, SoundNew>();
+            foreach (var cat in Categories)
+            {
+                foreach (var sound in cat.Sounds)
+                {
+                    dic.Add(sound.Id, sound);
+                }               
+            }
+            Sounds = dic;
+        }
+        private void KeyboardHook_OnKeyPressed(object sender, KeyPressedArgs e)
+        {
+            #region keys
+            switch (e.KeyPressed)
+            {
+                case Key.NumPad0:
+                    IdEntered += "0";
+                    break;
 
-        //    // Return
-        //    return foundSound;
-        //}
+                case Key.NumPad1:
+                    IdEntered += "1";
+                    break;
 
-        //// Window Events
-        //private void AddCategory()
-        //{
-        //    //AddCategoryWindow acw = new AddCategoryWindow()
-        //    //{
-        //    //    //Categories = Categories
-        //    //};
-        //    //acw.ShowDialog();
-        //    ////Categories = acw.Categories;
+                case Key.NumPad2:
+                    IdEntered += "2";
+                    break;
 
-        //    int a = 0;
-        //}
-        //private void AddSound()
-        //{
-        //    //ImportWindow iw = new ImportWindow()
-        //    //{
-        //    //    Categories = Categories
-        //    //};
-        //    //iw.ShowDialog();
-        //    //Categories = iw.Categories;
-        //}
+                case Key.NumPad3:
+                    IdEntered += "3";
+                    break;
 
-        //// Command
-        //public ICommand CommandAddCategory { get { return new RelayCommand(AddCategory); } }
-        //public ICommand CommandAddSound { get { return new RelayCommand(AddSound); } }
+                case Key.NumPad4:
+                    IdEntered += "4";
+                    break;
+
+                case Key.NumPad5:
+                    IdEntered += "5";
+                    break;
+
+                case Key.NumPad6:
+                    IdEntered += "6";
+                    break;
+
+                case Key.NumPad7:
+                    IdEntered += "7";
+                    break;
+
+                case Key.NumPad8:
+                    IdEntered += "8";
+                    break;
+
+                case Key.NumPad9:
+                    IdEntered += "9";
+                    break;
+
+                case Key.Delete:
+                    IdEntered = "";
+                    break;
+                    //case Key.Add:
+                    //    SoundController.IdEntered += "+";
+                    //    break;
+            }
+            #endregion
+
+            if (IdEntered.Length >= 4)
+            {
+                // Check if id is valid
+                if (!string.IsNullOrEmpty(IdEntered))
+                {
+                    int id = Convert.ToInt32(IdEntered);
+                    LoadSong(id);
+                }
+            }
+        }
+
+        // Command
+        public ICommand CommandAddCategory => new RelayCommand(ShowCategoryWindow);
+        public ICommand CommandAddSound => new RelayCommand(ShowSoundWindow);
+        public ICommand CommandPlayPauzeSound => new RelayCommand(PlayPauzeSound);
+
+        private void ShowCategoryWindow()
+        {
+            AddCategoryWindow acw = new AddCategoryWindow(Categories);
+            acw.ShowDialog();
+        }
+        private void ShowSoundWindow()
+        {
+            ImportWindow iw = new ImportWindow(Categories);
+            iw.ShowDialog();
+        }
+        private void PlayPauzeSound()
+        {
+            if (soundPlayer.IsLoadCompleted)
+            {
+                if (soundIsPlaying)
+                {
+                    soundPlayer.Stop();
+                    soundIsPlaying = false;
+                }
+                else
+                {
+                    soundPlayer.Play();
+                    soundIsPlaying = true;
+                }
+            }
+        }
     }
 }
