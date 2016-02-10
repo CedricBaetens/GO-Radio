@@ -5,10 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using VideoLibrary;
+using System.Diagnostics;
 
 namespace CSGO_Radio.Classes
 {
-    public static class NAudioHelper
+    public static class AudioHelper
     {
         public static void TrimWavFile(string inPath, string outPath, TimeSpan cutFromStart, TimeSpan cutFromEnd)
         {
@@ -66,6 +68,44 @@ namespace CSGO_Radio.Classes
 
             File.Delete(unconvertedSound.Path);
             return new SoundNew(path);
+        }
+
+        public static class YoutubeDownloader
+        {
+            public static void DownloadVideo(string url)
+            {
+                // Download video
+                var youTube = YouTube.Default;
+                var video = youTube.GetVideo(url);
+
+                // Save video
+                var path = ProgramSettings.PathTemp + video.FullName;
+                File.WriteAllBytes(path, video.GetBytes());
+            }
+            public static void DownloadAudio(string url)
+            {
+                // Download video
+                var youTube = YouTube.Default;
+                var video = youTube.GetVideo(url);
+
+                // Save video
+                var videoPath = ProgramSettings.PathTemp + video.FullName;
+                File.WriteAllBytes(videoPath, video.GetBytes());
+
+
+                Process myProcess = new Process();
+
+                myProcess.StartInfo.UseShellExecute = false;
+                myProcess.StartInfo.FileName = "ffmpeg.exe";
+                myProcess.StartInfo.Arguments = string.Format("-i \"{0}\" \"{1}{2}.mp3\"", videoPath, ProgramSettings.PathNew, video.Title);
+                myProcess.StartInfo.CreateNoWindow = true;
+                myProcess.Start();
+                myProcess.WaitForExit();
+
+
+                // Delete mp4
+                File.Delete(videoPath);
+            }
         }
     }
 }

@@ -59,7 +59,7 @@ namespace CSGO_Radio.Views
             {
                 SoundUnconverted newSound = (SoundUnconverted)selectedItems[i];
 
-                var convSound = NAudioHelper.Convert(newSound);
+                var convSound = AudioHelper.Convert(newSound);
 
                 Sounds.RemoveAt(Sounds.IndexOf(newSound));
 
@@ -75,7 +75,7 @@ namespace CSGO_Radio.Views
         // Custom methods
         private ObservableCollection<SoundUnconverted> GetNewSounds()
         {
-            string[] newSoundsStrings = System.IO.Directory.GetFiles(ProgramSettings.PathSounds + "\\Sounds \\new", "*.*", System.IO.SearchOption.AllDirectories);
+            string[] newSoundsStrings = System.IO.Directory.GetFiles(ProgramSettings.PathSounds + "\\new", "*.*", System.IO.SearchOption.AllDirectories);
 
             return
                 new ObservableCollection<SoundUnconverted>(newSoundsStrings.Select(newSound => new SoundUnconverted(newSound)).ToList());
@@ -85,12 +85,10 @@ namespace CSGO_Radio.Views
         {
             string link = @"https://www.youtube.com/watch?v=acHKPu4oIro";
 
-            var youTube = YouTube.Default; // starting point for YouTube actions
+            AudioHelper.YoutubeDownloader.DownloadAudio(link);
 
-            var video = youTube.GetVideo(link); // gets a Video object with info about the video
-
-            int a = 0;
-            File.WriteAllBytes(@"C:\Users\Cedric Baetens\Downloads\test\" + video.FullName, video.GetBytes());
+            Sounds = GetNewSounds();
         }
+
     }
 }

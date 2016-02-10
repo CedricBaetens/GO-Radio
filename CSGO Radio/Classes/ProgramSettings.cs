@@ -20,6 +20,8 @@ namespace CSGO_Radio
         // Properties
         public static string PathCsgo { get; set; }
         public static string PathSounds { get; set; }
+        public static string PathTemp { get { return PathSounds + "\\audio\\tmp\\"; } }
+        public static string PathNew { get { return PathSounds + "\\new\\"; } }
 
         // Public Methods
         public static void Init()
