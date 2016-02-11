@@ -170,6 +170,8 @@ namespace CSGO_Radio.Classes
                     int id = Convert.ToInt32(IdEntered);
                     LoadSong(id);
                 }
+
+                IdEntered = "";
             }
         }
 
@@ -187,6 +189,7 @@ namespace CSGO_Radio.Classes
         {
             ImportWindow iw = new ImportWindow(Categories);
             iw.ShowDialog();
+            UpdateDictionary();
         }
         private void PlayPauzeSound()
         {
