@@ -28,18 +28,28 @@ namespace CSGO_Radio.Views
         // Public
         public ObservableCollection<Category> Categories { get; set; }
         public ObservableCollection<SoundUnconverted> Sounds { get; set; }
+        public AudioHelper.YoutubeDownloader YtDownloader { get; set; }
+        public string Message { get; set; }
 
+        // Constructor
         public ImportWindow(ObservableCollection<Category> categories)
         {
             InitializeComponent();
 
             // Instanciate
             Sounds = new ObservableCollection<SoundUnconverted>();
+            YtDownloader = new AudioHelper.YoutubeDownloader();
+            YtDownloader.OnUpdateStatus += YtDownloader_OnUpdateStatus;
 
             this.Categories = categories;
 
             // Binding
             DataContext = this;
+        }
+
+        private void YtDownloader_OnUpdateStatus(object sender, AudioHelper.ProgressEventArgs e)
+        {
+            Message = e.Status;
         }
 
         // Window events
@@ -85,9 +95,11 @@ namespace CSGO_Radio.Views
         {
             string link = @"https://www.youtube.com/watch?v=acHKPu4oIro";
 
-            AudioHelper.YoutubeDownloader.DownloadAudio(link);
+            YtDownloader.DownLoadAudioAsync(link);
 
             Sounds = GetNewSounds();
+
+            int a = 0;
         }
 
     }

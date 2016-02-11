@@ -35,7 +35,7 @@
 
         <StackPanel  Grid.Row="1" Grid.Column="0">
             <Button Name="btnYt" Margin="5" Click="btnYt_Click">Youtube!</Button>
-            <TextBlock Name="val"></TextBlock>
+            <TextBlock Text="{Binding Message}"></TextBlock>
         </StackPanel>
         
         <Button Grid.Row="2" Grid.Column="0" Name="btnAdd" Click="btnAdd_Click" Margin="5">Add</Button>

@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using System.IO;
 using VideoLibrary;
 using System.Diagnostics;
+using PropertyChanged;
 
 namespace CSGO_Radio.Classes
 {
+    [ImplementPropertyChanged]
     public static class AudioHelper
     {
         public static void TrimWavFile(string inPath, string outPath, TimeSpan cutFromStart, TimeSpan cutFromEnd)
@@ -31,7 +33,6 @@ namespace CSGO_Radio.Classes
                 }
             }
         }
-
         private static void TrimWavFile(WaveFileReader reader, WaveFileWriter writer, int startPos, int endPos)
         {
             reader.Position = startPos;
@@ -70,9 +71,14 @@ namespace CSGO_Radio.Classes
             return new SoundNew(path);
         }
 
-        public static class YoutubeDownloader
+        [ImplementPropertyChanged]
+        public class YoutubeDownloader
         {
-            public static void DownloadVideo(string url)
+            public delegate void StatusUpdateHandler(object sender, ProgressEventArgs e);
+            public event StatusUpdateHandler OnUpdateStatus;
+
+
+            public void DownloadVideo(string url)
             {
                 // Download video
                 var youTube = YouTube.Default;
@@ -82,8 +88,10 @@ namespace CSGO_Radio.Classes
                 var path = ProgramSettings.PathTemp + video.FullName;
                 File.WriteAllBytes(path, video.GetBytes());
             }
-            public static void DownloadAudio(string url)
+            public void DownloadAudio(string url)
             {
+                UpdateStatus("Downloading video...");
+
                 // Download video
                 var youTube = YouTube.Default;
                 var video = youTube.GetVideo(url);
@@ -97,14 +105,45 @@ namespace CSGO_Radio.Classes
 
                 myProcess.StartInfo.UseShellExecute = false;
                 myProcess.StartInfo.FileName = "ffmpeg.exe";
-                myProcess.StartInfo.Arguments = string.Format("-i \"{0}\" \"{1}{2}.mp3\"", videoPath, ProgramSettings.PathNew, video.Title);
-                myProcess.StartInfo.CreateNoWindow = true;
+                myProcess.StartInfo.Arguments = string.Format("-y -i \"{0}\" \"{1}{2}.mp3\"", videoPath, ProgramSettings.PathNew, video.Title);
+                myProcess.StartInfo.CreateNoWindow = false;
                 myProcess.Start();
+
+                UpdateStatus("Converting audio...");
+
                 myProcess.WaitForExit();
 
 
                 // Delete mp4
                 File.Delete(videoPath);
+
+                UpdateStatus("Download complete!");
+            }
+
+            public async void DownLoadAudioAsync(string url)
+            {
+                await Task.Run(() =>
+                {
+                    DownloadAudio(url);
+                });
+            }
+
+            private void UpdateStatus(string status)
+            {
+                // Make sure someone is listening to event
+                if (OnUpdateStatus == null) return;
+
+                ProgressEventArgs args = new ProgressEventArgs(status);
+                OnUpdateStatus(this, args);
+            }
+        }
+
+        public class ProgressEventArgs : EventArgs
+        {
+            public string Status { get; private set; }
+            public ProgressEventArgs(string status)
+            {
+                Status = status;
             }
         }
     }
