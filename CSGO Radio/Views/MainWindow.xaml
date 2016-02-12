@@ -7,7 +7,7 @@
         xmlns:classes="clr-namespace:CSGO_Radio.Classes"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="{Binding AppName}" 
+        Title="CSGO Radio" 
         Height="350" Width="600" 
         Loaded="MainWindow_OnLoaded" Closing="MainWindow_OnClosing"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -193,8 +193,8 @@
                 <TextBlock Grid.Column="1" Style="{StaticResource MaterialDesignBody2TextBlock}" VerticalAlignment="Center">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0:0000} {1}">
-                            <Binding Path="SelectedSound.Key" />
-                            <Binding Path="SelectedSound.Value.Name" />
+                            <Binding Path="SelectedSound.Id" />
+                            <Binding Path="SelectedSound.Name" />
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>

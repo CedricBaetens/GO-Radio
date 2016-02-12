@@ -36,7 +36,6 @@ namespace CSGO_Radio
     public partial class MainWindow : Window
     {
         #region Properties
-        public string AppName { get; set; }
         public SoundController SoundController { get; set; }
 
         public bool ShowList { get; set; } = false;
@@ -68,13 +67,6 @@ namespace CSGO_Radio
 
             // Cfg
             Cfg.Create.Init();
-            //Cfg.CreateSongList(SoundController.SoundsList);
-
-            // Add application name and version
-            if (ApplicationDeployment.IsNetworkDeployed)
-            {
-                AppName = string.Format("CS: GO Radio - v{0}", ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString(4));
-            }
         }
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {

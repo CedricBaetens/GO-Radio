@@ -15,7 +15,6 @@ namespace CSGO_Radio.Classes
         public delegate void StatusUpdateHandler(object sender, ProgressEventArgs e);
         public event StatusUpdateHandler OnTtsDetected;
 
-
         System.Timers.Timer ttsTimer = new System.Timers.Timer();
 
         public Tts()
@@ -30,11 +29,33 @@ namespace CSGO_Radio.Classes
             var text = GetTtsText();
             if (!string.IsNullOrEmpty(text))
             {
-                StringToTTS(text);
+                string pathNotConv = ProgramSettings.PathSounds + "\\audio\\tts.wav";
+
+                using (var synth = new SpeechSynthesizer())
+                {
+                    // Configure the audio output. 
+                    synth.SetOutputToWaveFile(pathNotConv);
+
+                    // Build a prompt.
+                    //PromptBuilder builder = new PromptBuilder();
+                    //builder.AppendText(input);
+                    synth.Rate = -2;
+
+                    // Change voice
+                    //synth.SelectVoiceByHints(dialog.SelectedGender);
+
+                    // Speak the prompt.
+                    synth.Speak(text);
+                    synth.SetOutputToNull();
+                    synth.Dispose();
+                }
+
+                var sound = AudioHelper.Convert(new SoundUnconverted(pathNotConv));
+
+                TtsDetected(sound);
             }
         }
-
-        public static string GetTtsText()
+        private static string GetTtsText()
         {
             if (File.Exists(ProgramSettings.PathCsgo + "\\csgo\\condump000.txt"))
             {
@@ -43,37 +64,7 @@ namespace CSGO_Radio.Classes
                 return lastLine;
             }
             return "";
-        }
-
-        private void StringToTTS(string input)
-        {
-            string pathNotConv = ProgramSettings.PathSounds + "\\audio\\tts.wav";
-
-            using (var synth = new SpeechSynthesizer())
-            {
-                // Configure the audio output. 
-                synth.SetOutputToWaveFile(pathNotConv);
-
-                // Build a prompt.
-                //PromptBuilder builder = new PromptBuilder();
-                //builder.AppendText(input);
-                synth.Rate = -2;
-
-                // Change voice
-                //synth.SelectVoiceByHints(dialog.SelectedGender);
-
-                // Speak the prompt.
-                synth.Speak(input);
-                synth.SetOutputToNull();
-                synth.Dispose();
-            }
-
-            var sound = AudioHelper.Convert(new SoundUnconverted(pathNotConv));
-
-            TtsDetected(sound);
-
-            //File.Delete(pathNotConv);
-        }
+        }   
 
         // Event methods          
         private void TtsDetected(SoundNew sound)
