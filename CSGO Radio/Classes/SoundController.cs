@@ -22,6 +22,7 @@ namespace CSGO_Radio.Classes
         public Dictionary<int, SoundNew> Sounds { get; set; }   // Used for easy finding of songs
         public string IdEntered { get; set; } = "";
         public KeyValuePair<int, SoundNew> SelectedSound { get; set; }
+        public Tts TextToSpeech { get; set; }
 
         // Varaibles
         private LowLevelKeyboardListener keyboardHook;
@@ -37,6 +38,13 @@ namespace CSGO_Radio.Classes
             keyboardHook = new LowLevelKeyboardListener();
             keyboardHook.OnKeyPressed += KeyboardHook_OnKeyPressed;
             soundPlayer = new SoundPlayer();
+            TextToSpeech = new Tts();
+            TextToSpeech.OnTtsDetected += TextToSpeech_OnTtsDetected;
+        }
+
+        private void TextToSpeech_OnTtsDetected(object sender, Tts.ProgressEventArgs e)
+        {
+            LoadSong(e.Sound);
         }
 
         // Public methods
@@ -67,11 +75,10 @@ namespace CSGO_Radio.Classes
         }
 
         // Private methods
-        private void LoadSong(int id)
+        private void LoadSong(SoundNew sound)
         {
             try
             {
-                var sound = Sounds[id];
                 if (sound != null)
                 {
                     if (File.Exists(ProgramSettings.PathCsgo + "\\voice_input.wav"))
@@ -81,7 +88,7 @@ namespace CSGO_Radio.Classes
                     File.Copy(sound.Path, ProgramSettings.PathCsgo + "\\voice_input.wav");
 
                     IdEntered = "";
-                    SelectedSound = new KeyValuePair<int, SoundNew>(id,sound);
+                    SelectedSound = new KeyValuePair<int, SoundNew>(sound.Id,sound);
 
                     // Load for player
                     soundPlayer.SoundLocation = sound.Path;
@@ -168,7 +175,7 @@ namespace CSGO_Radio.Classes
                 if (!string.IsNullOrEmpty(IdEntered))
                 {
                     int id = Convert.ToInt32(IdEntered);
-                    LoadSong(id);
+                    LoadSong(Sounds[id]);
                 }
 
                 IdEntered = "";

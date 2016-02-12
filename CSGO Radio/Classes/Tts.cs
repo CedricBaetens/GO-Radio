@@ -9,8 +9,13 @@ using System.Threading.Tasks;
 
 namespace CSGO_Radio.Classes
 {
-    class Tts
+    public class Tts
     {
+        // Used for event
+        public delegate void StatusUpdateHandler(object sender, ProgressEventArgs e);
+        public event StatusUpdateHandler OnTtsDetected;
+
+
         System.Timers.Timer ttsTimer = new System.Timers.Timer();
 
         public Tts()
@@ -42,7 +47,7 @@ namespace CSGO_Radio.Classes
 
         private void StringToTTS(string input)
         {
-            string pathNotConv = ProgramSettings.PathSounds + "\\audio\\ttsNotConv.wav";
+            string pathNotConv = ProgramSettings.PathSounds + "\\audio\\tts.wav";
 
             using (var synth = new SpeechSynthesizer())
             {
@@ -63,31 +68,29 @@ namespace CSGO_Radio.Classes
                 synth.Dispose();
             }
 
+            var sound = AudioHelper.Convert(new SoundUnconverted(pathNotConv));
 
-            // ReSample
-            string path = string.Format("{0}\\audio\\{1}{2}", ProgramSettings.PathSounds, "tts", ".wav");
+            TtsDetected(sound);
 
-            using (var reader = new WaveFileReader(pathNotConv))
+            //File.Delete(pathNotConv);
+        }
+
+        // Event methods          
+        private void TtsDetected(SoundNew sound)
+        {
+            // Make sure someone is listening to event
+            if (OnTtsDetected == null) return;
+
+            ProgressEventArgs args = new ProgressEventArgs(sound);
+            OnTtsDetected(this, args);
+        }
+        public class ProgressEventArgs : EventArgs
+        {
+            public SoundNew Sound { get; set; }
+            public ProgressEventArgs(SoundNew sound)
             {
-                using (var resampler = new MediaFoundationResampler(reader, new WaveFormat(22050, 16, 1)))
-                {
-                    resampler.ResamplerQuality = 60;
-                    WaveFileWriter.CreateWaveFile(path, resampler);
-                    resampler.Dispose();
-                }
+                Sound = sound;
             }
-
-            //LoadedSound = new SoundWAV()
-            //{
-            //    Name = "Text To Speech",
-            //    Path =  path
-            //};
-
-            //SoundController.LoadSong(LoadedSound);
-
-//
-
-            File.Delete(pathNotConv);
         }
     }
 }
