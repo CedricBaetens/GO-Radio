@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSGO_Radio.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,24 @@ namespace CSGO_Radio.Views
     /// </summary>
     public partial class TrimWindow : Window
     {
-        public TrimWindow()
+        public SoundNew Sound { get; set; }
+        public TimeSpan StartTime { get; set; }
+        public TimeSpan EndTime { get; set; }
+
+        public TrimWindow(SoundNew sound)
         {
             InitializeComponent();
+            Sound = sound;
+
+            DataContext = this;
+        }
+
+        public ICommand CommandTrimSound => new RelayCommand(TrimSound);
+
+        private void TrimSound()
+        {
+            Sound.Trim(StartTime, EndTime);
+            Close();      
         }
     }
 }

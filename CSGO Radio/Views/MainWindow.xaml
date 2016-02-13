@@ -115,7 +115,8 @@
                                         </DataGrid.Columns>
                                         <DataGrid.ContextMenu>
                                             <ContextMenu >
-                                                <MenuItem Header="Trim" Command="{Binding CommandTrimSound}"/>
+                                                <MenuItem Header="Trim" IsEnabled="{Binding SelectedSound.IsTrimmed, Converter={StaticResource BoolInvers}}" Command="{Binding CommandTrimSound}"/>
+                                                <MenuItem Header="Remove Trim" IsEnabled="{Binding SelectedSound.IsTrimmed}" Command="{Binding CommandRemoveTrim}"/>
                                                 <MenuItem Header="Delete" Command="{Binding CommandRemoveSound}"/>
                                             </ContextMenu>
                                         </DataGrid.ContextMenu>

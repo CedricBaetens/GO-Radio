@@ -1,6 +1,7 @@
 ﻿using NAudio.Wave;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Speech.Synthesis;
@@ -15,12 +16,14 @@ namespace CSGO_Radio.Classes
         public delegate void StatusUpdateHandler(object sender, ProgressEventArgs e);
         public event StatusUpdateHandler OnTtsDetected;
 
+        private int count = 0;
+
         System.Timers.Timer ttsTimer = new System.Timers.Timer();
 
         public Tts()
         {
             ttsTimer.Elapsed += TtsTimer_Elapsed;
-            ttsTimer.Interval = 100;
+            ttsTimer.Interval = 500;
             ttsTimer.Enabled = true;
         }
 
@@ -29,7 +32,8 @@ namespace CSGO_Radio.Classes
             var text = GetTtsText();
             if (!string.IsNullOrEmpty(text))
             {
-                string pathNotConv = ProgramSettings.PathSounds + "\\audio\\tts.wav";
+                ttsTimer.Stop(); 
+                string pathNotConv = string.Format("{0}\\audio\\tmp\\Text To Speech {1}.wav", ProgramSettings.PathSounds, count++);                
 
                 using (var synth = new SpeechSynthesizer())
                 {
@@ -51,8 +55,8 @@ namespace CSGO_Radio.Classes
                 }
 
                 var sound = AudioHelper.Convert(new SoundUnconverted(pathNotConv));
-
                 TtsDetected(sound);
+                ttsTimer.Start();
             }
         }
         private static string GetTtsText()

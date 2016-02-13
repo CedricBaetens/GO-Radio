@@ -193,7 +193,16 @@ namespace CSGO_Radio.Classes
                     {
                         File.Delete(ProgramSettings.PathCsgo + "\\voice_input.wav");
                     }
-                    File.Copy(sound.Path, ProgramSettings.PathCsgo + "\\voice_input.wav");
+
+                    if (!string.IsNullOrEmpty(sound.PathTrim))
+                    {
+                        File.Copy(sound.PathTrim, ProgramSettings.PathCsgo + "\\voice_input.wav");
+                    }
+                    else
+                    {
+                        File.Copy(sound.Path, ProgramSettings.PathCsgo + "\\voice_input.wav");
+                    }
+                    
 
                     IdEntered = "";
                     SelectedSound = sound;
@@ -241,6 +250,11 @@ namespace CSGO_Radio.Classes
         public ICommand CommandAddSound => new RelayCommand(ShowSoundWindow);
         public ICommand CommandPlayPauzeSound => new RelayCommand(PlayPauzeSound);
 
+
+        private void ShowTrimSound()
+        {
+            
+        }
         private void ShowCategoryWindow()
         {
             AddCategoryWindow acw = new AddCategoryWindow(Categories);

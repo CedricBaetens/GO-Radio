@@ -42,33 +42,26 @@ namespace CSGO_Radio.Classes
             Sounds.Add(sound);
         }
 
-        //private void RecalculateIds()
-        //{
-        //    for (int i = 0; i < Sounds.Count; i++)
-        //    {
-        //        Sounds[i].Id = StartId + i;
-        //    }
-        //}
-        //private void EditCategory()
-        //{
-        //    CategoryWindow cw = new CategoryWindow();
-        //    cw.SelectedCategory = this;
-        //    cw.ShowDialog();
-        //}
-
-
-        //private void TrimSound()
-        //{
-        //    NAudioHelper.TrimWavFile(SelectedSound.Path, string.Format("{0}/{1}(trimmed).wav", SelectedSound.Directory, SelectedSound.Name), new TimeSpan(0, 0, 5), new TimeSpan(0, 0, 5));
-        //}
-
-
         //// Command Binding
         public ICommand CommandRemoveSound => new RelayCommand(RemoveSound);
+        public ICommand CommandTrimSound => new RelayCommand(TrimSound);
+        public ICommand CommandRemoveTrim => new RelayCommand(RemoveTrim);
+
         private void RemoveSound()
         {
             Sounds.Remove(SelectedSound);
         }
+
+        private void TrimSound()
+        {
+            TrimWindow tw = new TrimWindow(SelectedSound);
+            tw.ShowDialog();
+        }
+        private void RemoveTrim()
+        {
+            SelectedSound.RemoveTrim();
+        }
+
         //public ICommand CommandRecalculateIds { get { return new RelayCommand(RecalculateIds); } }
         //public ICommand CommandEditCategory { get { return new RelayCommand(EditCategory); } }
         //public ICommand CommandTrimSound { get { return new RelayCommand(TrimSound); } }

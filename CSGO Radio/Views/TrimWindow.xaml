@@ -4,12 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CSGO_Radio.Views"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="TrimWindow" Height="300" Width="300">
     <Grid>
         <StackPanel>
-            <TextBlock>Start playing from:</TextBlock>
-            <TextBlock Text="{Binding Start}"></TextBlock>
+            <TextBlock>Start Time</TextBlock>
+            <xctk:TimeSpanUpDown Value="{Binding StartTime}"></xctk:TimeSpanUpDown>
+            <TextBlock>End Time</TextBlock>
+            <xctk:TimeSpanUpDown Value="{Binding EndTime}"></xctk:TimeSpanUpDown>
+            <Button Command="{Binding CommandTrimSound}">Trim Sound</Button>
         </StackPanel>
+
     </Grid>
 </Window>
