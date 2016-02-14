@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System.Windows;
 using System.Windows.Input;
 using CSGO_Radio.Views;
+using System.Timers;
 
 namespace CSGO_Radio.Classes
 {
@@ -21,14 +22,15 @@ namespace CSGO_Radio.Classes
         public ObservableCollection<Category> Categories { get; set; }
         public Dictionary<int, SoundNew> Sounds { get; set; }   // Used for easy finding of songs
         public string IdEntered { get; set; } = "";
-        public SoundNew SelectedSound { get; set; }
+        public SoundLoader SoundLoader { get; set; }
         public Tts TextToSpeech { get; set; }
+
         public bool SoundIsPlaying { get; set; } = false;
 
         // Varaibles
         private LowLevelKeyboardListener keyboardHook;
         private SoundPlayer soundPlayer;
-
+        
         // Constructor
         public SoundController()
         {
@@ -38,14 +40,17 @@ namespace CSGO_Radio.Classes
             keyboardHook = new LowLevelKeyboardListener();
             keyboardHook.OnKeyPressed += KeyboardHook_OnKeyPressed;
             soundPlayer = new SoundPlayer();
+            
             TextToSpeech = new Tts();
             TextToSpeech.OnTtsDetected += TextToSpeech_OnTtsDetected;
+
+            SoundLoader = new SoundLoader();
         }
 
         // Events
         private void TextToSpeech_OnTtsDetected(object sender, Tts.ProgressEventArgs e)
         {
-            LoadSong(e.Sound);
+            SoundLoader.LoadSong(e.Sound);
         }
         private void KeyboardHook_OnKeyPressed(object sender, KeyPressedArgs e)
         {
@@ -99,6 +104,14 @@ namespace CSGO_Radio.Classes
                 case Key.Add:
                     IdEntered += "+";
                     break;
+
+                case Key.Subtract:
+                    SoundLoader.PlayPause();
+                    break;
+
+                case Key.Enter:
+                    SoundLoader.PlayStop();
+                    break;
             }
             #endregion
 
@@ -147,8 +160,11 @@ namespace CSGO_Radio.Classes
                 {
                     int id = Convert.ToInt32(IdEntered);
 
-                    // Get sound
-                    LoadSong(GetSoundById(id));
+                    // Load Sound
+                    SoundLoader.LoadSong(GetSoundById(id));
+                    soundPlayer.SoundLocation = SoundLoader.Sound.Path;
+                    soundPlayer.Load();
+                    
                 }
 
                 IdEntered = "";
@@ -183,43 +199,77 @@ namespace CSGO_Radio.Classes
         }
 
         // Private methods
-        private void LoadSong(SoundNew sound)
-        {
-            try
-            {
-                if (sound != null)
-                {
-                    if (File.Exists(ProgramSettings.PathCsgo + "\\voice_input.wav"))
-                    {
-                        File.Delete(ProgramSettings.PathCsgo + "\\voice_input.wav");
-                    }
+        //private void LoadSong(SoundNew sound)
+        //{
+        //    try
+        //    {
+        //        if (sound != null)
+        //        {
+        //            if (File.Exists(ProgramSettings.PathCsgo + "\\voice_input.wav"))
+        //            {
+        //                File.Delete(ProgramSettings.PathCsgo + "\\voice_input.wav");
+        //            }
 
-                    if (!string.IsNullOrEmpty(sound.PathTrim))
-                    {
-                        File.Copy(sound.PathTrim, ProgramSettings.PathCsgo + "\\voice_input.wav");
-                    }
-                    else
-                    {
-                        File.Copy(sound.Path, ProgramSettings.PathCsgo + "\\voice_input.wav");
-                    }
+        //            if (!string.IsNullOrEmpty(sound.PathTrim))
+        //            {
+        //                File.Copy(sound.PathTrim, ProgramSettings.PathCsgo + "\\voice_input.wav");
+        //            }
+        //            else
+        //            {
+        //                File.Copy(sound.Path, ProgramSettings.PathCsgo + "\\voice_input.wav");
+        //            }
                     
 
-                    IdEntered = "";
-                    SelectedSound = sound;
+        //            IdEntered = "";
+        //            SelectedSound.Sound = sound;
 
-                    // Load for player
-                    soundPlayer.SoundLocation = sound.Path;
-                    soundPlayer.Load();
-                }
+        //            // Load for player
+        //            soundPlayer.SoundLocation = sound.Path;
+        //            soundPlayer.Load();
+        //        }
 
-                //if (IdEntered.Count() >= 4)
-                //    IdEntered = "";
-            }
-            catch
-            {
-                // ignored
-            }
-        }
+        //        //if (IdEntered.Count() >= 4)
+        //        //    IdEntered = "";
+        //    }
+        //    catch
+        //    {
+        //        // ignored
+        //    }
+        //}
+        //private void LoadSongPauzed(SoundNew sound)
+        //{
+        //    try
+        //    {
+        //        if (sound != null)
+        //        {
+        //            if (File.Exists(ProgramSettings.PathCsgo + "\\voice_input.wav"))
+        //            {
+        //                File.Delete(ProgramSettings.PathCsgo + "\\voice_input.wav");
+        //            }
+
+        //            if (!string.IsNullOrEmpty(sound.PathTrim))
+        //            {
+        //                File.Copy(sound.PathTrim, ProgramSettings.PathCsgo + "\\voice_input.wav");
+        //            }
+        //            else
+        //            {
+        //                File.Copy(sound.Path, ProgramSettings.PathCsgo + "\\voice_input.wav");
+        //            }
+
+        //            // Load for player
+        //            soundPlayer.SoundLocation = sound.Path;
+        //            soundPlayer.Load();
+        //        }
+
+        //        //if (IdEntered.Count() >= 4)
+        //        //    IdEntered = "";
+        //    }
+        //    catch
+        //    {
+        //        // ignored
+        //    }
+        //}
+
         private void UpdateDictionary()
         {
             Dictionary<int, SoundNew> dic = new Dictionary<int, SoundNew>();
@@ -245,10 +295,12 @@ namespace CSGO_Radio.Classes
             }          
         }
 
+        
+
         // Command
         public ICommand CommandAddCategory => new RelayCommand(ShowCategoryWindow);
         public ICommand CommandAddSound => new RelayCommand(ShowSoundWindow);
-        public ICommand CommandPlayPauzeSound => new RelayCommand(PlayPauzeSound);
+        public ICommand CommandPlayPauzeSound => new RelayCommand(SoundplayerPlayPauzeSound);
 
 
         private void ShowTrimSound()
@@ -267,7 +319,7 @@ namespace CSGO_Radio.Classes
             UpdateDictionary();
         }
 
-        private void PlayPauzeSound()
+        private void SoundplayerPlayPauzeSound()
         {
             if (soundPlayer.IsLoadCompleted)
             {

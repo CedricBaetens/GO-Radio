@@ -14,10 +14,10 @@ namespace CSGO_Radio.Classes
     [ImplementPropertyChanged]
     public static class AudioHelper
     {
-        public static void TrimWavFile(SoundNew sound, TimeSpan cutFromStart, TimeSpan cutFromEnd)
+        public static void TrimWavFile(string inPath,string outPath, TimeSpan cutFromStart, TimeSpan cutFromEnd)
         {
-            var outPath = string.Format("{0}\\{1} trimmed.wav", sound.Directory, sound.Name);
-            using (WaveFileReader reader = new WaveFileReader(sound.Path))
+
+            using (WaveFileReader reader = new WaveFileReader(inPath))
             {
                 using (WaveFileWriter writer = new WaveFileWriter(outPath, reader.WaveFormat))
                 {
@@ -33,8 +33,6 @@ namespace CSGO_Radio.Classes
                     TrimWavFile(reader, writer, startPos, endPos);
                 }
             }
-
-            sound.PathTrim = outPath;
         }
         private static void TrimWavFile(WaveFileReader reader, WaveFileWriter writer, int startPos, int endPos)
         {

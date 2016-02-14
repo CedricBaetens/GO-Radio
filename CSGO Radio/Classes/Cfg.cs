@@ -18,6 +18,7 @@ namespace CSGO_Radio.Classes
                 content.Add("alias tts \"condump;\"");
                 content.Add("alias la \"exec radio_songs\"");
                 content.Add("bind KP_ENTER bs_play");
+                content.Add("bind KP_MINUS bs_play");
 
                 File.WriteAllLines(ProgramSettings.PathCsgo + "\\csgo\\cfg\\radio.cfg", content);
             }

@@ -194,8 +194,8 @@
                 <TextBlock Grid.Column="1" Style="{StaticResource MaterialDesignBody2TextBlock}" VerticalAlignment="Center">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0:0000} {1}">
-                            <Binding Path="SelectedSound.Id" />
-                            <Binding Path="SelectedSound.Name" />
+                            <Binding Path="SoundLoader.Sound.Id" />
+                            <Binding Path="SoundLoader.Sound.Name" />
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>

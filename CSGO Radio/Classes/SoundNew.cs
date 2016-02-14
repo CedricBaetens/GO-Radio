@@ -38,14 +38,22 @@ namespace CSGO_Radio.Classes
                 
         }
 
-
         public void Trim(TimeSpan start, TimeSpan end)
         {
-            AudioHelper.TrimWavFile(this, start, end);
+            var outPath = string.Format("{0}\\{1} trimmed.wav", Directory, Name);
+            AudioHelper.TrimWavFile(Path,outPath, start, end);
+            PathTrim = outPath;
         }
         public void RemoveTrim()
         {
+            File.Delete(PathTrim);
             PathTrim = "";
         } 
+        public void Pauze(TimeSpan time)
+        {
+            var outPath = string.Format("{0}\\tmp\\{1} pauzed.wav", Directory, Name);
+            AudioHelper.TrimWavFile(Path, outPath, time, new TimeSpan(0,0,0,0));
+            Path = outPath;
+        }
     }
 }
