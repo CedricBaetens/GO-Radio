@@ -4,17 +4,39 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CSGO_Radio.Views"
-        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:tkx="clr-namespace:CSGO_Radio.Classes.WPF_Extended_Extended"
+        xmlns:tk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="TrimWindow" Height="300" Width="300">
+        Title="TrimWindow" 
+        Height="300" Width="400"
+        MaxHeight="300" MaxWidth="400"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+        WindowStyle="SingleBorderWindow">
     <Grid>
-        <StackPanel>
-            <TextBlock>Start Time</TextBlock>
-            <xctk:TimeSpanUpDown Value="{Binding StartTime}"></xctk:TimeSpanUpDown>
-            <TextBlock>End Time</TextBlock>
-            <xctk:TimeSpanUpDown Value="{Binding EndTime}"></xctk:TimeSpanUpDown>
-            <Button Command="{Binding CommandTrimSound}">Trim Sound</Button>
-        </StackPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="0" Margin="5">Trim from start (hh:mm:ss)</TextBlock>
+        <tkx:TimeSpanUpDown Grid.Column="1" Margin="5" Value="{Binding StartTime}" FractionalSecondsDigitsCount="1"></tkx:TimeSpanUpDown>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Margin="5">Trim from end (hh:mm:ss)</TextBlock>
+        <tk:TimeSpanUpDown Grid.Row="1"  Grid.Column="3" Margin="5" Value="{Binding EndTime}" FractionalSecondsDigitsCount="1"></tk:TimeSpanUpDown>
+
+        <Button Grid.Row="2" Grid.Column="1" Width="150" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5"  Command="{Binding CommandTestSound}">Test</Button>
+
+        <Button  Grid.Row="3" Grid.Column="1" Width="150" HorizontalAlignment="Right" Margin="5" Command="{Binding CommandTrimSound}">Save</Button>
+
 
     </Grid>
 </Window>

@@ -104,9 +104,15 @@
                                     <TextBlock Visibility="{Binding Path=Sounds.Count, Converter={StaticResource IntInversToVisibility}}">This category doesnt have any songs in.</TextBlock>
 
                                     <!--DATA-->
-                                    <DataGrid ItemsSource="{Binding Sounds}" AutoGenerateColumns="False" PreviewMouseWheel="DataGrid_PreviewMouseWheel" CanUserAddRows="False"
-                                           materialDesign:DataGridAssist.CellPadding="13 8 8 8" materialDesign:DataGridAssist.ColumnHeaderPadding="8"
-                                          Visibility="{Binding Path=Sounds.Count, Converter={StaticResource IntToVisibility}}"
+                                    <DataGrid ItemsSource="{Binding Sounds}" 
+                                              AutoGenerateColumns="False" 
+                                              CanUserAddRows="False"
+                                              CanUserDeleteRows="False"
+                                              IsReadOnly="True"
+                                              PreviewMouseWheel="DataGrid_PreviewMouseWheel"                                              
+                                              materialDesign:DataGridAssist.CellPadding="13 8 8 8" 
+                                              materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                                              Visibility="{Binding Path=Sounds.Count, Converter={StaticResource IntToVisibility}}"
                                               SelectedItem="{Binding SelectedSound, Mode=OneWayToSource}">
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Id" Binding="{Binding Id, StringFormat='0000'}"  Width="auto"/>

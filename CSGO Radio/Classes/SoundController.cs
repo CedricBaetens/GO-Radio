@@ -159,12 +159,15 @@ namespace CSGO_Radio.Classes
                 if (!string.IsNullOrEmpty(IdEntered))
                 {
                     int id = Convert.ToInt32(IdEntered);
+                    var sound = GetSoundById(id);
 
                     // Load Sound
-                    SoundLoader.LoadSong(GetSoundById(id));
-                    soundPlayer.SoundLocation = SoundLoader.Sound.Path;
-                    soundPlayer.Load();
-                    
+                    if (sound != null)
+                    {
+                        SoundLoader.LoadSong(sound);
+                        soundPlayer.SoundLocation = SoundLoader.Sound.Path;
+                        soundPlayer.Load();
+                    }                   
                 }
 
                 IdEntered = "";
@@ -199,77 +202,6 @@ namespace CSGO_Radio.Classes
         }
 
         // Private methods
-        //private void LoadSong(SoundNew sound)
-        //{
-        //    try
-        //    {
-        //        if (sound != null)
-        //        {
-        //            if (File.Exists(ProgramSettings.PathCsgo + "\\voice_input.wav"))
-        //            {
-        //                File.Delete(ProgramSettings.PathCsgo + "\\voice_input.wav");
-        //            }
-
-        //            if (!string.IsNullOrEmpty(sound.PathTrim))
-        //            {
-        //                File.Copy(sound.PathTrim, ProgramSettings.PathCsgo + "\\voice_input.wav");
-        //            }
-        //            else
-        //            {
-        //                File.Copy(sound.Path, ProgramSettings.PathCsgo + "\\voice_input.wav");
-        //            }
-                    
-
-        //            IdEntered = "";
-        //            SelectedSound.Sound = sound;
-
-        //            // Load for player
-        //            soundPlayer.SoundLocation = sound.Path;
-        //            soundPlayer.Load();
-        //        }
-
-        //        //if (IdEntered.Count() >= 4)
-        //        //    IdEntered = "";
-        //    }
-        //    catch
-        //    {
-        //        // ignored
-        //    }
-        //}
-        //private void LoadSongPauzed(SoundNew sound)
-        //{
-        //    try
-        //    {
-        //        if (sound != null)
-        //        {
-        //            if (File.Exists(ProgramSettings.PathCsgo + "\\voice_input.wav"))
-        //            {
-        //                File.Delete(ProgramSettings.PathCsgo + "\\voice_input.wav");
-        //            }
-
-        //            if (!string.IsNullOrEmpty(sound.PathTrim))
-        //            {
-        //                File.Copy(sound.PathTrim, ProgramSettings.PathCsgo + "\\voice_input.wav");
-        //            }
-        //            else
-        //            {
-        //                File.Copy(sound.Path, ProgramSettings.PathCsgo + "\\voice_input.wav");
-        //            }
-
-        //            // Load for player
-        //            soundPlayer.SoundLocation = sound.Path;
-        //            soundPlayer.Load();
-        //        }
-
-        //        //if (IdEntered.Count() >= 4)
-        //        //    IdEntered = "";
-        //    }
-        //    catch
-        //    {
-        //        // ignored
-        //    }
-        //}
-
         private void UpdateDictionary()
         {
             Dictionary<int, SoundNew> dic = new Dictionary<int, SoundNew>();
@@ -302,23 +234,19 @@ namespace CSGO_Radio.Classes
         public ICommand CommandAddSound => new RelayCommand(ShowSoundWindow);
         public ICommand CommandPlayPauzeSound => new RelayCommand(SoundplayerPlayPauzeSound);
 
-
-        private void ShowTrimSound()
-        {
-            
-        }
         private void ShowCategoryWindow()
         {
             AddCategoryWindow acw = new AddCategoryWindow(Categories);
             acw.ShowDialog();
+            Save();
         }
         private void ShowSoundWindow()
         {
             ImportWindow iw = new ImportWindow(Categories);
             iw.ShowDialog();
             UpdateDictionary();
+            Save();
         }
-
         private void SoundplayerPlayPauzeSound()
         {
             if (soundPlayer.IsLoadCompleted)
