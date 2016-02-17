@@ -33,7 +33,7 @@ namespace CSGO_Radio.Classes.WPF_Extended_Extended
         private void UpdateTimeSpan(int value)
         {
             TimeSpan timeSpan = (TimeSpan)Value;
-            timeSpan = timeSpan.Add(new TimeSpan(0, 0, 0, value, 0));
+            timeSpan = timeSpan.Add(new TimeSpan(0, 0, 0, 0, value*100));
 
             if (IsLowerThan(timeSpan, Minimum))
             {

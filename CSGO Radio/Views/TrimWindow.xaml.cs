@@ -22,8 +22,9 @@ namespace CSGO_Radio.Views
     public partial class TrimWindow : Window
     {
         public SoundNew Sound { get; set; }
-        public TimeSpan StartTime { get; set; }
-        public TimeSpan EndTime { get; set; }
+
+        //public TimeSpan StartTime { get; set; }
+        //public TimeSpan EndTime { get; set; }
 
 
         private SoundPlayer soundPlayer;
@@ -37,6 +38,8 @@ namespace CSGO_Radio.Views
             soundPlayer = new SoundPlayer();
 
             DataContext = this;
+            tsDown.DataContext = Sound;
+            tsUp.DataContext = Sound;
         }
 
         public ICommand CommandTrimSound => new RelayCommand(TrimSound);
@@ -44,7 +47,7 @@ namespace CSGO_Radio.Views
 
         private void TrimSound()
         {
-            Sound.Trim(StartTime, EndTime);
+            Sound.Trim();
             Close();      
         }
 
@@ -52,7 +55,7 @@ namespace CSGO_Radio.Views
         {
             if (!isPlaying)
             {
-                Sound.Trim(StartTime, EndTime);
+                Sound.Trim();
                 soundPlayer.SoundLocation = Sound.PathTrim;
                 soundPlayer.Load();
                 soundPlayer.Play();
@@ -62,6 +65,14 @@ namespace CSGO_Radio.Views
                 soundPlayer.Stop();
             }
             isPlaying = !isPlaying;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (isPlaying)
+            {
+                soundPlayer.Stop();
+            }
         }
     }
 }

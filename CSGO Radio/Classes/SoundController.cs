@@ -165,7 +165,7 @@ namespace CSGO_Radio.Classes
                     if (sound != null)
                     {
                         SoundLoader.LoadSong(sound);
-                        soundPlayer.SoundLocation = SoundLoader.Sound.Path;
+                        soundPlayer.SoundLocation = sound.IsTrimmed ? SoundLoader.Sound.PathTrim : SoundLoader.Sound.Path;                        
                         soundPlayer.Load();
                     }                   
                 }

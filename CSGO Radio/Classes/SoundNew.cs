@@ -19,6 +19,8 @@ namespace CSGO_Radio.Classes
         public string Extension { get; set; }
         public DateTime Date { get; set; }
         public bool IsTrimmed { get { return string.IsNullOrEmpty(PathTrim) ? false : true; } }
+        public TimeSpan TrimStart { get; set; }
+        public TimeSpan TrimEnd { get; set; }
 
         public SoundNew(string path, int id = -1)
         {
@@ -38,15 +40,17 @@ namespace CSGO_Radio.Classes
                 
         }
 
-        public void Trim(TimeSpan start, TimeSpan end)
+        public void Trim()
         {
             var outPath = string.Format("{0}\\{1} trimmed.wav", Directory, Name);
-            AudioHelper.TrimWavFile(Path,outPath, start, end);
+            AudioHelper.TrimWavFile(Path,outPath, TrimStart, TrimEnd);
             PathTrim = outPath;
         }
         public void RemoveTrim()
         {
             File.Delete(PathTrim);
+            TrimStart = TimeSpan.Zero;
+            TrimEnd = TimeSpan.Zero;
             PathTrim = "";
         } 
         public void Pauze(TimeSpan time)

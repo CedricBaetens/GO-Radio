@@ -13,11 +13,12 @@
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
-        WindowStyle="SingleBorderWindow">
+        WindowStyle="SingleBorderWindow" Closing="Window_Closing">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="81*"/>
+            <ColumnDefinition Width="164*"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -28,14 +29,14 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0" Margin="5">Trim from start (hh:mm:ss)</TextBlock>
-        <tkx:TimeSpanUpDown Grid.Column="1" Margin="5" Value="{Binding StartTime}" FractionalSecondsDigitsCount="1"></tkx:TimeSpanUpDown>
+        <tkx:TimeSpanUpDown x:Name="tsUp" Grid.Column="1" Margin="5" Value="{Binding TrimStart}" FractionalSecondsDigitsCount="1" Grid.ColumnSpan="2"></tkx:TimeSpanUpDown>
 
         <TextBlock Grid.Row="1" Grid.Column="0" Margin="5">Trim from end (hh:mm:ss)</TextBlock>
-        <tk:TimeSpanUpDown Grid.Row="1"  Grid.Column="3" Margin="5" Value="{Binding EndTime}" FractionalSecondsDigitsCount="1"></tk:TimeSpanUpDown>
+        <tk:TimeSpanUpDown x:Name="tsDown" Grid.Row="1"  Grid.Column="1" Margin="5" Value="{Binding TrimEnd}" FractionalSecondsDigitsCount="1" Grid.ColumnSpan="2"></tk:TimeSpanUpDown>
 
-        <Button Grid.Row="2" Grid.Column="1" Width="150" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5"  Command="{Binding CommandTestSound}">Test</Button>
+        <Button Grid.Row="2" Grid.Column="2" Width="150" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5,5,0"  Command="{Binding CommandTestSound}">Test</Button>
 
-        <Button  Grid.Row="3" Grid.Column="1" Width="150" HorizontalAlignment="Right" Margin="5" Command="{Binding CommandTrimSound}">Save</Button>
+        <Button  Grid.Row="3" Grid.Column="2" Width="150" HorizontalAlignment="Right" Margin="0,5,5,5" Command="{Binding CommandTrimSound}">Save</Button>
 
 
     </Grid>
