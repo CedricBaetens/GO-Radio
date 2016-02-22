@@ -186,7 +186,14 @@ namespace CSGO_Radio.Classes
 
             keyboardHook.HookKeyboard();
         }
-        public void Save()
+        public void Exit()
+        {
+            Save();
+            keyboardHook.UnHookKeyboard();
+        }
+
+        // Private methods
+        private void Save()
         {
             string json = JsonConvert.SerializeObject(Categories, Formatting.Indented);
 
@@ -198,10 +205,7 @@ namespace CSGO_Radio.Classes
             {
                 MessageBox.Show("Error writing data, please make sure the sound folder exists.");
             }
-            keyboardHook.UnHookKeyboard();
         }
-
-        // Private methods
         private void UpdateDictionary()
         {
             Dictionary<int, SoundNew> dic = new Dictionary<int, SoundNew>();
@@ -225,9 +229,7 @@ namespace CSGO_Radio.Classes
             {
                 return null;
             }          
-        }
-
-        
+        }        
 
         // Command
         public ICommand CommandAddCategory => new RelayCommand(ShowCategoryWindow);
@@ -236,14 +238,22 @@ namespace CSGO_Radio.Classes
 
         private void ShowCategoryWindow()
         {
+            keyboardHook.UnHookKeyboard();
+
             AddCategoryWindow acw = new AddCategoryWindow(Categories);
             acw.ShowDialog();
             Save();
+
+            keyboardHook.HookKeyboard();
         }
         private void ShowSoundWindow()
         {
+            keyboardHook.UnHookKeyboard();
+
             ImportWindow iw = new ImportWindow(Categories);
             iw.ShowDialog();
+
+            keyboardHook.HookKeyboard();
             UpdateDictionary();
             Save();
         }

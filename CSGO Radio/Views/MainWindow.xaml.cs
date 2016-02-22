@@ -74,7 +74,7 @@ namespace CSGO_Radio
             ProgramSettings.Save();
 
             // SoundController
-            SoundController.Save();
+            SoundController.Exit();
 
             // Cfg
             Cfg.Remove.Init();

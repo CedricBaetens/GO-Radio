@@ -29,20 +29,25 @@ namespace CSGO_Radio.Views
         public ObservableCollection<Category> Categories { get; set; }
         public ObservableCollection<SoundUnconverted> Sounds { get; set; }
         public AudioHelper.YoutubeDownloader YtDownloader { get; set; }
+
         public string Message { get; set; }
         public string YoutubeUrl { get; set; }
+        public bool HasSounds { get { return Sounds.Count > 0 ? true : false; } }
+
+        private bool busy = false;
 
         // Constructor
         public ImportWindow(ObservableCollection<Category> categories)
         {
             InitializeComponent();
 
+            // Properites
+            this.Categories = categories;
+
             // Instanciate
             Sounds = new ObservableCollection<SoundUnconverted>();
             YtDownloader = new AudioHelper.YoutubeDownloader();
             YtDownloader.OnUpdateStatus += YtDownloader_OnUpdateStatus;
-
-            this.Categories = categories;
 
             // Binding
             DataContext = this;
@@ -54,6 +59,7 @@ namespace CSGO_Radio.Views
             if (e.Done)
             {
                 Sounds = GetNewSounds();
+                busy = false;
             }
         }
 
@@ -61,6 +67,15 @@ namespace CSGO_Radio.Views
         private void ImportWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             Sounds = GetNewSounds();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!YtDownloader.IsDone())
+            {
+                e.Cancel = true;
+                MessageBox.Show("Downloading still in progress. Cannot exit now.");
+            }
         }
 
         // Button events
@@ -86,6 +101,15 @@ namespace CSGO_Radio.Views
                 Close();
             }
         }
+        private void btnYt_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(YoutubeUrl))
+            {
+                YtDownloader.DownLoadAudioAsync(YoutubeUrl);
+                busy = true;
+            }
+        }
+
 
         // Custom methods
         private ObservableCollection<SoundUnconverted> GetNewSounds()
@@ -95,14 +119,5 @@ namespace CSGO_Radio.Views
             return
                 new ObservableCollection<SoundUnconverted>(newSoundsStrings.Select(newSound => new SoundUnconverted(newSound)).ToList());
         }
-
-        private void btnYt_Click(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(YoutubeUrl))
-            {
-                YtDownloader.DownLoadAudioAsync(YoutubeUrl);
-            }
-        }
-
     }
 }

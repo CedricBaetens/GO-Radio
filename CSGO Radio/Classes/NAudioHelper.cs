@@ -79,6 +79,7 @@ namespace CSGO_Radio.Classes
             public enum States
             {
                 IDLE,
+                ERROR,
                 DOWNLOADING_VIDEO,
                 DOWNLOAD_COMPLETE,
                 CONVERTING_AUDIO,
@@ -88,6 +89,9 @@ namespace CSGO_Radio.Classes
             public delegate void StatusUpdateHandler(object sender, ProgressEventArgs e);
             public event StatusUpdateHandler OnUpdateStatus;
 
+            List<Task> tasklist = new List<Task>();
+            List<string> stateList = new List<string>();
+
             // Sync Methods
             public void DownloadVideo(string url)
             {
@@ -95,27 +99,34 @@ namespace CSGO_Radio.Classes
 
                 UpdateStatus(States.DOWNLOAD_COMPLETE);
             }
-            public void DownloadAudio(string url)
+            public void DownloadAudio(string urls)
             {
-                // Download video
-                var vid = _downloadVideo(url);
+                try
+                {
+                    // Download video
+                    var vid = _downloadVideo(url);
 
-                // Extract audio
-                _extractAudio(vid);
-                
-                // Remove video
-                File.Delete(vid.Path);
+                    // Extract audio
+                    _extractAudio(vid);
 
-                UpdateStatus(States.CONVERTION_COMPLETE);
+                    // Remove video
+                    File.Delete(vid.Path);
+
+                    UpdateStatus(States.CONVERTION_COMPLETE);
+                }
+                catch (Exception e)
+                {
+                    UpdateStatus(States.ERROR);
+                }               
             }
 
             // Async Methods
-            public async void DownLoadAudioAsync(string url)
+            public void DownLoadAudioAsync(string url)
             {
-                await Task.Run(() =>
-                {
-                    DownloadAudio(url);
-                });
+                var task = new Task(() => DownloadAudio(url));
+                tasklist.Add(task);
+
+                task.Start();     
             }
             public async void DownloadVideoAsync(string url)
             {
@@ -123,6 +134,21 @@ namespace CSGO_Radio.Classes
                 {
                     DownloadVideo(url);
                 });
+            }
+            
+
+            public bool IsDone()
+            {
+                bool done = true;
+                foreach (var task in tasklist)
+                {
+                    if (!task.IsCompleted)
+                    {
+                        done = false;
+                    }
+                }
+
+                return done;
             }
 
             // Private methods
@@ -160,12 +186,22 @@ namespace CSGO_Radio.Classes
                 Process myProcess = new Process();
                 myProcess.StartInfo.UseShellExecute = false;
                 myProcess.StartInfo.FileName = "ffmpeg.exe";
-                myProcess.StartInfo.Arguments = string.Format("-y -i \"{0}\" \"{1}{2}.mp3\"", video.Path, ProgramSettings.PathNew, video.Name);
+                myProcess.StartInfo.Arguments = string.Format("-y -i \"{0}\" \"{1}{2}.mp3\"", video.Path, ProgramSettings.PathNew, ReplaceInvalidChar(video.Name));
                 myProcess.StartInfo.CreateNoWindow = true;
                 myProcess.Start();
                 myProcess.WaitForExit();
 
                 UpdateStatus(States.IDLE);
+            }
+            private string ReplaceInvalidChar(string input)
+            {
+                var invalidChars = Path.GetInvalidFileNameChars();
+
+                string invalidCharsRemoved = new string(input
+                .Where(x => !invalidChars.Contains(x))
+                .ToArray());
+
+                return invalidCharsRemoved;
             }
 
             // Event methods          
@@ -188,7 +224,7 @@ namespace CSGO_Radio.Classes
             {
                 public string Message { get; private set; }
 
-                public bool Done { get; set; }
+                public bool Done { get; set; } = false;
 
                 public ProgressEventArgs(States newState)
                 {
@@ -199,19 +235,21 @@ namespace CSGO_Radio.Classes
                             break;
                         case States.DOWNLOADING_VIDEO:
                             Message = "Downloading video";
-                            Done = false;
                             break;
                         case States.DOWNLOAD_COMPLETE:
                             Done = true;
                             Message = "Download complete";
                             break;
                         case States.CONVERTING_AUDIO:
-                            Done = false;
                             Message = "Converting audio";
                             break;
                         case States.CONVERTION_COMPLETE:
-                            Done = true;
                             Message = "Convertion complete";
+                            Done = true;
+                            break;
+                        case States.ERROR:
+                            Done = true;
+                            Message = "Not a valid URL.";
                             break;
                         default:
                             break;

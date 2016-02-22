@@ -6,13 +6,97 @@
         xmlns:classes="clr-namespace:CSGO_Radio.Classes"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="CS:GO Radio - Import Sound" Height="300" Width="300"
+        Title="CS:GO Radio - Import Sound" Height="400" Width="450"
         Loaded="ImportWindow_OnLoaded"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto" Closing="Window_Closing">
+    <Window.Resources>
+        <ResourceDictionary>
+            <classes:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+            <classes:BooleanInversToVisibilityConverter x:Key="BoolInversToVisibility"/>
+        </ResourceDictionary>
+    </Window.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <!--Header-->
+        <materialDesign:ColorZone Mode="PrimaryMid" Grid.Row="0">
+            <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}" Margin="20,10,10,10">Import New Sounds</TextBlock>
+        </materialDesign:ColorZone>
+
+        <!--Has Songs-->
+        <Grid Grid.Row="1" Margin="10,10,10,0" Visibility="{Binding HasSounds, Converter={StaticResource BoolToVisibility}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Margin="0,0,0,5">Select the song(s) you want to add.</TextBlock>
+
+            <ListBox Name="lvNewSongs" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Sounds}" SelectionMode="Multiple">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding Name}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <ComboBox Grid.Row="2" Grid.Column="0" ItemsSource="{Binding Categories}" Name="cbCategories" SelectedIndex="0" materialDesign:TextFieldAssist.Hint="Category" materialDesign:TextFieldAssist.HintOpacity=".26">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"></TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <Button Grid.Row="2" Grid.Column="1" Name="btnAdd" Click="btnAdd_Click" Margin="5,5,0,0">Add</Button>
+        </Grid>
+
+        <!--No Songs-->
+        <TextBlock Grid.Row="1" Margin="10" Visibility="{Binding HasSounds, Converter={StaticResource BoolInversToVisibility}}">Their are no new songs to add!</TextBlock>
+
+        <!--Youtube-->
+        <GroupBox Grid.Row="2" Header="Youtube" Margin="5">
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Enter youtube URL:"></TextBlock>
+                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding YoutubeUrl}"></TextBox>
+                <Button Grid.Row="2" Grid.Column="1" Name="btnYt" HorizontalAlignment="Right" Margin="0,5,0,0" Width="150" Click="btnYt_Click">Convert!</Button>
+                <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="{Binding Message}"></TextBlock>
+            </Grid>
+            
+           
+        </GroupBox>
+        
+
+        <!---->
+
+
+        <!--<Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -49,6 +133,6 @@
             <TextBox Text="{Binding YoutubeUrl}"></TextBox>
         </StackPanel>
 
-        <Button Grid.Row="3" Grid.Column="1" Name="btnYt" Margin="5" Click="btnYt_Click">Convert!</Button>
+        <Button Grid.Row="3" Grid.Column="1" Name="btnYt" Margin="5" Click="btnYt_Click">Convert!</Button>-->
     </Grid>
 </Window>
