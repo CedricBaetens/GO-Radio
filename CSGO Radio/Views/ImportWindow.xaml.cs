@@ -1,24 +1,11 @@
-﻿using System;
+﻿using CSGO_Radio.Classes;
+using PropertyChanged;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using CSGO_Radio.Classes;
-using PropertyChanged;
-using Microsoft.Win32;
-using NAudio.Wave;
 using System.IO;
-using VideoLibrary;
-using YoutubeExtractor;
+using System.Linq;
+using System.Windows;
 
 namespace CSGO_Radio.Views
 {
@@ -31,7 +18,10 @@ namespace CSGO_Radio.Views
         public YoutubeDownloader YtDownloader { get; set; }
 
         public string YoutubeUrl { get; set; }
-        public bool HasSounds { get { return NewSounds.Count > 0 ? true : false; } }
+
+       
+        public bool HasSounds { get { return NewSounds.Count > 0 ? true : false; }}
+
 
         private bool busy = false;
 
@@ -69,7 +59,7 @@ namespace CSGO_Radio.Views
             if (!YtDownloader.IsDone())
             {
                 e.Cancel = true;
-                MessageBox.Show("Downloading still in progress. Cannot exit now.");
+                System.Windows.Forms.MessageBox.Show("Downloading still in progress. Cannot exit now.");
             }
         }
 
@@ -104,6 +94,22 @@ namespace CSGO_Radio.Views
                 busy = true;
             }
         }
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to delete all the selected songs?", "Delete!", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                //Copy selected Items List
+                List<SoundUnconverted> selectedItems = new List<SoundUnconverted>(lvNewSongs.SelectedItems.Cast<SoundUnconverted>());
+
+                for (int i = 0; i < selectedItems.Count; i++)
+                {
+                    SoundUnconverted newSound = (SoundUnconverted)selectedItems[i];
+                    File.Delete(newSound.Path);
+                    NewSounds.RemoveAt(NewSounds.IndexOf(newSound));
+                }
+            }
+            NewSounds = GetNewSounds();  
+        }
 
 
         // Custom methods
@@ -113,6 +119,6 @@ namespace CSGO_Radio.Views
 
             return
                 new ObservableCollection<SoundUnconverted>(newSoundsStrings.Select(newSound => new SoundUnconverted(newSound)).ToList());
-        }
+        }  
     }
 }

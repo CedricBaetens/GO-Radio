@@ -63,7 +63,11 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <Button Grid.Row="2" Grid.Column="1" Name="btnAdd" Click="btnAdd_Click" Margin="5,5,0,0">Add</Button>
+            <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right">
+                <Button Name="btnAdd" Width="80" Click="btnAdd_Click" Margin="5,5,0,0">Add</Button>
+                <Button Name="btnDelete" Width="80"  Margin="5,5,0,0" Click="btnDelete_Click">Delete</Button>
+            </StackPanel>
+           
         </Grid>
 
         <!--No Songs-->
