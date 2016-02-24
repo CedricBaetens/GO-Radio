@@ -58,8 +58,18 @@ namespace CSGO_Radio.Views
         {
             if (!YtDownloader.IsDone())
             {
-                e.Cancel = true;
-                System.Windows.Forms.MessageBox.Show("Downloading still in progress. Cannot exit now.");
+                if (MessageBox.Show("Download still in progress. Do you want to cancel all remaining downloads?", "Abort", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    YtDownloader.End();
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+            }
+            else
+            {
+                YtDownloader.End();
             }
         }
 

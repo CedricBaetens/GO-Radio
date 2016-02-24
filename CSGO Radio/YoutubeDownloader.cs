@@ -23,7 +23,8 @@ namespace CSGO_Radio
         // Variables
         bool isDownloading = false;
         int count = 0;
-        
+        Process ffmpegProces = new Process();
+
         // Constructor
         public YoutubeDownloader()
         {
@@ -52,6 +53,22 @@ namespace CSGO_Radio
         public bool IsDone()
         {
             return !isDownloading;
+        }
+        public void End()
+        {
+            try
+            {
+                Queue.Clear();
+
+                EmptyVideoFolder();
+
+                ffmpegProces.Kill();
+            }
+            catch (Exception)
+            {
+                // Catch
+            }
+            
         }
 
         // Private methods
@@ -97,7 +114,7 @@ namespace CSGO_Radio
             var video = best;
 
             // Save video
-            var path = ProgramSettings.PathTemp + video.FullName;
+            var path = ProgramSettings.PathVideo + video.FullName;
             File.WriteAllBytes(path, video.GetBytes());
 
             return new DownloadedVideo() { Path = path, Name = video.Title };
@@ -107,13 +124,13 @@ namespace CSGO_Radio
         private void _extractAudio(DownloadedVideo video)
         {
             // Launch ffmpg.exe
-            Process myProcess = new Process();
-            myProcess.StartInfo.UseShellExecute = false;
-            myProcess.StartInfo.FileName = "ffmpeg.exe";
-            myProcess.StartInfo.Arguments = string.Format("-y -i \"{0}\" \"{1}{2}.mp3\"", video.Path, ProgramSettings.PathNew, ReplaceInvalidChar(video.Name));
-            myProcess.StartInfo.CreateNoWindow = true;
-            myProcess.Start();
-            myProcess.WaitForExit();
+            
+            ffmpegProces.StartInfo.UseShellExecute = false;
+            ffmpegProces.StartInfo.FileName = "ffmpeg.exe";
+            ffmpegProces.StartInfo.Arguments = string.Format("-y -i \"{0}\" \"{1}{2}.mp3\"", video.Path, ProgramSettings.PathNew, ReplaceInvalidChar(video.Name));
+            ffmpegProces.StartInfo.CreateNoWindow = true;
+            ffmpegProces.Start();
+            ffmpegProces.WaitForExit();
         }
         private async void DownLoadAudioAsync(ItemToDownload item)
         {
@@ -164,6 +181,15 @@ namespace CSGO_Radio
             .ToArray());
 
             return invalidCharsRemoved;
+        }
+        private void EmptyVideoFolder()
+        {
+            // Clear vid folder
+            DirectoryInfo dir = new DirectoryInfo(ProgramSettings.PathVideo);
+            foreach (FileInfo fi in dir.GetFiles())
+            {
+                fi.Delete();
+            }
         }
 
         // Classes

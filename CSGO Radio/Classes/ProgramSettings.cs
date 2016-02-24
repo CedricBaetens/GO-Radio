@@ -21,7 +21,9 @@ namespace CSGO_Radio
         public static string PathCsgo { get; set; }
         public static string PathSounds { get; set; }
         public static string PathTemp { get { return PathSounds + "\\audio\\tmp\\"; } }
+        public static string PathVideo { get { return PathSounds + "\\audio\\tmp\\vid\\"; } }
         public static string PathNew { get { return PathSounds + "\\new\\"; } }
+
 
         // Public Methods
         public static void Init()
@@ -77,11 +79,24 @@ namespace CSGO_Radio
                 PathSounds = path;
                 CreateFolders();
             }
+
+
+            CheckFolder(PathTemp);
+            CheckFolder(PathVideo);
+            CheckFolder(PathNew);         
         }  
         private static void CreateFolders()
         {
             Directory.CreateDirectory(PathSounds + "\\audio");
             Directory.CreateDirectory(PathSounds + "\\new");
-        }                
+        }  
+        
+        private static void CheckFolder(string url)
+        {
+            if (!Directory.Exists(url))
+            {
+                Directory.CreateDirectory(url);
+            }
+        }              
     }
 }
