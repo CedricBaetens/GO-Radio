@@ -6,7 +6,7 @@
         xmlns:classes="clr-namespace:CSGO_Radio.Classes"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="CS:GO Radio - Import Sound" Height="400" Width="450"
+        Title="CS:GO Radio - Import Sound" Height="700" Width="450"
         Loaded="ImportWindow_OnLoaded"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
@@ -21,8 +21,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
-            <RowDefinition/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--Header-->
@@ -45,7 +45,7 @@
 
             <TextBlock Margin="0,0,0,5">Select the song(s) you want to add.</TextBlock>
 
-            <ListBox Name="lvNewSongs" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Sounds}" SelectionMode="Multiple">
+            <ListBox Name="lvNewSongs" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding NewSounds}" SelectionMode="Multiple">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical">
@@ -74,19 +74,25 @@
             <Grid Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
-                    <RowDefinition/>
                     <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
 
                 <TextBlock Text="Enter youtube URL:"></TextBlock>
                 <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding YoutubeUrl}"></TextBox>
-                <Button Grid.Row="2" Grid.Column="1" Name="btnYt" HorizontalAlignment="Right" Margin="0,5,0,0" Width="150" Click="btnYt_Click">Convert!</Button>
-                <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="{Binding Message}"></TextBlock>
+                <Button Grid.Row="2" Name="btnYt" HorizontalAlignment="Left" Margin="0,5,0,0" Width="150" Click="btnYt_Click">Convert!</Button>
+
+                <ItemsControl Grid.Row="3" Name="lbQueue" Margin="0,5,0,0" ItemsSource="{Binding Queue}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Width="100" Text="{Binding StateString}"></TextBlock>
+                                <TextBlock Text="{Binding Name}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </Grid>
             
            

@@ -175,6 +175,7 @@
     <Compile Include="Views\TrimWindow.xaml.cs">
       <DependentUpon>TrimWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="YoutubeDownloader.cs" />
     <Page Include="Views\AddCategoryWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

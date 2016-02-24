@@ -27,12 +27,11 @@ namespace CSGO_Radio.Views
     {
         // Public
         public ObservableCollection<Category> Categories { get; set; }
-        public ObservableCollection<SoundUnconverted> Sounds { get; set; }
-        public AudioHelper.YoutubeDownloader YtDownloader { get; set; }
+        public ObservableCollection<SoundUnconverted> NewSounds { get; set; }
+        public YoutubeDownloader YtDownloader { get; set; }
 
-        public string Message { get; set; }
         public string YoutubeUrl { get; set; }
-        public bool HasSounds { get { return Sounds.Count > 0 ? true : false; } }
+        public bool HasSounds { get { return NewSounds.Count > 0 ? true : false; } }
 
         private bool busy = false;
 
@@ -45,28 +44,24 @@ namespace CSGO_Radio.Views
             this.Categories = categories;
 
             // Instanciate
-            Sounds = new ObservableCollection<SoundUnconverted>();
-            YtDownloader = new AudioHelper.YoutubeDownloader();
-            YtDownloader.OnUpdateStatus += YtDownloader_OnUpdateStatus;
-
+            NewSounds = new ObservableCollection<SoundUnconverted>();
+            YtDownloader = new YoutubeDownloader();
+            YtDownloader.ConvertionComplete += YtDownloader_ConvertionComplete;
+                
             // Binding
             DataContext = this;
+            lbQueue.DataContext = YtDownloader;
         }
 
-        private void YtDownloader_OnUpdateStatus(object sender, AudioHelper.YoutubeDownloader.ProgressEventArgs e)
+        private void YtDownloader_ConvertionComplete(object sender, YoutubeDownloader.ProgressEventArgs e)
         {
-            Message = e.Message;
-            if (e.Done)
-            {
-                Sounds = GetNewSounds();
-                busy = false;
-            }
+            NewSounds = GetNewSounds();
         }
 
         // Window events
         private void ImportWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            Sounds = GetNewSounds();
+            NewSounds = GetNewSounds();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -91,12 +86,12 @@ namespace CSGO_Radio.Views
 
                 var convSound = AudioHelper.Convert(newSound);
 
-                Sounds.RemoveAt(Sounds.IndexOf(newSound));
+                NewSounds.RemoveAt(NewSounds.IndexOf(newSound));
 
                 selectedCategory.AddSound(convSound);
             }
 
-            if (Sounds.Count == 0)
+            if (NewSounds.Count == 0)
             {
                 Close();
             }
@@ -105,7 +100,7 @@ namespace CSGO_Radio.Views
         {
             if (!string.IsNullOrEmpty(YoutubeUrl))
             {
-                YtDownloader.DownLoadAudioAsync(YoutubeUrl);
+                YtDownloader.DownloadAudioList(YoutubeUrl);
                 busy = true;
             }
         }
