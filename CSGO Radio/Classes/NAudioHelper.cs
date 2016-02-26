@@ -64,11 +64,16 @@ namespace CSGO_Radio.Classes
             // ReSample
             string path = string.Format("{0}\\audio\\{1}{2}", ProgramSettings.PathSounds, unconvertedSound.Name, ".wav");
             using (var reader = new MediaFoundationReader(unconvertedSound.Path))
-            using (var resampler = new MediaFoundationResampler(reader, new WaveFormat(sampleRate, bits, channels)))
             {
-                resampler.ResamplerQuality = 60;
-                WaveFileWriter.CreateWaveFile(path, resampler);
+                WaveChannel32 wav = new WaveChannel32(reader);
+                //wav.Volume = (150 / 100) ^ 6;
+                using (var resampler = new MediaFoundationResampler(reader, new WaveFormat(sampleRate, bits, channels)))
+                {
+                    resampler.ResamplerQuality = 60;
+                    WaveFileWriter.CreateWaveFile(path, resampler);
+                }
             }
+            
 
             File.Delete(unconvertedSound.Path);
 
