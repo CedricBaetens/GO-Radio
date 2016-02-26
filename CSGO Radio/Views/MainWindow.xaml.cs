@@ -26,7 +26,6 @@ using System.Speech.AudioFormat;
 using System.Media;
 using System.Reflection;
 using System.Threading;
-using AutoUpdate;
 using NAudio.Wave;
 using System.Deployment.Application;
 
@@ -37,15 +36,20 @@ namespace CSGO_Radio
     {
         #region Properties
         public SoundController SoundController { get; set; }
-
         public bool ShowList { get; set; } = false;
         public bool SoundIsPlaying { get; set; }
         #endregion
+
+        AutoUpdater au;
 
         #region Constructor
         public MainWindow()
         {
             InitializeComponent();
+
+            // Updates
+            au = new AutoUpdater("http://www.baellon.com/csgoradio/Inno/version.txt", Assembly.GetExecutingAssembly().GetName().Version);
+            au.CheckForUpdate();
 
             // Instanciate
             SoundController = new SoundController();
