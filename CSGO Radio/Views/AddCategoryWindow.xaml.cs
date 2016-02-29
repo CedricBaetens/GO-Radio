@@ -22,9 +22,9 @@ namespace CSGO_Radio.Views
     {
         public Category NewCategory { get; set; }
 
-        private ObservableCollection<Category> categories;
+        private CategoryList categories;
 
-        public AddCategoryWindow(ObservableCollection<Category> categories)
+        public AddCategoryWindow(CategoryList CategoryList)
         {
             InitializeComponent();
 
@@ -34,7 +34,7 @@ namespace CSGO_Radio.Views
             // Binding
             DataContext = this;
 
-            this.categories = categories;
+            this.categories = CategoryList;
         }
 
         private void AddCategory()

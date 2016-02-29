@@ -121,6 +121,7 @@
     </ApplicationDefinition>
     <Compile Include="Classes\AutoUpdater.cs" />
     <Compile Include="Classes\Category.cs" />
+    <Compile Include="Classes\CategoryList.cs" />
     <Compile Include="Classes\Cfg.cs" />
     <Compile Include="Classes\Convertors.cs" />
     <Compile Include="Classes\SoundLoader.cs" />
@@ -133,11 +134,11 @@
     <Compile Include="Classes\SoundNew.cs" />
     <Compile Include="Classes\Tts.cs" />
     <Compile Include="Classes\WPF_Extended_Extended\TimeSpanExtended.cs" />
-    <Compile Include="Views\CategoryWindow.xaml.cs">
-      <DependentUpon>CategoryWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\DownloadWindow.xaml.cs">
       <DependentUpon>DownloadWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditCategoryWindow.xaml.cs">
+      <DependentUpon>EditCategoryWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
@@ -153,11 +154,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CategoryWindow.xaml">
+    <Page Include="Views\DownloadWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DownloadWindow.xaml">
+    <Page Include="Views\EditCategoryWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

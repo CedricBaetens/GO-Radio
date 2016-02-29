@@ -17,15 +17,24 @@ using System.Windows.Shapes;
 namespace CSGO_Radio.Views
 {
     [ImplementPropertyChanged]
-    public partial class CategoryWindow : Window
+    public partial class EditCategoryWindow : Window
     {
-        public Category SelectedCategory { get; set; }
+        public Category Category { get; set; }
 
-        public CategoryWindow()
+        public EditCategoryWindow(Category cat)
         {
             InitializeComponent();
 
+            Category = cat;
+
             DataContext = this;
+        }
+
+        public ICommand CommandMove => new RelayCommand(Move);
+        private void Move()
+        {
+            Category selected = (Category)cbCategories.SelectedItem;
+            Category.MoveSound(selected);
         }
     }
 }

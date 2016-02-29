@@ -19,8 +19,9 @@ namespace CSGO_Radio.Classes
     public class SoundController
     {
         // Properties
-        public ObservableCollection<Category> Categories { get; set; }
-        public Dictionary<int, SoundNew> Sounds { get; set; }   // Used for easy finding of songs
+        //public ObservableCollection<Category> Categories { get; set; }
+        public CategoryList CategoriesList { get; set; }
+        //public Dictionary<int, SoundNew> Sounds { get; set; }   // Used for easy finding of songs
         public string IdEntered { get; set; } = "";
         public SoundLoader SoundLoader { get; set; }
         public Tts TextToSpeech { get; set; }
@@ -34,8 +35,9 @@ namespace CSGO_Radio.Classes
         // Constructor
         public SoundController()
         {
-            Sounds = new Dictionary<int, SoundNew>();
-            Categories = new ObservableCollection<Category>();
+            //Sounds = new Dictionary<int, SoundNew>();
+            //Categories = new ObservableCollection<Category>();
+            CategoriesList = new CategoryList();
 
             keyboardHook = new LowLevelKeyboardListener();
             keyboardHook.OnKeyPressed += KeyboardHook_OnKeyPressed;
@@ -121,7 +123,7 @@ namespace CSGO_Radio.Classes
 
                 List<int> temp = new List<int>();
 
-                foreach (var sound in Sounds)
+                foreach (var sound in CategoriesList.Sounds)
                 {
                     var soundCharArray = sound.Key.ToString("0000").ToCharArray();
 
@@ -180,8 +182,8 @@ namespace CSGO_Radio.Classes
             if (File.Exists(ProgramSettings.PathSounds + "\\data.json"))
             {
                 string json = File.ReadAllText(ProgramSettings.PathSounds + "\\data.json");
-                Categories = JsonConvert.DeserializeObject<ObservableCollection<Category>>(json);
-                UpdateDictionary();
+                CategoriesList.Import(JsonConvert.DeserializeObject<ObservableCollection<Category>>(json));
+                CategoriesList.UpdateDictionary();
             }
 
             keyboardHook.HookKeyboard();
@@ -195,7 +197,7 @@ namespace CSGO_Radio.Classes
         // Private methods
         private void Save()
         {
-            string json = JsonConvert.SerializeObject(Categories, Formatting.Indented);
+            string json = JsonConvert.SerializeObject(CategoriesList.Categories, Formatting.Indented);
 
             try
             {
@@ -206,23 +208,23 @@ namespace CSGO_Radio.Classes
                 MessageBox.Show("Error writing data, please make sure the sound folder exists.");
             }
         }
-        private void UpdateDictionary()
-        {
-            Dictionary<int, SoundNew> dic = new Dictionary<int, SoundNew>();
-            foreach (var cat in Categories)
-            {
-                foreach (var sound in cat.Sounds)
-                {
-                    dic.Add(sound.Id, sound);
-                }               
-            }
-            Sounds = dic;
-        }     
+        //private void UpdateDictionary()
+        //{
+        //    Dictionary<int, SoundNew> dic = new Dictionary<int, SoundNew>();
+        //    foreach (var cat in CategoriesList.Categories)
+        //    {
+        //        foreach (var sound in cat.Sounds)
+        //        {
+        //            dic.Add(sound.Id, sound);
+        //        }               
+        //    }
+        //    Sounds = dic;
+        //}     
         private SoundNew GetSoundById(int id)
         {
             try
             {
-                var sound = Sounds[id];
+                var sound = CategoriesList.Sounds[id];
                 return sound;
             }
             catch (Exception)
@@ -240,7 +242,7 @@ namespace CSGO_Radio.Classes
         {
             keyboardHook.UnHookKeyboard();
 
-            AddCategoryWindow acw = new AddCategoryWindow(Categories);
+            AddCategoryWindow acw = new AddCategoryWindow(CategoriesList);
             acw.ShowDialog();
             Save();
 
@@ -250,11 +252,11 @@ namespace CSGO_Radio.Classes
         {
             keyboardHook.UnHookKeyboard();
 
-            ImportWindow iw = new ImportWindow(Categories);
+            ImportWindow iw = new ImportWindow(CategoriesList);
             iw.ShowDialog();
 
             keyboardHook.HookKeyboard();
-            UpdateDictionary();
+            CategoriesList.UpdateDictionary();
             Save();
         }
         private void SoundplayerPlayPauzeSound()

@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 
 namespace CSGO_Radio.Views
 {
@@ -13,20 +14,14 @@ namespace CSGO_Radio.Views
     public partial class ImportWindow : Window
     {
         // Public
-        public ObservableCollection<Category> Categories { get; set; }
+        public CategoryList Categories { get; set; }
         public ObservableCollection<SoundUnconverted> NewSounds { get; set; }
         public YoutubeDownloader YtDownloader { get; set; }
-
-        public string YoutubeUrl { get; set; }
-
-       
+        public string YoutubeUrl { get; set; }     
         public bool HasSounds { get { return NewSounds.Count > 0 ? true : false; }}
-
-
-        private bool busy = false;
-
+        
         // Constructor
-        public ImportWindow(ObservableCollection<Category> categories)
+        public ImportWindow(CategoryList categories)
         {
             InitializeComponent();
 
@@ -43,6 +38,7 @@ namespace CSGO_Radio.Views
             lbQueue.DataContext = YtDownloader;
         }
 
+        // Youtube
         private void YtDownloader_ConvertionComplete(object sender, YoutubeDownloader.ProgressEventArgs e)
         {
             NewSounds = GetNewSounds();
@@ -53,7 +49,6 @@ namespace CSGO_Radio.Views
         {
             NewSounds = GetNewSounds();
         }
-
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (!YtDownloader.IsDone())
@@ -73,8 +68,22 @@ namespace CSGO_Radio.Views
             }
         }
 
-        // Button events
-        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        // Buttons
+        public ICommand CommandSelectAll => new RelayCommand(SelectAll);
+        public ICommand CommandDeselectAll => new RelayCommand(DeselectAll);
+        public ICommand CommandDelete => new RelayCommand(Delete);
+        public ICommand CommandAdd => new RelayCommand(Add);
+        public ICommand CommandYoutube => new RelayCommand(Youtube);
+
+        private void SelectAll()
+        {
+            lvNewSongs.SelectAll();
+        }
+        private void DeselectAll()
+        {
+            lvNewSongs.UnselectAll();
+        }
+        private void Add()
         {
             //Copy selected Items List
             List<SoundUnconverted> selectedItems = new List<SoundUnconverted>(lvNewSongs.SelectedItems.Cast<SoundUnconverted>());
@@ -96,15 +105,7 @@ namespace CSGO_Radio.Views
                 Close();
             }
         }
-        private void btnYt_Click(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(YoutubeUrl))
-            {
-                YtDownloader.DownloadAudioList(YoutubeUrl);
-                busy = true;
-            }
-        }
-        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        private void Delete()
         {
             if (MessageBox.Show("Are you sure you want to delete all the selected songs?", "Delete!", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
@@ -118,7 +119,14 @@ namespace CSGO_Radio.Views
                     NewSounds.RemoveAt(NewSounds.IndexOf(newSound));
                 }
             }
-            NewSounds = GetNewSounds();  
+            NewSounds = GetNewSounds();
+        }
+        private void Youtube()
+        {
+            if (!string.IsNullOrEmpty(YoutubeUrl))
+            {
+                YtDownloader.DownloadAudioList(YoutubeUrl);
+            }
         }
 
 

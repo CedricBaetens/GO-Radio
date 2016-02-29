@@ -34,18 +34,24 @@
         <Grid Grid.Row="1" Margin="10,10,10,0" Visibility="{Binding HasSounds, Converter={StaticResource BoolToVisibility}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition  Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Margin="0,0,0,5">Select the song(s) you want to add.</TextBlock>
-
-            <ListBox Name="lvNewSongs" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding NewSounds}" SelectionMode="Multiple">
+            <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,0,0,5">
+                <Button Margin="0,0,5,0" Width="120" Command="{Binding CommandSelectAll}">Select All</Button>
+                <Button Width="120" Command="{Binding CommandDeselectAll}">Deselect All</Button>
+            </StackPanel>
+            
+            <TextBlock Grid.Row="1" Margin="0,0,0,5">Select the song(s) you want to add.</TextBlock>
+            
+            <ListBox Name="lvNewSongs" Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding NewSounds}" SelectionMode="Multiple">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical">
@@ -55,7 +61,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <ComboBox Grid.Row="2" Grid.Column="0" ItemsSource="{Binding Categories}" Name="cbCategories" SelectedIndex="0" materialDesign:TextFieldAssist.Hint="Category" materialDesign:TextFieldAssist.HintOpacity=".26">
+            <ComboBox Grid.Row="3" Grid.Column="0" ItemsSource="{Binding Categories.Categories}" Name="cbCategories" SelectedIndex="0" materialDesign:TextFieldAssist.Hint="Category" materialDesign:TextFieldAssist.HintOpacity=".26">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}"></TextBlock>
@@ -63,9 +69,9 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right">
-                <Button Name="btnAdd" Width="80" Click="btnAdd_Click" Margin="5,5,0,0">Add</Button>
-                <Button Name="btnDelete" Width="80"  Margin="5,5,0,0" Click="btnDelete_Click">Delete</Button>
+            <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right">
+                <Button Name="btnAdd" Width="80" Command="{Binding CommandAdd}" Margin="5,5,0,0">Add</Button>
+                <Button Name="btnDelete" Width="80"  Margin="5,5,0,0" Command="{Binding CommandDelete}">Delete</Button>
             </StackPanel>
            
         </Grid>
@@ -85,7 +91,7 @@
 
                 <TextBlock Text="Enter youtube URL:"></TextBlock>
                 <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding YoutubeUrl}"></TextBox>
-                <Button Grid.Row="2" Name="btnYt" HorizontalAlignment="Left" Margin="0,5,0,0" Width="150" Click="btnYt_Click">Convert!</Button>
+                <Button Grid.Row="2" Name="btnYt" HorizontalAlignment="Left" Margin="0,5,0,0" Width="150" Command="{Binding CommandYoutube}">Convert!</Button>
 
                 <ItemsControl Grid.Row="3" Name="lbQueue" Margin="0,5,0,0" ItemsSource="{Binding Queue}">
                     <ItemsControl.ItemTemplate>
