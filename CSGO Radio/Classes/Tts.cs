@@ -23,8 +23,12 @@ namespace CSGO_Radio.Classes
         public Tts()
         {
             ttsTimer.Elapsed += TtsTimer_Elapsed;
-            ttsTimer.Interval = 500;
-            ttsTimer.Enabled = true;
+            ttsTimer.Interval = 100;
+        }
+
+        public void Start()
+        {
+            ttsTimer.Start();
         }
 
         private void TtsTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -55,6 +59,7 @@ namespace CSGO_Radio.Classes
                 }
 
                 var sound = AudioHelper.Convert(new SoundUnconverted(pathNotConv));
+                sound.Name = "TTS: " + text;
                 TtsDetected(sound);
                 ttsTimer.Start();
             }
