@@ -30,11 +30,13 @@ namespace CSGO_Radio.Views
             DataContext = this;
         }
 
-        public ICommand CommandMove => new RelayCommand(Move);
+        public ICommand CommandOk => new RelayCommand(Move);
+        public ICommand CommandCancel => new RelayCommand(Close);
         private void Move()
         {
             Category selected = (Category)cbCategories.SelectedItem;
             Category.MoveSound(selected);
+            Close();
         }
     }
 }

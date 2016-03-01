@@ -52,12 +52,6 @@ namespace CSGO_Radio.Classes
             SoundLoader = new SoundLoader();
         }
 
-        private void TimerClearInput_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            IdEntered = "";
-            timerClearInput.Stop();
-        }
-
         // Events
         private void TextToSpeech_OnTtsDetected(object sender, Tts.ProgressEventArgs e)
         {
@@ -189,6 +183,11 @@ namespace CSGO_Radio.Classes
             {
                 timerClearInput.Start();
             }
+        }
+        private void TimerClearInput_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            IdEntered = "";
+            timerClearInput.Stop();
         }
         
         // Public methods
