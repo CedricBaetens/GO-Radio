@@ -62,7 +62,16 @@ namespace CSGO_Radio
                         Description = "Please select the csgo folder."
                     };
                     fbd.ShowDialog();
-                    PathCsgo = fbd.SelectedPath;
+
+
+                    if (!string.IsNullOrEmpty(fbd.SelectedPath))
+                    {
+                        PathCsgo = fbd.SelectedPath;
+                    }
+                    else
+                    {
+                        Environment.Exit(1);
+                    }
                 }
 
             }
@@ -70,14 +79,22 @@ namespace CSGO_Radio
             // Sound Path
             if (string.IsNullOrEmpty(PathSounds))
             {
-                FolderBrowserDialog fbd = new FolderBrowserDialog()
-                {
-                    Description = "Please select a location where you want your sounds to be stored."
-                };
-                fbd.ShowDialog();
-                string path = fbd.SelectedPath + "\\Sounds";
-                PathSounds = path;
-                CreateFolders();
+                    FolderBrowserDialog fbd = new FolderBrowserDialog()
+                    {
+                        Description = "Please select a location where you want your sounds to be stored."
+                    };
+                    fbd.ShowDialog();
+
+                    if (!string.IsNullOrEmpty(fbd.SelectedPath))
+                    {
+                        string path = fbd.SelectedPath + "\\Sounds";
+                        PathSounds = path;
+                        CreateFolders();
+                    }
+                    else
+                    {
+                        Environment.Exit(1);
+                    }         
             }
 
 
