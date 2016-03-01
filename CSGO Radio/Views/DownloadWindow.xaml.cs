@@ -32,8 +32,16 @@ namespace CSGO_Radio.Views
             webClient.DownloadFileCompleted += WebClient_DownloadFileCompleted;
             webClient.DownloadProgressChanged += WebClient_DownloadProgressChanged;
 
-            downloadPath = string.Format("setup_csgo_radio{0}.exe", version);
-            webClient.DownloadFileAsync(new Uri(url), downloadPath);
+            try
+            {
+                downloadPath = string.Format("{1}/setup_csgo_radio{0}.exe", version, Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+                webClient.DownloadFileAsync(new Uri(url), downloadPath);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Download failed...");
+                Close();
+            }
         }
 
         private void WebClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
