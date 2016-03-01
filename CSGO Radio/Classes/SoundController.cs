@@ -19,9 +19,7 @@ namespace CSGO_Radio.Classes
     public class SoundController
     {
         // Properties
-        //public ObservableCollection<Category> Categories { get; set; }
         public CategoryList CategoriesList { get; set; }
-        //public Dictionary<int, SoundNew> Sounds { get; set; }   // Used for easy finding of songs
         public string IdEntered { get; set; } = "";
         public SoundLoader SoundLoader { get; set; }
         public Tts TextToSpeech { get; set; }
@@ -31,6 +29,7 @@ namespace CSGO_Radio.Classes
         // Varaibles
         private LowLevelKeyboardListener keyboardHook;
         private SoundPlayer soundPlayer;
+        private Timer timerClearInput;
         
         // Constructor
         public SoundController()
@@ -46,7 +45,17 @@ namespace CSGO_Radio.Classes
             TextToSpeech = new Tts();
             TextToSpeech.OnTtsDetected += TextToSpeech_OnTtsDetected;
 
+            timerClearInput = new Timer();
+            timerClearInput.Elapsed += TimerClearInput_Elapsed;
+            timerClearInput.Interval = 5000;
+
             SoundLoader = new SoundLoader();
+        }
+
+        private void TimerClearInput_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            IdEntered = "";
+            timerClearInput.Stop();
         }
 
         // Events
@@ -174,6 +183,12 @@ namespace CSGO_Radio.Classes
 
                 IdEntered = "";
             }
+
+
+            if (IdEntered != "")
+            {
+                timerClearInput.Start();
+            }
         }
         
         // Public methods
@@ -186,7 +201,9 @@ namespace CSGO_Radio.Classes
                 CategoriesList.UpdateDictionary();
             }
 
+            TextToSpeech.Start();
             keyboardHook.HookKeyboard();
+            
         }
         public void Exit()
         {
@@ -208,18 +225,6 @@ namespace CSGO_Radio.Classes
                 MessageBox.Show("Error writing data, please make sure the sound folder exists.");
             }
         }
-        //private void UpdateDictionary()
-        //{
-        //    Dictionary<int, SoundNew> dic = new Dictionary<int, SoundNew>();
-        //    foreach (var cat in CategoriesList.Categories)
-        //    {
-        //        foreach (var sound in cat.Sounds)
-        //        {
-        //            dic.Add(sound.Id, sound);
-        //        }               
-        //    }
-        //    Sounds = dic;
-        //}     
         private SoundNew GetSoundById(int id)
         {
             try

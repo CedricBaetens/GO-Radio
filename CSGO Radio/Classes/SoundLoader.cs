@@ -20,7 +20,6 @@ namespace CSGO_Radio.Classes
 
         private Stopwatch timer;
 
-
         public SoundLoader()
         {
             timer = new Stopwatch();
