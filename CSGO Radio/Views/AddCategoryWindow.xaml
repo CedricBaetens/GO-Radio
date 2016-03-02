@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:CSGO_Radio.Views"
         xmlns:classes="clr-namespace:CSGO_Radio.Classes"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:tk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
@@ -29,15 +30,23 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Category Name" Margin="10,10,10,0" FontSize="16"/>
-                <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding NewCategory.Name}" Margin="10" materialDesign:TextFieldAssist.Hint="Enter name here..." />
+                <StackPanel Grid.ColumnSpan="2">
+                    <TextBlock Text="Category Name" Margin="10,10,10,0" FontSize="16"/>
+                    <TextBox  Text="{Binding NewCategory.Name}" Margin="10" materialDesign:TextFieldAssist.Hint="Enter name here..." />
+                </StackPanel>
 
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="Start ID" Margin="10,10,10,0" FontSize="16"/>
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding NewCategory.StartId}" Margin="10" materialDesign:TextFieldAssist.Hint="Enter start id here..."/>
+                <StackPanel  Grid.Row="1" Grid.Column="0">
+                    <TextBlock  Text="Start ID" Margin="10,10,10,0" FontSize="16"/>                   
+                    <tk:IntegerUpDown Margin="10" Value="{Binding NewCategory.StartId}"></tk:IntegerUpDown>
+                </StackPanel>
+
+                <StackPanel  Grid.Row="1" Grid.Column="2">
+                    <TextBlock  Text="Size" Margin="10,10,10,0" FontSize="16"/>
+                    <tk:IntegerUpDown Margin="10" Value="{Binding NewCategory.Size}"></tk:IntegerUpDown>
+                </StackPanel>
+
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Sub Category" Margin="10,10,10,0" FontSize="16" Visibility="Hidden" />
 
@@ -49,8 +58,8 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
 
-                <Button Grid.Row="4" Grid.Column="1" Margin="10" Command="{Binding CommandAddCategory}">Ok</Button>
-                <Button Grid.Row="4" Grid.Column="0" Margin="10" Command="{Binding CommandCloseWindow}">Cancel</Button>
+                <Button Grid.Row="2" Grid.Column="1" Margin="10" Command="{Binding CommandAddCategory}">Ok</Button>
+                <Button Grid.Row="2" Grid.Column="0" Margin="10" Command="{Binding CommandCloseWindow}">Cancel</Button>
 
             </Grid>
 

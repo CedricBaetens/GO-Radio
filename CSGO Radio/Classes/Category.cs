@@ -23,6 +23,10 @@ namespace CSGO_Radio.Classes
 
         [DataMember]
         public int StartId { get; set; }
+        public int EndId { get { return (StartId + Size)-1; } }
+
+        [DataMember]
+        public int Size { get; set; } = 100;
 
         [DataMember]
         public ObservableCollection<SoundNew> Sounds { get; set; }
@@ -31,6 +35,8 @@ namespace CSGO_Radio.Classes
 
         public CategoryList Parent { get; set; }
 
+        public bool IsFull { get { return Sounds.Count >= Size ? true : false; } }
+
         // Constructor
         public Category()
         {
@@ -38,7 +44,7 @@ namespace CSGO_Radio.Classes
         }
 
         // Public methods
-        public void AddSound(SoundNew sound)
+        public bool AddSound(SoundNew sound)
         {
             /* CHECK IF NUMBERS FOLLOW IN CATEGORY, VOODOO DO NOT TOUCH. IT MIGHT BITE  */
 
@@ -71,7 +77,8 @@ namespace CSGO_Radio.Classes
 
             // Add sound to list and sort it.
             Sounds.Add(sound);
-            Sounds = new ObservableCollection<SoundNew>(Sounds.OrderBy(o => o.Id).ToList()); 
+            Sounds = new ObservableCollection<SoundNew>(Sounds.OrderBy(o => o.Id).ToList());
+            return true;
         }
         public void MoveSound(Category category)
         {

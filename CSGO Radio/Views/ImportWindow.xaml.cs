@@ -91,13 +91,22 @@ namespace CSGO_Radio.Views
 
             for (int i = 0; i < selectedItems.Count; i++)
             {
-                SoundUnconverted newSound = (SoundUnconverted)selectedItems[i];
+                
+                if (!selectedCategory.IsFull)
+                {
+                    SoundUnconverted newSound = (SoundUnconverted)selectedItems[i];
 
-                var convSound = AudioHelper.Convert(newSound);
+                    var convSound = AudioHelper.Convert(newSound);
 
-                NewSounds.RemoveAt(NewSounds.IndexOf(newSound));
+                    selectedCategory.AddSound(convSound);
+                    NewSounds.RemoveAt(NewSounds.IndexOf(newSound));
 
-                selectedCategory.AddSound(convSound);
+                }
+
+                else
+                {
+                    MessageBox.Show("Category is full!");
+                }
             }
 
             if (NewSounds.Count == 0)

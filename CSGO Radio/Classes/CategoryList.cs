@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace CSGO_Radio.Classes
 {
@@ -20,10 +21,26 @@ namespace CSGO_Radio.Classes
             Sounds = new Dictionary<int, SoundNew>();
         }
 
-        public void Add(Category cat)
+        public bool Add(Category cat)
         {
-            cat.Parent = this;
-            Categories.Add(cat);
+            if (string.IsNullOrEmpty(cat.Name))
+            {
+                MessageBox.Show("Category name is empty.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            if (IsValidRange(cat))
+            {
+                cat.Parent = this;
+                Categories.Add(cat);
+                return true;
+            }
+            else
+            {
+
+                MessageBox.Show("Invallid category range!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }        
         }
 
         public void Import(ObservableCollection<Category> Categories)
@@ -47,5 +64,16 @@ namespace CSGO_Radio.Classes
             Sounds = dic;
         }
 
+        private bool IsValidRange(Category newCat)
+        {
+            foreach (var cat in Categories)
+            {
+                if (Math.Max(newCat.EndId, cat.EndId) - Math.Min(newCat.StartId, cat.StartId) < (newCat.EndId - newCat.StartId) + (cat.EndId - cat.StartId))
+                {
+                    return false;
+                }
+            }         
+            return true;
+        }
     }
 }
