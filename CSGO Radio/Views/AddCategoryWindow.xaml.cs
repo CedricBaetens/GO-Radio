@@ -39,14 +39,9 @@ namespace CSGO_Radio.Views
 
         private void AddCategory()
         {
-            if (!String.IsNullOrEmpty(NewCategory.Name))
+            if (categories.Add(NewCategory))
             {
-                categories.Add(NewCategory);
                 Close();
-            }
-            else
-            {
-                MessageBox.Show("Category name is empty.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

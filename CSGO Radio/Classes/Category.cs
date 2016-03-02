@@ -23,6 +23,10 @@ namespace CSGO_Radio.Classes
 
         [DataMember]
         public int StartId { get; set; }
+        public int EndId { get { return (StartId + Size)-1; } }
+
+        [DataMember]
+        public int Size { get; set; } = 100;
 
         [DataMember]
         public ObservableCollection<SoundNew> Sounds { get; set; }

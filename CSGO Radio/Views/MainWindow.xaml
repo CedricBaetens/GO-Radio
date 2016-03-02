@@ -86,8 +86,10 @@
                                 <Expander.Header>
                                     <TextBlock>
                                         <TextBlock.Text>
-                                            <MultiBinding StringFormat="{}{0}">
+                                            <MultiBinding StringFormat="{}{0} ({1:0000} - {2:0000})">
                                                 <Binding Path="Name" />
+                                                <Binding Path="StartId" />
+                                                <Binding Path="EndId"/>
                                             </MultiBinding>
                                         </TextBlock.Text>
                                         <TextBlock.ContextMenu>
