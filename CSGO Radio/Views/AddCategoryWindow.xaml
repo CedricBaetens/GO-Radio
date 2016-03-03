@@ -46,6 +46,16 @@
                     <TextBlock  Text="Size" Margin="10,10,10,0" FontSize="16"/>
                     <tk:IntegerUpDown Margin="10" Value="{Binding NewCategory.Size}"></tk:IntegerUpDown>
                 </StackPanel>
+
+                <StackPanel  Grid.Row="1" Grid.Column="0">
+                    <TextBlock  Text="Start ID" Margin="10,10,10,0" FontSize="16"/>                   
+                    <tk:IntegerUpDown Margin="10" Value="{Binding NewCategory.StartId}"></tk:IntegerUpDown>
+                </StackPanel>
+
+                <StackPanel  Grid.Row="1" Grid.Column="2">
+                    <TextBlock  Text="Size" Margin="10,10,10,0" FontSize="16"/>
+                    <tk:IntegerUpDown Margin="10" Value="{Binding NewCategory.Size}"></tk:IntegerUpDown>
+                </StackPanel>
                 
                 <Button Grid.Row="2" Grid.Column="1" Margin="10" Command="{Binding CommandAddCategory}">Ok</Button>
                 <Button Grid.Row="2" Grid.Column="0" Margin="10" Command="{Binding CommandCloseWindow}">Cancel</Button>
