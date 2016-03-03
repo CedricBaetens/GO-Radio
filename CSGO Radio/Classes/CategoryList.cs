@@ -64,14 +64,21 @@ namespace CSGO_Radio.Classes
             Sounds = dic;
         }
 
-        private bool IsValidRange(Category newCat)
+        public bool IsValidRange(Category newCat)
         {
+            if (newCat.Sounds.Count > newCat.Size)
+            {
+                return false;
+            }
             foreach (var cat in Categories)
             {
-                if (Math.Max(newCat.EndId, cat.EndId) - Math.Min(newCat.StartId, cat.StartId) < (newCat.EndId - newCat.StartId) + (cat.EndId - cat.StartId))
+                if (newCat.Name != cat.Name)
                 {
-                    return false;
-                }
+                    if (Math.Max(newCat.EndId, cat.EndId) - Math.Min(newCat.StartId, cat.StartId) < (newCat.EndId - newCat.StartId) + (cat.EndId - cat.StartId))
+                    {
+                        return false;
+                    }
+                }            
             }         
             return true;
         }

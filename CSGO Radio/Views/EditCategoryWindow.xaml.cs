@@ -21,22 +21,58 @@ namespace CSGO_Radio.Views
     {
         public Category Category { get; set; }
 
+        public string NewCatName { get; set; }
+        public int NewCatStartId { get; set; }
+        public int NewCatSize { get; set; }
+
         public EditCategoryWindow(Category cat)
         {
             InitializeComponent();
 
             Category = cat;
 
+            NewCatName = cat.Name;
+            NewCatStartId = cat.StartId;
+            NewCatSize = cat.Size;
+
             DataContext = this;
         }
 
-        public ICommand CommandOk => new RelayCommand(Move);
-        public ICommand CommandCancel => new RelayCommand(Close);
-        private void Move()
+        private void Ok()
         {
-            Category selected = (Category)cbCategories.SelectedItem;
-            Category.MoveSound(selected);
+            // Check cat name
+            if (!string.IsNullOrEmpty(NewCatName))
+            {
+                Category.Name = NewCatName;
+            }
+            else
+            {
+                MessageBox.Show("Category name invallid!");
+                return;
+            }
+
+            // Check range
+            var catCopy = Category.Clone();
+            catCopy.Size = NewCatSize;
+            catCopy.StartId = NewCatStartId;
+
+            if (Category.Parent.IsValidRange(catCopy))
+            {
+                Category.Size = NewCatSize;
+                Category.StartId = NewCatStartId;
+                Category.RecalculateIds();
+            }
+            else
+            {
+                MessageBox.Show("Invalid category range.");
+                return;
+            }
+
+
             Close();
         }
+
+        public ICommand CommandOk => new RelayCommand(Ok);
+        public ICommand CommandCancel => new RelayCommand(Close);
     }
 }

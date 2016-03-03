@@ -44,7 +44,7 @@ namespace CSGO_Radio.Classes
         }
 
         // Public methods
-        public bool AddSound(SoundNew sound)
+        public void AddSound(SoundNew sound)
         {
             /* CHECK IF NUMBERS FOLLOW IN CATEGORY, VOODOO DO NOT TOUCH. IT MIGHT BITE  */
 
@@ -78,7 +78,6 @@ namespace CSGO_Radio.Classes
             // Add sound to list and sort it.
             Sounds.Add(sound);
             Sounds = new ObservableCollection<SoundNew>(Sounds.OrderBy(o => o.Id).ToList());
-            return true;
         }
         public void MoveSound(Category category)
         {
@@ -88,6 +87,28 @@ namespace CSGO_Radio.Classes
             category.AddSound(sound);
             Parent.UpdateDictionary();
         }
+        public void Edit(Category cat)
+        {
+            Name = cat.Name;
+            StartId = cat.StartId;
+            Size = cat.StartId;
+        }
+
+        public Category Clone()
+        {
+            return new Category() { Name = this.Name, Size = this.Size, StartId = this.StartId, Sounds = this.Sounds };
+        }
+
+        public void RecalculateIds()
+        {
+            var id = StartId;
+            foreach (var sound in Sounds)
+            {
+                sound.Id = id++;
+            }
+            Parent.UpdateDictionary();
+        }
+
 
         // Private methods
         private int FindMissingId()
@@ -112,7 +133,8 @@ namespace CSGO_Radio.Classes
         public ICommand CommandRemoveSound => new RelayCommand(RemoveSound);
         public ICommand CommandTrimSound => new RelayCommand(TrimSound);
         public ICommand CommandRemoveTrim => new RelayCommand(RemoveTrim);
-        public ICommand CommandMove => new RelayCommand(Edit);
+        public ICommand CommandMove => new RelayCommand(MoveSound);
+        public ICommand CommandEdit => new RelayCommand(Edit);      
 
 
         private void RemoveSound()
@@ -128,10 +150,17 @@ namespace CSGO_Radio.Classes
         {
             SelectedSound.RemoveTrim();
         }
+        private void MoveSound()
+        {
+            MoveSoundWindow ecw = new MoveSoundWindow(this);
+            ecw.ShowDialog();
+        }
+
         private void Edit()
         {
             EditCategoryWindow ecw = new EditCategoryWindow(this);
             ecw.ShowDialog();
+
         }
     }
 }

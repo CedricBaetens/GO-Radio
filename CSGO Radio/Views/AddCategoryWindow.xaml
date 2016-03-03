@@ -46,18 +46,7 @@
                     <TextBlock  Text="Size" Margin="10,10,10,0" FontSize="16"/>
                     <tk:IntegerUpDown Margin="10" Value="{Binding NewCategory.Size}"></tk:IntegerUpDown>
                 </StackPanel>
-
-
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Sub Category" Margin="10,10,10,0" FontSize="16" Visibility="Hidden" />
-
-                <ComboBox Grid.Row="3" Grid.Column="0" ItemsSource="{Binding Data.Categories}" Margin="10" Name="cbCategories" Visibility="Hidden">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name}"></TextBlock>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-
+                
                 <Button Grid.Row="2" Grid.Column="1" Margin="10" Command="{Binding CommandAddCategory}">Ok</Button>
                 <Button Grid.Row="2" Grid.Column="0" Margin="10" Command="{Binding CommandCloseWindow}">Cancel</Button>
 

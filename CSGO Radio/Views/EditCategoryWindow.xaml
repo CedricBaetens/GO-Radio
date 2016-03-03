@@ -3,16 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:tk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:CSGO_Radio.Views"
         mc:Ignorable="d"
-        Title="Move Sound" Height="250" Width="300"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+        Title="EditCategoryWindow" Height="300" Width="300">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -20,19 +23,26 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-
         <StackPanel Grid.ColumnSpan="2">
-            <TextBlock Margin="5">Choose a new category.</TextBlock>
-            <ListBox Margin="5" ItemsSource="{Binding Category.Parent.Categories}" Name="cbCategories" SelectedIndex="0">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Name}"></TextBlock>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <TextBlock Text="Category Name" Margin="10,10,10,0" FontSize="16"/>
+            <TextBox  Text="{Binding NewCatName}" Margin="10" materialDesign:TextFieldAssist.Hint="Enter name here..." />
         </StackPanel>
-        
-        <Button Grid.Row="1" Command="{Binding CommandOk}" Margin="5">Ok</Button>
-        <Button Grid.Row="1" Grid.Column="1" Command="{Binding CommandCancel}" Margin="5">Cancel</Button>
+
+        <StackPanel  Grid.Row="1" Grid.Column="0">
+            <TextBlock  Text="Start ID" Margin="10,10,10,0" FontSize="16"/>
+            <tk:IntegerUpDown Margin="10" Value="{Binding NewCatStartId}"></tk:IntegerUpDown>
+        </StackPanel>
+
+        <StackPanel  Grid.Row="1" Grid.Column="2">
+            <TextBlock  Text="Size" Margin="10,10,10,0" FontSize="16"/>
+            <tk:IntegerUpDown Margin="10" Value="{Binding NewCatSize}"></tk:IntegerUpDown>
+        </StackPanel>
+
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Sub Category" Margin="10,10,10,0" FontSize="16" Visibility="Hidden" />
+
+        <Button VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="1" Margin="10" Command="{Binding CommandOk}">Ok</Button>
+        <Button VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="0" Margin="10" Command="{Binding CommandCancel}">Cancel</Button>
+
     </Grid>
 </Window>
