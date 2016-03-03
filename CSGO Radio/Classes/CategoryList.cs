@@ -64,6 +64,7 @@ namespace CSGO_Radio.Classes
             Sounds = dic;
         }
 
+        public bool IsValidRange(Category newCat)
         {
             if (newCat.Sounds.Count > newCat.Size)
             {
