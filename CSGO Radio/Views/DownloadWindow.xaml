@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CSGO_Radio.Views"
         mc:Ignorable="d"
-        Title="DownloadWindow" Height="100" Width="300">
+        Title="DownloadWindow" Height="100" Width="300"
+        ResizeMode="NoResize"
+        Name="Updating">
     <Grid>
         <StackPanel Margin="5">
             <TextBlock HorizontalAlignment="Center">Downloading update...</TextBlock>

@@ -93,6 +93,17 @@ namespace CSGO_Radio.Classes
             StartId = cat.StartId;
             Size = cat.StartId;
         }
+        public void Remove()
+        {
+            if(MessageBox.Show(string.Format("Are you sure you want to delete this categoy including {0} sounds?",Sounds.Count), "Delete", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                foreach (var sound in Sounds)
+                {
+                    sound.Remove();
+                }
+                Parent.Remove(this);
+            }
+        }
 
         public Category Clone()
         {
@@ -134,7 +145,8 @@ namespace CSGO_Radio.Classes
         public ICommand CommandTrimSound => new RelayCommand(TrimSound);
         public ICommand CommandRemoveTrim => new RelayCommand(RemoveTrim);
         public ICommand CommandMove => new RelayCommand(MoveSound);
-        public ICommand CommandEdit => new RelayCommand(Edit);      
+        public ICommand CommandEdit => new RelayCommand(Edit);
+        public ICommand CommandRemove => new RelayCommand(Remove);
 
 
         private void RemoveSound()

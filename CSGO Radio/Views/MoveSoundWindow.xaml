@@ -8,9 +8,11 @@
         Title="Move Sound" Height="250" Width="300"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+        ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
@@ -21,18 +23,17 @@
         </Grid.ColumnDefinitions>
 
 
-        <StackPanel Grid.ColumnSpan="2">
-            <TextBlock Margin="5">Choose a new category.</TextBlock>
-            <ListBox Margin="5" ItemsSource="{Binding Category.Parent.Categories}" Name="cbCategories" SelectedIndex="0">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Name}"></TextBlock>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </StackPanel>
-        
-        <Button Grid.Row="1" Command="{Binding CommandOk}" Margin="5">Ok</Button>
-        <Button Grid.Row="1" Grid.Column="1" Command="{Binding CommandCancel}" Margin="5">Cancel</Button>
+        <TextBlock Margin="5" Grid.ColumnSpan="2">Choose a new category.</TextBlock>
+
+        <ListBox Margin="5" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Category.Parent.Categories}" Name="cbCategories" SelectedIndex="0">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"></TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Button Grid.Row="2" Command="{Binding CommandOk}" Margin="5">Ok</Button>
+        <Button Grid.Row="2" Grid.Column="1" Command="{Binding CommandCancel}" Margin="5">Cancel</Button>
     </Grid>
 </Window>

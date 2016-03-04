@@ -6,11 +6,12 @@
         xmlns:classes="clr-namespace:CSGO_Radio.Classes"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="CS:GO Radio - Import Sound" Height="700" Width="450"
+        Title="Import New Sound" Height="700" Width="450"
         Loaded="ImportWindow_OnLoaded"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto" Closing="Window_Closing">
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto" Closing="Window_Closing"
+        ResizeMode="NoResize">
     <Window.Resources>
         <ResourceDictionary>
             <classes:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>

@@ -16,20 +16,30 @@ namespace CSGO_Radio.Classes
         public SoundNew Sound { get; set; }
         public SoundNew SoundPauzed { get; set; }
 
-        public TimeSpan TimePlaying { get { return timer.Elapsed; } }
+        public TimeSpan TimePlaying { get; set; }
 
-        private Stopwatch timer;
+        private Stopwatch stopwatch;
+        private Timer timer;
 
         public SoundLoader()
         {
-            timer = new Stopwatch();
+            stopwatch = new Stopwatch();
+            timer = new Timer();
+            timer.Interval = 1;
+            timer.Elapsed += Timer_Elapsed;
+            timer.Start();
+        }
+
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            TimePlaying = stopwatch.Elapsed;
         }
 
         public void PlayPause()
         {
-            if (timer.IsRunning)
+            if (stopwatch.IsRunning)
             {
-               timer.Stop();
+                stopwatch.Stop();
 
                 if (Sound.IsTrimmed)
                 {
@@ -46,22 +56,22 @@ namespace CSGO_Radio.Classes
             }
             else
             {
-                timer.Start();
+                stopwatch.Start();
             }    
         }
         public void PlayStop()
         {
             if (Sound != null)
             {
-                if (timer.IsRunning)
+                if (stopwatch.IsRunning)
                 {
-                    timer.Stop();
-                    timer.Reset();
+                    stopwatch.Stop();
+                    stopwatch.Reset();
                     LoadSong(Sound);
                 }
                 else
                 {
-                    timer.Start();
+                    stopwatch.Start();
                 }
             }         
         }

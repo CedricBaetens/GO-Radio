@@ -95,6 +95,7 @@
                                         <TextBlock.ContextMenu>
                                             <ContextMenu >
                                                 <MenuItem Header="Edit" Command="{Binding CommandEdit}"/>
+                                                <MenuItem Header="Remove" Command="{Binding CommandRemove}"/>
                                             </ContextMenu>
                                         </TextBlock.ContextMenu>
                                     </TextBlock>
@@ -199,15 +200,18 @@
                         </Viewbox>
                     </Button>
                 </StackPanel>
-                
-                <TextBlock Grid.Column="1" Style="{StaticResource MaterialDesignBody2TextBlock}" VerticalAlignment="Center">
-                    <TextBlock.Text>
-                        <MultiBinding StringFormat="{}{0:0000} {1}">
-                            <Binding Path="SoundLoader.Sound.Id" />
-                            <Binding Path="SoundLoader.Sound.Name" />
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
+
+                <StackPanel Grid.Column="1"  VerticalAlignment="Center">
+                    <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0:0000} {1}">
+                                <Binding Path="SoundLoader.Sound.Id" />
+                                <Binding Path="SoundLoader.Sound.Name" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                    <TextBlock Text="{Binding SoundLoader.TimePlaying}"/>
+                </StackPanel>
 
                 <TextBlock Grid.Column="2" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="20,10,10,10" VerticalAlignment="Center">
                     <TextBlock.Text>

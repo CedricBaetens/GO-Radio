@@ -11,7 +11,9 @@
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
-        Title="CS:GO Radio - Add New Category" Height="285" Width="300" MaxHeight="285" MaxWidth="300">
+        Title="Add New Category" 
+        Height="285" Width="300" 
+        ResizeMode="NoResize">
     <Grid>
         <StackPanel>
             

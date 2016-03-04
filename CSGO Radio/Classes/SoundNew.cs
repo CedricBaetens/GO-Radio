@@ -40,6 +40,18 @@ namespace CSGO_Radio.Classes
                 
         }
 
+        public void Remove()
+        {
+            if (File.Exists(Path))
+            {
+                File.Delete(Path);
+            }
+            if (File.Exists(PathTrim))
+            {
+                File.Delete(PathTrim);
+            }
+        }
+
         public void Trim()
         {
             var outPath = string.Format("{0}\\{1} trimmed.wav", Directory, Name);

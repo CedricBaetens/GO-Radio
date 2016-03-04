@@ -42,7 +42,10 @@ namespace CSGO_Radio.Classes
                 return false;
             }        
         }
-
+        public void Remove(Category cat)
+        {
+            Categories.Remove(cat);
+        }
         public void Import(ObservableCollection<Category> Categories)
         {
             foreach (var item in Categories)
