@@ -211,6 +211,7 @@
                         </TextBlock.Text>
                     </TextBlock>
                     <TextBlock Text="{Binding SoundLoader.TimePlaying}"/>
+                    <TextBlock Text="{Binding SoundLoader.State}"/>
                 </StackPanel>
 
                 <TextBlock Grid.Column="2" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="20,10,10,10" VerticalAlignment="Center">
