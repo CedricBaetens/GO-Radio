@@ -160,7 +160,8 @@ namespace CSGO_Radio.Classes
 
             TextToSpeech.Start();
             keyboardHook.HookKeyboard();
-            
+            SoundLoader.LoadSong(GetSoundById(0));
+
         }
         public void Exit()
         {
