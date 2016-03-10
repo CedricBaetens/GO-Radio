@@ -124,6 +124,7 @@
     <Compile Include="Classes\CategoryList.cs" />
     <Compile Include="Classes\Cfg.cs" />
     <Compile Include="Classes\Convertors.cs" />
+    <Compile Include="Classes\KeyBinding.cs" />
     <Compile Include="Classes\SoundLoader.cs" />
     <Compile Include="Classes\NAudioHelper.cs" />
     <Compile Include="Classes\ProgramSettings.cs" />
@@ -139,6 +140,9 @@
     </Compile>
     <Compile Include="Views\EditCategoryWindow.xaml.cs">
       <DependentUpon>EditCategoryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\KeyBindingWindow.xaml.cs">
+      <DependentUpon>KeyBindingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MoveSoundWindow.xaml.cs">
       <DependentUpon>MoveSoundWindow.xaml</DependentUpon>
@@ -162,6 +166,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EditCategoryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\KeyBindingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

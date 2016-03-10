@@ -23,6 +23,7 @@ namespace CSGO_Radio.Classes
         public string IdEntered { get; set; } = "";
         public SoundLoader SoundLoader { get; set; }
         public Tts TextToSpeech { get; set; }
+        public KeyBinding KeyBindings { get; set; }
 
         public bool SoundIsPlaying { get; set; } = false;
 
@@ -31,6 +32,7 @@ namespace CSGO_Radio.Classes
         private SoundPlayer soundPlayer;
         private Timer timerClearInput;
         
+
         // Constructor
         public SoundController()
         {
@@ -50,6 +52,8 @@ namespace CSGO_Radio.Classes
             timerClearInput.Interval = 5000;
 
             SoundLoader = new SoundLoader();
+
+            KeyBindings = new KeyBinding();
         }
 
         // Events
@@ -59,66 +63,20 @@ namespace CSGO_Radio.Classes
         }
         private void KeyboardHook_OnKeyPressed(object sender, KeyPressedArgs e)
         {
-            #region keys
-            switch (e.KeyPressed)
-            {
-                case Key.NumPad0:
-                    IdEntered += "0";
-                    break;
+            // KEYS
+            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinding.KeyTranslation.PlayPauze].Value)
+                SoundLoader.PlayStop();
 
-                case Key.NumPad1:
-                    IdEntered += "1";
-                    break;
+            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinding.KeyTranslation.PlayPauze].Value)
+                SoundLoader.PlayPause();
 
-                case Key.NumPad2:
-                    IdEntered += "2";
-                    break;
+            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinding.KeyTranslation.Random].Value)
+                IdEntered += "+";
 
-                case Key.NumPad3:
-                    IdEntered += "3";
-                    break;
+            //if (KeyBindings.Keys.Contains(new KeyValuePair<KeyBinding.KeyTranslation, Key> e.KeyPressed))
+            //    IdEntered += KeyBindings.Keys.IndexOf(e.KeyPressed);
 
-                case Key.NumPad4:
-                    IdEntered += "4";
-                    break;
 
-                case Key.NumPad5:
-                    IdEntered += "5";
-                    break;
-
-                case Key.NumPad6:
-                    IdEntered += "6";
-                    break;
-
-                case Key.NumPad7:
-                    IdEntered += "7";
-                    break;
-
-                case Key.NumPad8:
-                    IdEntered += "8";
-                    break;
-
-                case Key.NumPad9:
-                    IdEntered += "9";
-                    break;
-
-                case Key.Delete:
-                    IdEntered = "";
-                    break;
-
-                case Key.Add:
-                    IdEntered += "+";
-                    break;
-
-                case Key.Subtract:
-                    SoundLoader.PlayPause();
-                    break;
-
-                case Key.Enter:
-                    SoundLoader.PlayStop();
-                    break;
-            }
-            #endregion
 
             if (IdEntered.Contains("+"))
             {
@@ -235,9 +193,10 @@ namespace CSGO_Radio.Classes
             {
                 return null;
             }          
-        }        
+        }
 
         // Command
+        public ICommand CommandKeyBinding => new RelayCommand(ShowKeyBinding);
         public ICommand CommandAddCategory => new RelayCommand(ShowCategoryWindow);
         public ICommand CommandAddSound => new RelayCommand(ShowSoundWindow);
         public ICommand CommandPlayPauzeSound => new RelayCommand(SoundplayerPlayPauzeSound);
@@ -278,6 +237,11 @@ namespace CSGO_Radio.Classes
                     SoundIsPlaying = true;
                 }
             }
+        }
+        private void ShowKeyBinding()
+        {
+            KeyBindingWindow kbw = new KeyBindingWindow(KeyBindings);
+            kbw.ShowDialog();
         }
     }
 }

@@ -65,11 +65,9 @@
                 <MenuItem Header="Categories" Command="{Binding CommandViewCategories}"/>
                 <MenuItem Header="List" Command="{Binding CommandViewList}"/>
             </MenuItem>-->
-            <!--<MenuItem Header="Extra" Height="25">
-                <MenuItem Header="Text To Speech" Command="{Binding CommandTextToSpeech}"/>
-                <Separator/>
-                <MenuItem Header="Settings" Height="25" Command="{Binding CommandSettings}"></MenuItem>
-            </MenuItem>-->
+            <MenuItem Header="Settings" Height="25">
+                <MenuItem Header="Keybindings" Height="25" Command="{Binding CommandKeyBinding}"></MenuItem>
+            </MenuItem>
             
         </Menu>
 
@@ -117,7 +115,7 @@
                                               Visibility="{Binding Path=Sounds.Count, Converter={StaticResource IntToVisibility}}"
                                               SelectedItem="{Binding SelectedSound, Mode=OneWayToSource}">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Id" Binding="{Binding Id, StringFormat='0000'}"  Width="auto"/>
+                                            <DataGridTextColumn Header="Id" Binding="{Binding Id, StringFormat='0000'}"  Width="85"/>
                                             <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="auto" />
                                             <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="*" />
                                         </DataGrid.Columns>
