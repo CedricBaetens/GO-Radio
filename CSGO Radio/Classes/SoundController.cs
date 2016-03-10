@@ -63,7 +63,6 @@ namespace CSGO_Radio.Classes
         }
         private void KeyboardHook_OnKeyPressed(object sender, KeyPressedArgs e)
         {
-            // KEYS
             if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinding.KeyTranslation.PlayPauze].Value)
                 SoundLoader.PlayStop();
 
@@ -73,8 +72,35 @@ namespace CSGO_Radio.Classes
             if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinding.KeyTranslation.Random].Value)
                 IdEntered += "+";
 
-            //if (KeyBindings.Keys.Contains(new KeyValuePair<KeyBinding.KeyTranslation, Key> e.KeyPressed))
-            //    IdEntered += KeyBindings.Keys.IndexOf(e.KeyPressed);
+            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinding.KeyTranslation.K0].Value)
+                IdEntered += "0";
+
+            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinding.KeyTranslation.K1].Value)
+                IdEntered += "1";
+
+            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinding.KeyTranslation.K2].Value)
+                IdEntered += "2";
+
+            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinding.KeyTranslation.K3].Value)
+                IdEntered += "3";
+
+            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinding.KeyTranslation.K4].Value)
+                IdEntered += "4";
+
+            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinding.KeyTranslation.K5].Value)
+                IdEntered += "5";
+
+            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinding.KeyTranslation.K6].Value)
+                IdEntered += "6";
+
+            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinding.KeyTranslation.K7].Value)
+                IdEntered += "7";
+
+            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinding.KeyTranslation.K8].Value)
+                IdEntered += "8";
+
+            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinding.KeyTranslation.K9].Value)
+                IdEntered += "9";
 
 
 
