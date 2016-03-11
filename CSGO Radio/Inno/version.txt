@@ -1,4 +1,0 @@
-<doc>
-<version>1.0.0.5</version>
-<url>http://www.baellon.com/csgoradio/Inno/setup_CSGO Radio_1.0.0.5.exe</url>
-</doc>

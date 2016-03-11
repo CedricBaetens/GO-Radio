@@ -1,0 +1,230 @@
+﻿<Window x:Class="GO_Radio.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GO_Radio"
+        xmlns:classes="clr-namespace:GO_Radio.Classes"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="GO Radio" 
+        Height="350" Width="600" 
+        Loaded="MainWindow_OnLoaded" Closing="MainWindow_OnClosing"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+        WindowStyle="SingleBorderWindow">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.RadioButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <classes:InverseBooleanConverter x:Key="BoolInvers" />
+            <classes:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+            <classes:BooleanInversToVisibilityConverter x:Key="BoolInversToVisibility"/>
+            <classes:IntToVisibilityConverter x:Key="IntToVisibility"/>
+            <classes:IntInversToVisibilityConverter x:Key="IntInversToVisibility"/>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!--Header-->
+        <materialDesign:ColorZone Mode="PrimaryMid" Grid.Row="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}" Margin="20,10,10,10">GO Radio</TextBlock>
+                
+            </Grid>
+        </materialDesign:ColorZone>
+
+        <!--Menu-->
+        <Menu Grid.Row="0" IsMainMenu="True">
+            <MenuItem Header="File" Height="25">
+                <MenuItem Header="Import" Command="{Binding CommandAddSound}"/>
+                <Separator/>
+                <MenuItem Header="Add Category" Command="{Binding CommandAddCategory}"/>
+            </MenuItem>
+            <!--<MenuItem Header="View" Height="25">
+                <MenuItem Header="Categories" Command="{Binding CommandViewCategories}"/>
+                <MenuItem Header="List" Command="{Binding CommandViewList}"/>
+            </MenuItem>-->
+            <!--<MenuItem Header="Settings" Height="25">
+                <MenuItem Header="Keybindings" Height="25" Command="{Binding CommandKeyBinding}"></MenuItem>
+            </MenuItem>-->
+
+            <MenuItem Header="Extra" Height="25">
+                <MenuItem Header="Reset Playing Monitor" Height="25" Command="{Binding CommandResetPlayingMonitor}"></MenuItem>
+            </MenuItem>
+
+        </Menu>
+
+        <!--Collection-->
+        <ScrollViewer Grid.Row="2" Name="scrollViewer" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!--CATEGORIES-->
+                <ItemsControl ItemsSource="{Binding CategoriesList.Categories}"  Visibility="{Binding Path=ShowList, Converter={StaticResource BoolInversToVisibility}}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Expander Margin="10" ExpandDirection="Down">
+                                
+                                <!--CATEGORY NAME-->
+                                <Expander.Header>
+                                    <TextBlock>
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0} ({1:0000} - {2:0000})">
+                                                <Binding Path="Name" />
+                                                <Binding Path="StartId" />
+                                                <Binding Path="EndId"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                        <TextBlock.ContextMenu>
+                                            <ContextMenu >
+                                                <MenuItem Header="Edit" Command="{Binding CommandEdit}"/>
+                                                <MenuItem Header="Remove" Command="{Binding CommandRemove}"/>
+                                            </ContextMenu>
+                                        </TextBlock.ContextMenu>
+                                    </TextBlock>
+                                </Expander.Header>
+                                
+                                <StackPanel>
+                                    <!--NO DATA-->
+                                    <TextBlock Visibility="{Binding Path=Sounds.Count, Converter={StaticResource IntInversToVisibility}}">This category doesnt have any songs in.</TextBlock>
+
+                                    <!--DATA-->
+                                    <DataGrid ItemsSource="{Binding Sounds}" 
+                                              AutoGenerateColumns="False" 
+                                              CanUserAddRows="False"
+                                              CanUserDeleteRows="False"
+                                              IsReadOnly="True"
+                                              PreviewMouseWheel="DataGrid_PreviewMouseWheel"                                              
+                                              materialDesign:DataGridAssist.CellPadding="13 8 8 8" 
+                                              materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                                              Visibility="{Binding Path=Sounds.Count, Converter={StaticResource IntToVisibility}}"
+                                              SelectedItem="{Binding SelectedSound, Mode=OneWayToSource}">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Id" Binding="{Binding Id, StringFormat='0000'}"  Width="85"/>
+                                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="auto" />
+                                            <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="*" />
+                                        </DataGrid.Columns>
+                                        <DataGrid.ContextMenu>
+                                            <ContextMenu >
+                                                <MenuItem Header="Trim" IsEnabled="{Binding SelectedSound.IsTrimmed, Converter={StaticResource BoolInvers}}" Command="{Binding CommandTrimSound}"/>
+                                                <MenuItem Header="Remove Trim" IsEnabled="{Binding SelectedSound.IsTrimmed}" Command="{Binding CommandRemoveTrim}"/>
+                                                <Separator/>
+                                                <MenuItem Header="Move" Command="{Binding CommandMove}"/>
+                                                <MenuItem Header="Delete" Command="{Binding CommandRemoveSound}"/>
+                                            </ContextMenu>
+                                        </DataGrid.ContextMenu>
+                                    </DataGrid>
+                                </StackPanel>
+                            </Expander>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                    <ItemsControl.Style>
+                        <Style TargetType="ItemsControl">
+                            <Style.Triggers>
+                                <Trigger Property="HasItems" Value="false"   >
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <TextBlock Text="You currently have no categories. Click file -> Add Category to create one." Margin="5"/>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ItemsControl.Style>
+
+                </ItemsControl>
+            </StackPanel>
+            
+        </ScrollViewer>
+
+        <!--Add new items-->
+        <materialDesign:PopupBox Grid.Row="2" 
+                                 Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}"                                        
+                                 PlacementMode="TopAndAlignCentres"                                         
+                                 ToolTipService.Placement="Left"
+                                 ToolTip="Add New Item"                                       
+                                 Margin="15"
+                                 HorizontalAlignment="Right"
+                                 VerticalAlignment="Bottom"
+                                 Width="40"
+                                 Height="40">
+            <StackPanel>
+                <Button ToolTip="Import a new sound." Command="{Binding CommandAddSound}">
+                    <Image Source="/Images/music-w.png" Margin="5"/>
+                </Button>
+                <Button ToolTip="Create a new category." Command="{Binding CommandAddCategory}">
+                    <Image Source="/Images/folder-w.png" Margin="5"/>
+                </Button>
+            </StackPanel>
+        </materialDesign:PopupBox>
+
+         <!--Footer-->
+        <materialDesign:ColorZone Grid.Row="3" Mode="PrimaryMid">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
+                        Margin="0 0 8 0" HorizontalAlignment="Left"
+                        ToolTip="Play/Stop selected sound."
+                        Command="{Binding CommandPlayPauzeSound}">
+                        <Viewbox Width="24" Height="24">
+                            <StackPanel>
+                                <Image Visibility="{Binding Path=SoundIsPlaying, Converter={StaticResource BoolInversToVisibility}}" Source="/Images/play.png"></Image>
+                                <Image Visibility="{Binding Path=SoundIsPlaying, Converter={StaticResource BoolToVisibility}}" Source="/Images/stop.png"></Image>
+                            </StackPanel>
+                        </Viewbox>
+                    </Button>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1"  VerticalAlignment="Center">
+                    <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0:0000} {1}">
+                                <Binding Path="SoundLoader.Sound.Id" />
+                                <Binding Path="SoundLoader.Sound.Name" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                    <TextBlock Text="{Binding SoundLoader.TimePlaying}"/>
+                    <TextBlock Text="{Binding SoundLoader.State}"/>
+                </StackPanel>
+
+                <TextBlock Grid.Column="2" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="20,10,10,10" VerticalAlignment="Center">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0}">
+                            <Binding Path="IdEntered" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </Grid>
+            
+        </materialDesign:ColorZone>
+    </Grid>
+</Window>
