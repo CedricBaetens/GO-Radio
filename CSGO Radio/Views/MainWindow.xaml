@@ -65,10 +65,14 @@
                 <MenuItem Header="Categories" Command="{Binding CommandViewCategories}"/>
                 <MenuItem Header="List" Command="{Binding CommandViewList}"/>
             </MenuItem>-->
-            <MenuItem Header="Settings" Height="25">
+            <!--<MenuItem Header="Settings" Height="25">
                 <MenuItem Header="Keybindings" Height="25" Command="{Binding CommandKeyBinding}"></MenuItem>
+            </MenuItem>-->
+
+            <MenuItem Header="Extra" Height="25">
+                <MenuItem Header="Reset Playing Monitor" Height="25" Command="{Binding CommandResetPlayingMonitor}"></MenuItem>
             </MenuItem>
-            
+
         </Menu>
 
         <!--Collection-->

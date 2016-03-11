@@ -24,8 +24,8 @@ namespace CSGO_Radio.Classes
            K7,
            K8,
            K9,
-           PlayStop = 10,
-           PlayPauze = 11,
+           PlayPauze = 10,
+           PlayStop = 11,
            Random = 12
         }
 

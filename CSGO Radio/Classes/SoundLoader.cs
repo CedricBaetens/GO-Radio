@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows;
 
 namespace CSGO_Radio.Classes
 {
@@ -22,11 +23,14 @@ namespace CSGO_Radio.Classes
         private Timer timer;
 
         public SoundState State { get; set; }
+
         public enum SoundState
         {
+            LOADED,
             STOPPED,
             PLAYING,
-            PAUSED            
+            PAUSED,
+            LOADEDSTILLPLAYING
         }
 
         public SoundLoader()
@@ -45,54 +49,22 @@ namespace CSGO_Radio.Classes
 
         public void PlayPause()
         {
-            //if (stopwatch.IsRunning)
-            //{
-            //    stopwatch.Stop();
-
-            //    if (Sound.IsTrimmed)
-            //    {
-            //        SoundPauzed = new SoundNew(Sound.PathTrim);
-            //    }
-            //    else
-            //    {
-            //        SoundPauzed = new SoundNew(Sound.Path);
-            //    }
-
-            //    SoundPauzed.Pauze(TimePlaying);
-
-            //    LoadSongPauzed(SoundPauzed);
-            //}
-            //else
-            //{
-            //    stopwatch.Start();
-            //}    
-
             switch (State)
             {
+                case SoundState.LOADED:
+                    Play();
+                    break;
                 case SoundState.STOPPED:
-                    State = SoundState.PLAYING;
-                    stopwatch.Start();
+                    Play();
                     break;
                 case SoundState.PLAYING:
-                    State = SoundState.PAUSED;
-                    stopwatch.Stop();
-
-                    if (Sound.IsTrimmed)
-                    {
-                        SoundPauzed = new SoundNew(Sound.PathTrim);
-                    }
-                    else
-                    {
-                        SoundPauzed = new SoundNew(Sound.Path);
-                    }
-
-                    SoundPauzed.Pauze(TimePlaying);
-
-                    LoadSongPauzed(SoundPauzed);
+                    Pauze();
                     break;
                 case SoundState.PAUSED:
-                    State = SoundState.PLAYING;
-                    stopwatch.Start();
+                    Play();
+                    break;
+                case SoundState.LOADEDSTILLPLAYING:
+                    Stop();
                     break;
                 default:
                     break;
@@ -102,32 +74,63 @@ namespace CSGO_Radio.Classes
         {
             switch (State)
             {
+                case SoundState.LOADED:
+                    Play();
+                    break;
                 case SoundState.STOPPED:
-                    State = SoundState.PLAYING;
-                    stopwatch.Start();
+                    Play();
                     break;
                 case SoundState.PLAYING:
-                    State = SoundState.STOPPED;
-                    stopwatch.Reset();
+                    Stop();
                     break;
                 case SoundState.PAUSED:
+                    Play();
+                    break;
+                case SoundState.LOADEDSTILLPLAYING:
+                    Stop();
                     break;
                 default:
                     break;
+            }      
+        }
+
+        public void Reset()
+        {
+            if (MessageBox.Show("Make sure you are not playing any sound in game!","Reset Sound Monitor",MessageBoxButton.OKCancel)==MessageBoxResult.OK)
+            {
+                LoadSong(Sound);
+                State = SoundState.LOADED;
+                stopwatch.Reset();
             }
-            //if (Sound != null)
-            //{
-            //    if (stopwatch.IsRunning)
-            //    {
-            //        stopwatch.Stop();
-            //        stopwatch.Reset();
-            //        LoadSong(Sound);
-            //    }
-            //    else
-            //    {
-            //        stopwatch.Start();
-            //    }
-            //}         
+        }
+
+        private void Play()
+        {
+            State = SoundState.PLAYING;
+            stopwatch.Start();
+        }
+
+        private void Stop()
+        {
+            State = SoundState.STOPPED;
+            stopwatch.Reset();
+        }
+
+        private void Pauze()
+        {
+            State = SoundState.PAUSED;
+            stopwatch.Stop();
+
+            if (Sound.IsTrimmed)
+            {
+                SoundPauzed = new SoundNew(Sound.PathTrim);
+            }
+            else
+            {
+                SoundPauzed = new SoundNew(Sound.Path);
+            }
+            SoundPauzed.Pauze(TimePlaying);
+            LoadSongPauzed(SoundPauzed);
         }
 
         public void LoadSong(SoundNew sound)
@@ -136,9 +139,18 @@ namespace CSGO_Radio.Classes
             {
                 if (sound != null)
                 {
+
+                    if (State == SoundState.PLAYING)
+                    {
+                        State = SoundState.LOADEDSTILLPLAYING;
+                    }
+                    else
+                    {
+                        State = SoundState.LOADED;
+                    }
+
                     SoundToCsDir(sound);
                     Sound = sound;
-                    stopwatch.Reset();
                 }
             }
             catch (Exception e)

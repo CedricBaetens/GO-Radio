@@ -63,8 +63,8 @@ namespace CSGO_Radio.Classes
         }
         private void KeyboardHook_OnKeyPressed(object sender, KeyPressedArgs e)
         {
-            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinding.KeyTranslation.PlayPauze].Value)
-                SoundLoader.PlayStop();
+        if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinding.KeyTranslation.PlayStop].Value)
+            SoundLoader.PlayStop();
 
             if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinding.KeyTranslation.PlayPauze].Value)
                 SoundLoader.PlayPause();
@@ -223,6 +223,7 @@ namespace CSGO_Radio.Classes
         }
 
         // Command
+        public ICommand CommandResetPlayingMonitor => new RelayCommand(SoundLoader.Reset);
         public ICommand CommandKeyBinding => new RelayCommand(ShowKeyBinding);
         public ICommand CommandAddCategory => new RelayCommand(ShowCategoryWindow);
         public ICommand CommandAddSound => new RelayCommand(ShowSoundWindow);
