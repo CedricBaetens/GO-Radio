@@ -13,7 +13,8 @@
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
-        WindowStyle="SingleBorderWindow">
+        WindowStyle="SingleBorderWindow" KeyDown="Window_KeyDown" PreviewKeyDown="Window_PreviewKeyDown"
+        >
 
     <Window.Resources>
         <ResourceDictionary>
@@ -34,6 +35,10 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -41,21 +46,8 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!--Header-->
-        <materialDesign:ColorZone Mode="PrimaryMid" Grid.Row="1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}" Margin="20,10,10,10">GO Radio</TextBlock>
-                
-            </Grid>
-        </materialDesign:ColorZone>
-
         <!--Menu-->
-        <Menu Grid.Row="0" IsMainMenu="True">
+        <Menu Grid.Row="0" IsMainMenu="True" Grid.ColumnSpan="2">
             <MenuItem Header="File" Height="25">
                 <MenuItem Header="Import" Command="{Binding CommandAddSound}"/>
                 <Separator/>
@@ -73,17 +65,39 @@
                 <MenuItem Header="Reset Playing Monitor" Height="25" Command="{Binding CommandResetPlayingMonitor}"></MenuItem>
             </MenuItem>
 
+            <!--<MenuItem Header="Settings" Height="25">
+                <MenuItem Header="Keybindings" Height="25" Command="{Binding CommandKeyBinding}"></MenuItem>
+            </MenuItem>-->
+
         </Menu>
 
+        <!--Header-->
+        <materialDesign:ColorZone Mode="PrimaryMid" Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}" Margin="20,10,10,10">GO Radio</TextBlock>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Right" Margin="5">
+                    <TextBlock HorizontalAlignment="Right">Play/Stop: "PAGE UP"</TextBlock>
+                    <TextBlock HorizontalAlignment="Right">Play/Pauze: "PAGE DOWN"</TextBlock>
+                    <TextBlock HorizontalAlignment="Right">Random: "Numpad +"</TextBlock>
+                </StackPanel>
+
+            </Grid>
+        </materialDesign:ColorZone>
+
         <!--Collection-->
-        <ScrollViewer Grid.Row="2" Name="scrollViewer" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Name="scrollViewer" VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="2" Grid.Row="2">
             <StackPanel>
                 <!--CATEGORIES-->
                 <ItemsControl ItemsSource="{Binding CategoriesList.Categories}"  Visibility="{Binding Path=ShowList, Converter={StaticResource BoolInversToVisibility}}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Expander Margin="10" ExpandDirection="Down">
-                                
+
                                 <!--CATEGORY NAME-->
                                 <Expander.Header>
                                     <TextBlock>
@@ -102,7 +116,7 @@
                                         </TextBlock.ContextMenu>
                                     </TextBlock>
                                 </Expander.Header>
-                                
+
                                 <StackPanel>
                                     <!--NO DATA-->
                                     <TextBlock Visibility="{Binding Path=Sounds.Count, Converter={StaticResource IntInversToVisibility}}">This category doesnt have any songs in.</TextBlock>
@@ -156,7 +170,7 @@
 
                 </ItemsControl>
             </StackPanel>
-            
+
         </ScrollViewer>
 
         <!--Add new items-->
@@ -165,11 +179,11 @@
                                  PlacementMode="TopAndAlignCentres"                                         
                                  ToolTipService.Placement="Left"
                                  ToolTip="Add New Item"                                       
-                                 Margin="15"
+                                 Margin="0,0,20,20"
                                  HorizontalAlignment="Right"
                                  VerticalAlignment="Bottom"
                                  Width="40"
-                                 Height="40">
+                                 Height="40" Grid.Column="1">
             <StackPanel>
                 <Button ToolTip="Import a new sound." Command="{Binding CommandAddSound}">
                     <Image Source="/Images/music-w.png" Margin="5"/>
@@ -180,8 +194,8 @@
             </StackPanel>
         </materialDesign:PopupBox>
 
-         <!--Footer-->
-        <materialDesign:ColorZone Grid.Row="3" Mode="PrimaryMid">
+        <!--Footer-->
+        <materialDesign:ColorZone Grid.Row="3" Mode="PrimaryMid" Grid.ColumnSpan="2">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
@@ -224,7 +238,7 @@
                     </TextBlock.Text>
                 </TextBlock>
             </Grid>
-            
+
         </materialDesign:ColorZone>
     </Grid>
 </Window>

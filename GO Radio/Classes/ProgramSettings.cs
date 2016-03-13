@@ -23,7 +23,7 @@ namespace GO_Radio
         public static string PathTemp { get { return PathSounds + "\\audio\\tmp\\"; } }
         public static string PathVideo { get { return PathSounds + "\\audio\\tmp\\vid\\"; } }
         public static string PathNew { get { return PathSounds + "\\new\\"; } }
-        public static string AppFolder { get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CSGO Radio"); } }
+        public static string AppFolder { get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GO Radio"); } }
 
 
         // Public Methods

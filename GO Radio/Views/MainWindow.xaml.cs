@@ -68,9 +68,6 @@ namespace GO_Radio
 
             // SoundController
             SoundController.Load();
-
-            // Cfg
-            Cfg.Create.Init();
         }
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
@@ -96,6 +93,17 @@ namespace GO_Radio
         private void DataGrid_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            System.Windows.Forms.Keys key = (System.Windows.Forms.Keys)e.Key;
+            int a = 0;
+        }
+
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            int a = 0;
         }
 
         // Command Binding

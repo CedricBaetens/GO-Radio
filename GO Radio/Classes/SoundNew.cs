@@ -71,5 +71,14 @@ namespace GO_Radio.Classes
             AudioHelper.TrimWavFile(Path, outPath, time, new TimeSpan(0,0,0,0));
             Path = outPath;
         }
+
+        public string GetPath()
+        {
+            if (IsTrimmed)
+            {
+                return PathTrim;
+            }
+            return Path;
+        }
     }
 }

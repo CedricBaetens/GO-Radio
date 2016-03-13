@@ -31,7 +31,8 @@ namespace GO_Radio.Classes
         private LowLevelKeyboardListener keyboardHook;
         private SoundPlayer soundPlayer;
         private Timer timerClearInput;
-        
+        private ConsoleChecker consoleChecker;
+
 
         // Constructor
         public SoundController()
@@ -43,7 +44,7 @@ namespace GO_Radio.Classes
             keyboardHook = new LowLevelKeyboardListener();
             keyboardHook.OnKeyPressed += KeyboardHook_OnKeyPressed;
             soundPlayer = new SoundPlayer();
-            
+
             TextToSpeech = new Tts();
             TextToSpeech.OnTtsDetected += TextToSpeech_OnTtsDetected;
 
@@ -54,6 +55,8 @@ namespace GO_Radio.Classes
             SoundLoader = new SoundLoader();
 
             KeyBindings = new KeyBinder();
+
+            consoleChecker = new ConsoleChecker();
         }
 
         // Events
@@ -63,8 +66,10 @@ namespace GO_Radio.Classes
         }
         private void KeyboardHook_OnKeyPressed(object sender, KeyPressedArgs e)
         {
-        if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinding.KeyTranslation.PlayStop].Value)
-            SoundLoader.PlayStop();
+            char tempdd = (char)e.KeyPressed;
+
+            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinder.KeyTranslation.PlayStop].Key)
+                SoundLoader.PlayStop();
 
             if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinder.KeyTranslation.PlayPauze].Key)
                 SoundLoader.PlayPause();
@@ -154,9 +159,9 @@ namespace GO_Radio.Classes
                     if (sound != null)
                     {
                         SoundLoader.LoadSong(sound);
-                        soundPlayer.SoundLocation = sound.IsTrimmed ? SoundLoader.Sound.PathTrim : SoundLoader.Sound.Path;                        
+                        soundPlayer.SoundLocation = sound.IsTrimmed ? SoundLoader.Sound.PathTrim : SoundLoader.Sound.Path;
                         soundPlayer.Load();
-                    }                   
+                    }
                 }
 
                 IdEntered = "";
@@ -173,7 +178,7 @@ namespace GO_Radio.Classes
             IdEntered = "";
             timerClearInput.Stop();
         }
-        
+
         // Public methods
         public void Load()
         {
@@ -189,6 +194,8 @@ namespace GO_Radio.Classes
             SoundLoader.LoadSong(GetSoundById(0));
 
             KeyBindings.Load();
+            Cfg.Create.Init(KeyBindings);
+            Cfg.Create.CategoryList(CategoriesList);
 
         }
         public void Exit()
@@ -223,7 +230,7 @@ namespace GO_Radio.Classes
             catch (Exception)
             {
                 return null;
-            }          
+            }
         }
 
         // Command
@@ -276,6 +283,8 @@ namespace GO_Radio.Classes
 
             KeyBindingWindow kbw = new KeyBindingWindow(KeyBindings);
             kbw.ShowDialog();
+
+            Cfg.Create.Init(KeyBindings);
 
             keyboardHook.HookKeyboard();
         }

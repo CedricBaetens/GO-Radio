@@ -24,6 +24,7 @@ namespace GO_Radio.Classes
         [DataMember]
         public int StartId { get; set; }
         public int EndId { get { return (StartId + Size)-1; } }
+        public string Range { get { return string.Format("({0} - {1})", StartId.ToString("0000"), EndId.ToString("0000")); } }
 
         [DataMember]
         public int Size { get; set; } = 100;

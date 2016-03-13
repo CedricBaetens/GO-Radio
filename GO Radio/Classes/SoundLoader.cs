@@ -47,6 +47,7 @@ namespace GO_Radio.Classes
             TimePlaying = stopwatch.Elapsed;
         }
 
+        // Butoon Commands
         public void PlayPause()
         {
             switch (State)
@@ -94,6 +95,7 @@ namespace GO_Radio.Classes
             }      
         }
 
+        // State Functions
         public void Reset()
         {
             if (MessageBox.Show("Make sure you are not playing any sound in game!","Reset Sound Monitor",MessageBoxButton.OKCancel)==MessageBoxResult.OK)
@@ -103,91 +105,54 @@ namespace GO_Radio.Classes
                 stopwatch.Reset();
             }
         }
-
         private void Play()
         {
             State = SoundState.PLAYING;
             stopwatch.Start();
         }
-
         private void Stop()
         {
             State = SoundState.STOPPED;
             stopwatch.Reset();
+            LoadSong(Sound);
         }
-
         private void Pauze()
         {
             State = SoundState.PAUSED;
             stopwatch.Stop();
 
-            if (Sound.IsTrimmed)
-            {
-                SoundPauzed = new SoundNew(Sound.PathTrim);
-            }
-            else
-            {
-                SoundPauzed = new SoundNew(Sound.Path);
-            }
+            // Copy sound and trim it
+            SoundPauzed = new SoundNew(Sound.GetPath());
             SoundPauzed.Pauze(TimePlaying);
-            LoadSongPauzed(SoundPauzed);
+
+            CopyToGameDirectory(SoundPauzed);
         }
 
+        // Load Functions
         public void LoadSong(SoundNew sound)
         {
             try
             {
                 if (sound != null)
                 {
-
                     if (State == SoundState.PLAYING)
-                    {
                         State = SoundState.LOADEDSTILLPLAYING;
-                    }
                     else
-                    {
-                        State = SoundState.LOADED;
-                    }
+                        stopwatch.Reset();
 
-                    SoundToCsDir(sound);
+                    CopyToGameDirectory(sound);
                     Sound = sound;
                 }
             }
-            catch (Exception e)
-            {
-                int a = 0;
-            }
+            catch (Exception){}
         }
-        private void LoadSongPauzed(SoundNew sound)
-        {
-            try
-            {
-                if (sound != null)
-                {
-                    SoundToCsDir(sound);
-                }
-            }
-            catch
-            {
-                // ignored
-            }
-        }
-
-        private void SoundToCsDir(SoundNew sound)
+        private void CopyToGameDirectory(SoundNew sound)
         {
             if (File.Exists(ProgramSettings.PathCsgo + "\\voice_input.wav"))
-            {
                 File.Delete(ProgramSettings.PathCsgo + "\\voice_input.wav");
-            }
 
-            if (!string.IsNullOrEmpty(sound.PathTrim))
-            {
-                File.Copy(sound.PathTrim, ProgramSettings.PathCsgo + "\\voice_input.wav");
-            }
-            else
-            {
-                File.Copy(sound.Path, ProgramSettings.PathCsgo + "\\voice_input.wav");
-            }
+            if (!string.IsNullOrEmpty(sound.GetPath()))
+                File.Copy(sound.GetPath(), ProgramSettings.PathCsgo + "\\voice_input.wav");
         }
     }
 }

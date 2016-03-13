@@ -28,7 +28,7 @@ namespace GO_Radio.Classes
 
         public void Start()
         {
-            ttsTimer.Start();
+            //ttsTimer.Start();
         }
 
         private void TtsTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)

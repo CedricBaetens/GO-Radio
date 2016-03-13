@@ -29,8 +29,7 @@ namespace GO_Radio.Classes
             K6,
             K7,
             K8,
-            K9,
-            
+            K9         
         }
 
         public ObservableCollection<BindableKey> Keys { get; set; }
@@ -39,32 +38,33 @@ namespace GO_Radio.Classes
         {
             Keys = new ObservableCollection<BindableKey>()
             {
-                new BindableKey() { Name="Play/Pauze", Description="Key that is used to play/pauze the selected sound.", Key = Key.Enter },
-                new BindableKey() { Name="Play/Stop", Description="Key that is used to play/stop the selected sound.", Key = Key.Subtract },
-                new BindableKey() { Name="Random Sound", Description="Key that is used to select a random sound.", Key = Key.Add },
-                new BindableKey() { Name="Number 0", Description="Key that is used to type in the number 0.", Key = Key.NumPad0 },
-                new BindableKey() { Name="Number 1", Description="Key that is used to type in the number 1.", Key = Key.NumPad1 },
-                new BindableKey() { Name="Number 2", Description="Key that is used to type in the number 2.", Key = Key.NumPad2 },
-                new BindableKey() { Name="Number 3", Description="Key that is used to type in the number 3.", Key = Key.NumPad3 },
-                new BindableKey() { Name="Number 4", Description="Key that is used to type in the number 4.", Key = Key.NumPad4 },
-                new BindableKey() { Name="Number 5", Description="Key that is used to type in the number 5.", Key = Key.NumPad5 },
-                new BindableKey() { Name="Number 6", Description="Key that is used to type in the number 6.", Key = Key.NumPad6 },
-                new BindableKey() { Name="Number 7", Description="Key that is used to type in the number 7.", Key = Key.NumPad7 },
-                new BindableKey() { Name="Number 8", Description="Key that is used to type in the number 8.", Key = Key.NumPad8 },
-                new BindableKey() { Name="Number 9", Description="Key that is used to type in the number 9.", Key = Key.NumPad9 }
+                new BindableKey(Key.PageDown) { Name="Play/Pauze", Description="Key that is used to play/pauze the selected sound." },
+                new BindableKey(Key.PageUp) { Name="Play/Stop", Description="Key that is used to play/stop the selected sound." },
+                new BindableKey(Key.Add) { Name="Random Sound", Description="Key that is used to select a random sound." },
+                new BindableKey(Key.NumPad0) { Name="Number 0", Description="Key that is used to type in the number 0."},
+                new BindableKey(Key.NumPad1) { Name="Number 1", Description="Key that is used to type in the number 1."},
+                new BindableKey(Key.NumPad2) { Name="Number 2", Description="Key that is used to type in the number 2." },
+                new BindableKey(Key.NumPad3) { Name="Number 3", Description="Key that is used to type in the number 3." },
+                new BindableKey(Key.NumPad4) { Name="Number 4", Description="Key that is used to type in the number 4."  },
+                new BindableKey(Key.NumPad5) { Name="Number 5", Description="Key that is used to type in the number 5."  },
+                new BindableKey(Key.NumPad6) { Name="Number 6", Description="Key that is used to type in the number 6." },
+                new BindableKey(Key.NumPad7) { Name="Number 7", Description="Key that is used to type in the number 7." },
+                new BindableKey(Key.NumPad8) { Name="Number 8", Description="Key that is used to type in the number 8." },
+                new BindableKey(Key.NumPad9) { Name="Number 9", Description="Key that is used to type in the number 9." }
             };
         }
 
         public void Load()
         {
-            string loc = Path.Combine(ProgramSettings.AppFolder, "keybindings.json");
-            if (File.Exists(loc))
-            {
-                string json = File.ReadAllText(loc);
-                Keys = JsonConvert.DeserializeObject<ObservableCollection<BindableKey>>(json);
-            }
-        }
+            //string loc = Path.Combine(ProgramSettings.AppFolder, "keybindings.json");
+            //if (File.Exists(loc))
+            //{
+            //    string json = File.ReadAllText(loc);
+            //    Keys = JsonConvert.DeserializeObject<ObservableCollection<BindableKey>>(json);
+            //}
 
+            //int a = 0;
+        }
         public void Save()
         {
             string json = JsonConvert.SerializeObject(Keys, Formatting.Indented);
@@ -87,19 +87,58 @@ namespace GO_Radio.Classes
         public string Name { get; set; }
         public string Description { get; set; }
         public Key Key { get; set; }
+        public string KeyCsGo { get; set; }
+
+        private Dictionary<Key, string> CsGoKeys = new Dictionary<Key, string>()
+            {
+                { Key.Insert,"ins" },
+                { Key.Delete,"del" },
+                { Key.Home,"Home" },
+                { Key.End,"End" },
+                { Key.PageUp,"pgup" },
+                { Key.PageDown,"pgdn" },
+            };
 
         private LowLevelKeyboardListener keyboardHook;
+
+        public BindableKey(Key key)
+        {
+            keyboardHook = new LowLevelKeyboardListener();
+            keyboardHook.OnKeyPressed += KeyboardHook_OnKeyPressed;
+
+            Key = key;
+            if (CsGoKeys.ContainsKey(key))
+            {
+                KeyCsGo = CsGoKeys[Key];
+            }
+        }
 
         public BindableKey()
         {
             keyboardHook = new LowLevelKeyboardListener();
-            keyboardHook.OnKeyPressed += KeyboardHook_OnKeyPressed;           
+            keyboardHook.OnKeyPressed += KeyboardHook_OnKeyPressed;
+
+            if (CsGoKeys.ContainsKey(Key))
+            {
+                KeyCsGo = CsGoKeys[Key];
+            }
         }
 
         private void KeyboardHook_OnKeyPressed(object sender, KeyPressedArgs e)
         {
-            Key = e.KeyPressed;
-            keyboardHook.UnHookKeyboard();
+            if (e.KeyPressed != Key.Enter & CsGoKeys.ContainsKey(e.KeyPressed))
+            {
+                Key = e.KeyPressed;
+                KeyCsGo = CsGoKeys[Key];
+                keyboardHook.UnHookKeyboard();
+            }
+            else
+            {
+                keyboardHook.UnHookKeyboard();
+                MessageBox.Show("This is not a valid key! Please choose another key.");
+                keyboardHook.HookKeyboard();
+            }
+            
         }
 
         public void ChangeKey()
@@ -107,6 +146,5 @@ namespace GO_Radio.Classes
             keyboardHook.HookKeyboard();
         }
         public ICommand CommandChangeKey => new RelayCommand(ChangeKey);
-
     }
 }

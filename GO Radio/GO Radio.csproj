@@ -135,6 +135,7 @@
     <Compile Include="Classes\SoundNew.cs" />
     <Compile Include="Classes\Tts.cs" />
     <Compile Include="Classes\WPF_Extended_Extended\TimeSpanExtended.cs" />
+    <Compile Include="ConsoleChecker.cs" />
     <Compile Include="Views\DownloadWindow.xaml.cs">
       <DependentUpon>DownloadWindow.xaml</DependentUpon>
     </Compile>
