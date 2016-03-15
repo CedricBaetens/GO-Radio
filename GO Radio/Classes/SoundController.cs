@@ -12,6 +12,8 @@ using System.Windows;
 using System.Windows.Input;
 using GO_Radio.Views;
 using System.Timers;
+using System.Windows.Forms;
+using System.Drawing;
 
 namespace GO_Radio.Classes
 {
@@ -30,9 +32,10 @@ namespace GO_Radio.Classes
         // Varaibles
         private LowLevelKeyboardListener keyboardHook;
         private SoundPlayer soundPlayer;
-        private Timer timerClearInput;
+        private System.Timers.Timer timerClearInput;
         private ConsoleChecker consoleChecker;
 
+        ConsoleWindow cw = new ConsoleWindow();
 
         // Constructor
         public SoundController()
@@ -48,7 +51,7 @@ namespace GO_Radio.Classes
             TextToSpeech = new Tts();
             TextToSpeech.OnTtsDetected += TextToSpeech_OnTtsDetected;
 
-            timerClearInput = new Timer();
+            timerClearInput = new System.Timers.Timer();
             timerClearInput.Elapsed += TimerClearInput_Elapsed;
             timerClearInput.Interval = 5000;
 
@@ -67,6 +70,19 @@ namespace GO_Radio.Classes
         private void KeyboardHook_OnKeyPressed(object sender, KeyPressedArgs e)
         {
             char tempdd = (char)e.KeyPressed;
+
+            if (e.KeyPressed == Key.Pause)
+            {
+                if (cw.IsActive)
+                {
+                    cw.Hide();
+                    cw = new ConsoleWindow();
+                }
+                else
+                {
+                    cw.Show();
+                }
+            }
 
             if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinder.KeyTranslation.PlayStop].Key)
                 SoundLoader.PlayStop();
@@ -215,7 +231,7 @@ namespace GO_Radio.Classes
             }
             catch (Exception)
             {
-                MessageBox.Show("Error writing data, please make sure the sound folder exists.");
+                System.Windows.MessageBox.Show("Error writing data, please make sure the sound folder exists.");
             }
 
             KeyBindings.Save();
