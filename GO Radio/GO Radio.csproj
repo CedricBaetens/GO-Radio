@@ -136,7 +136,7 @@
     <Compile Include="Classes\SoundNew.cs" />
     <Compile Include="Classes\Tts.cs" />
     <Compile Include="Classes\WPF_Extended_Extended\TimeSpanExtended.cs" />
-    <Compile Include="ConsoleChecker.cs" />
+    <Compile Include="Classes\ConsoleChecker.cs" />
     <Compile Include="Views\ConsoleWindow.xaml.cs">
       <DependentUpon>ConsoleWindow.xaml</DependentUpon>
     </Compile>
@@ -161,7 +161,7 @@
     <Compile Include="Views\TrimWindow.xaml.cs">
       <DependentUpon>TrimWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="YoutubeDownloader.cs" />
+    <Compile Include="Classes\YoutubeDownloader.cs" />
     <Page Include="Views\AddCategoryWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

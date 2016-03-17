@@ -25,7 +25,8 @@ DisableDirPage=yes
 DisableProgramGroupPage=yes
 OutputBaseFilename=setup_{#MyAppName}_{#MyAppVersion}
 Compression=none
-;SolidCompression=yes
+;SolidCompression=yes    
+SetupIconFile="radio.ico"
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"

@@ -40,38 +40,27 @@ namespace GO_Radio.Classes
         // Constructor
         public SoundController()
         {
-            //Sounds = new Dictionary<int, SoundNew>();
-            //Categories = new ObservableCollection<Category>();
-            CategoriesList = new CategoryList();
-
-            keyboardHook = new LowLevelKeyboardListener();
-            keyboardHook.OnKeyPressed += KeyboardHook_OnKeyPressed;
-            soundPlayer = new SoundPlayer();
-
+            // Instanciate
+            CategoriesList = new CategoryList();            
             TextToSpeech = new Tts();
-            TextToSpeech.OnTtsDetected += TextToSpeech_OnTtsDetected;
-
-            timerClearInput = new System.Timers.Timer();
-            timerClearInput.Elapsed += TimerClearInput_Elapsed;
-            timerClearInput.Interval = 5000;
-
             SoundLoader = new SoundLoader();
-
             KeyBindings = new KeyBinder();
 
+            keyboardHook = new LowLevelKeyboardListener();
+            soundPlayer = new SoundPlayer();
             consoleChecker = new ConsoleChecker();
+            timerClearInput = new System.Timers.Timer(5000);
+
+            // Events
+            keyboardHook.OnKeyPressed += KeyboardHook_OnKeyPressed;           
+            timerClearInput.Elapsed += TimerClearInput_Elapsed;
+            consoleChecker.OnCommandDetected += ConsoleChecker_OnCommandDetected;
         }
 
         // Events
-        private void TextToSpeech_OnTtsDetected(object sender, Tts.ProgressEventArgs e)
-        {
-            SoundLoader.LoadSong(e.Sound);
-        }
         private void KeyboardHook_OnKeyPressed(object sender, KeyPressedArgs e)
         {
-            char tempdd = (char)e.KeyPressed;
-
-            if (e.KeyPressed == Key.Pause)
+            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinder.KeyTranslation.Console].Key)
             {
                 if (cw.IsActive)
                 {
@@ -195,6 +184,21 @@ namespace GO_Radio.Classes
             timerClearInput.Stop();
         }
 
+        private void ConsoleChecker_OnCommandDetected(object sender, ConsoleChecker.ProgressEventArgs e)
+        {
+            switch (e.Detected.Command)
+            {
+                case Commandos.LOAD:
+                    SoundLoader.LoadSong(GetSoundById(Convert.ToInt32(e.Detected.Response)));
+                    break;
+                case Commandos.TTS:
+                    SoundLoader.LoadSong(TextToSpeech.GetSound(e.Detected.Response));
+                    break;
+                default:
+                    break;
+            }
+        }
+
         // Public methods
         public void Load()
         {
@@ -205,7 +209,7 @@ namespace GO_Radio.Classes
                 CategoriesList.UpdateDictionary();
             }
 
-            TextToSpeech.Start();
+            //TextToSpeech.Start();
             keyboardHook.HookKeyboard();
             SoundLoader.LoadSong(GetSoundById(0));
 

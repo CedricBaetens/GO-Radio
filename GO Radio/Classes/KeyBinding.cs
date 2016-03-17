@@ -29,7 +29,8 @@ namespace GO_Radio.Classes
             K6,
             K7,
             K8,
-            K9         
+            K9,
+            Console
         }
 
         public ObservableCollection<BindableKey> Keys { get; set; }
@@ -50,7 +51,8 @@ namespace GO_Radio.Classes
                 new BindableKey(Key.NumPad6) { Name="Number 6", Description="Key that is used to type in the number 6." },
                 new BindableKey(Key.NumPad7) { Name="Number 7", Description="Key that is used to type in the number 7." },
                 new BindableKey(Key.NumPad8) { Name="Number 8", Description="Key that is used to type in the number 8." },
-                new BindableKey(Key.NumPad9) { Name="Number 9", Description="Key that is used to type in the number 9." }
+                new BindableKey(Key.NumPad9) { Name="Number 9", Description="Key that is used to type in the number 9." },
+                new BindableKey(Key.Delete) { Name="Open Console", Description="Key that is used to open the GO Radio Console Overlay." }
             };
         }
 
