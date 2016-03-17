@@ -8,6 +8,13 @@ using System.Timers;
 
 namespace GO_Radio
 {
+    enum Commandos
+    {
+        LOAD,
+        TTS,
+        UNKNOWN
+    }
+
     class ConsoleChecker
     {
         // Used for event
@@ -77,7 +84,6 @@ namespace GO_Radio
 
     class ConsoleCommand
     {
-        //public string Command { get; private set; }
         public string Response { get; private set; }
         public Commandos Command { get; set; }
 
@@ -94,12 +100,5 @@ namespace GO_Radio
             }
             Response = split[2];
         }
-    }
-
-    enum Commandos
-    {
-        LOAD,
-        TTS,
-        UNKNOWN
     }
 }

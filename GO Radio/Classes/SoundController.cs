@@ -34,8 +34,7 @@ namespace GO_Radio.Classes
         private SoundPlayer soundPlayer;
         private System.Timers.Timer timerClearInput;
         private ConsoleChecker consoleChecker;
-
-        ConsoleWindow cw = new ConsoleWindow();
+        private ConsoleWindow consoleWindow;
 
         // Constructor
         public SoundController()
@@ -50,6 +49,7 @@ namespace GO_Radio.Classes
             soundPlayer = new SoundPlayer();
             consoleChecker = new ConsoleChecker();
             timerClearInput = new System.Timers.Timer(5000);
+            consoleWindow = new ConsoleWindow();
 
             // Events
             keyboardHook.OnKeyPressed += KeyboardHook_OnKeyPressed;           
@@ -61,17 +61,7 @@ namespace GO_Radio.Classes
         private void KeyboardHook_OnKeyPressed(object sender, KeyPressedArgs e)
         {
             if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinder.KeyTranslation.Console].Key)
-            {
-                if (cw.IsActive)
-                {
-                    cw.Hide();
-                    cw = new ConsoleWindow();
-                }
-                else
-                {
-                    cw.Show();
-                }
-            }
+                consoleWindow.Display();
 
             if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinder.KeyTranslation.PlayStop].Key)
                 SoundLoader.PlayStop();

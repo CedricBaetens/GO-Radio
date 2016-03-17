@@ -24,6 +24,24 @@ namespace GO_Radio.Views
         {
             InitializeComponent();
 
+            BringToTop();
+        }
+
+        public void Display()
+        {
+            if (IsActive)
+            {
+                Hide();
+            }
+            else
+            {
+                Show();
+                BringToTop();
+            }
+        }
+
+        private void BringToTop()
+        {
             // CONSOLE TEMP HAS TO GO
             Screen screen2 = Screen.AllScreens[0];
             var rectangle = screen2.WorkingArea;
