@@ -29,23 +29,26 @@ namespace GO_Radio
         {
             checkTimer = new Timer();
             checkTimer.Elapsed += CheckTimer_Elapsed;
-            checkTimer.Interval = 1000;
+            checkTimer.Interval = 250;
             checkTimer.Start();
         }
 
         private void CheckTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
+            checkTimer.Stop();
+
             var text = GetLastLine();
             if (!string.IsNullOrEmpty(text))
             {
-                checkTimer.Stop();
+                
                 ConsoleCommand command = new ConsoleCommand(text);
                 if (IsValidCommand(command))
                 {
                     CommandDetected(command);
                 }
-                checkTimer.Start();
             }
+
+            checkTimer.Start();
         }
 
         private string GetLastLine()
@@ -89,16 +92,16 @@ namespace GO_Radio
 
         public ConsoleCommand(string input)
         {
-            var split = input.Split(new[] { ' ' }, 3);
+            var split = input.Replace("] ", "").Split(new[] { ' ' }, 2);
             try
             {
-                Command = (Commandos)Enum.Parse(typeof(Commandos), split[1].ToUpper());
+                Command = (Commandos)Enum.Parse(typeof(Commandos), split[0].ToUpper());
             }
             catch (Exception e)
             {
                 Command = Commandos.UNKNOWN;
             }
-            Response = split[2];
+            Response = split[1];
         }
     }
 }

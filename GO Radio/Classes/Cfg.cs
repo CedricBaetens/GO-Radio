@@ -55,7 +55,7 @@ namespace GO_Radio.Classes
             {
                 List<string> content = new List<string>();
 
-                content.Add(string.Format("echo Loaded {0}: {1};condump; ", sound.Id.ToString("0000"), sound.Name));
+                content.Add(string.Format("echo load {0};condump; ", sound.Id.ToString("0000")));
 
                 File.WriteAllLines(string.Format("{0}\\csgo\\cfg\\radio_category_soundload{1}.cfg", ProgramSettings.PathCsgo, sound.Id.ToString("0000")), content);
             }
