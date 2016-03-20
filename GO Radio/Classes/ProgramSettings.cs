@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using GO_Radio.Classes;
 using System.Windows.Forms;
 using PropertyChanged;
+using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 namespace GO_Radio
 {
@@ -15,42 +17,64 @@ namespace GO_Radio
     /// Class that contains where the CS folder and sound folder is.
     /// </summary>
     [ImplementPropertyChanged]
-    public static class ProgramSettings
+    [DataContract]
+    public class ProgramSettings
     {
-        // Properties
-        public static string PathCsgo { get; set; }
-        public static string PathSounds { get; set; }
-        public static string PathTemp { get { return PathSounds + "\\audio\\tmp\\"; } }
-        public static string PathVideo { get { return PathSounds + "\\audio\\tmp\\vid\\"; } }
-        public static string PathNew { get { return PathSounds + "\\new\\"; } }
-        public static string AppFolder { get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GO Radio"); } }
+        // Singleton Patern
+        private static ProgramSettings instance;
+        private ProgramSettings() { }
+        public static ProgramSettings Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new ProgramSettings();
+                }
+                return instance;
+            }
+        }
 
+        // Properties
+        [DataMember]
+        public string PathCsgo { get; set; }
+        [DataMember]
+        public string PathSounds { get; set; }
+        public string PathTemp { get { return PathSounds + "\\audio\\tmp\\"; } }
+        public string PathVideo { get { return PathSounds + "\\audio\\tmp\\vid\\"; } }
+        public string PathNew { get { return PathSounds + "\\new\\"; } }
+        public string AppFolder { get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GO Radio"); } }
 
         // Public Methods
-        public static void Init()
+        public void Save()
         {
-            Load();
-            Check();
+            string json = JsonConvert.SerializeObject(this, Formatting.Indented);
+            try
+            {
+                File.WriteAllText(AppFolder + "\\settings.json", json);
+            }
+            catch (Exception)
+            {
+                System.Windows.MessageBox.Show("Error writing settings.");
+            }
         }
-        public static void Save()
+        public void Load()
         {
-            Properties.Settings.Default.PathCsgo = PathCsgo;
-            Properties.Settings.Default.PathSounds = PathSounds;
-            Properties.Settings.Default.Save();
+            string loc = Path.Combine(AppFolder, "settings.json");
+            if (File.Exists(loc))
+            {
+                string json = File.ReadAllText(loc);
+                instance = JsonConvert.DeserializeObject<ProgramSettings>(json);
+            }
+
+            Check();
         }
 
         // Private Methods
-        private static void Load()
-        {
-            var set = Properties.Settings.Default;
-
-            PathCsgo = set.PathCsgo;
-            PathSounds = set.PathSounds;
-        }
-        private static void Check()
+        private void Check()
         {
             // CSGO Path
-            if (string.IsNullOrEmpty(PathCsgo))
+            if (string.IsNullOrEmpty(Instance.PathCsgo))
             {
                 if (Directory.Exists(@"C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive"))
                 {
@@ -67,7 +91,7 @@ namespace GO_Radio
 
                     if (!string.IsNullOrEmpty(fbd.SelectedPath))
                     {
-                        PathCsgo = fbd.SelectedPath;
+                        Instance.PathCsgo = fbd.SelectedPath;
                     }
                     else
                     {
@@ -78,7 +102,7 @@ namespace GO_Radio
             }
 
             // Sound Path
-            if (string.IsNullOrEmpty(PathSounds))
+            if (string.IsNullOrEmpty(Instance.PathSounds))
             {
                     FolderBrowserDialog fbd = new FolderBrowserDialog()
                     {
@@ -89,7 +113,7 @@ namespace GO_Radio
                     if (!string.IsNullOrEmpty(fbd.SelectedPath))
                     {
                         string path = fbd.SelectedPath + "\\Sounds";
-                        PathSounds = path;
+                        Instance.PathSounds = path;
                         CreateFolders();
                     }
                     else
@@ -99,18 +123,17 @@ namespace GO_Radio
             }
 
 
-            CheckFolder(PathTemp);
-            CheckFolder(PathVideo);
-            CheckFolder(PathNew);
-            CheckFolder(AppFolder);      
+            CheckFolder(Instance.PathTemp);
+            CheckFolder(Instance.PathVideo);
+            CheckFolder(Instance.PathNew);
+            CheckFolder(Instance.AppFolder);      
         }  
-        private static void CreateFolders()
+        private void CreateFolders()
         {
             Directory.CreateDirectory(PathSounds + "\\audio");
             Directory.CreateDirectory(PathSounds + "\\new");
-        }  
-        
-        private static void CheckFolder(string url)
+        }        
+        private void CheckFolder(string url)
         {
             if (!Directory.Exists(url))
             {

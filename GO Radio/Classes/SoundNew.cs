@@ -21,6 +21,7 @@ namespace GO_Radio.Classes
         public bool IsTrimmed { get { return string.IsNullOrEmpty(PathTrim) ? false : true; } }
         public TimeSpan TrimStart { get; set; }
         public TimeSpan TrimEnd { get; set; }
+        public float Volume { get; set; } = 100;
 
         public SoundNew(string path, int id = -1)
         {

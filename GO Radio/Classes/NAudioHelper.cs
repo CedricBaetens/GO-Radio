@@ -62,7 +62,7 @@ namespace GO_Radio.Classes
              int channels = 1;
 
             // ReSample
-            string path = string.Format("{0}\\audio\\{1}{2}", ProgramSettings.PathSounds, unconvertedSound.Name, ".wav");
+            string path = string.Format("{0}\\audio\\{1}{2}", ProgramSettings.Instance.PathSounds, unconvertedSound.Name, ".wav");
             using (var reader = new MediaFoundationReader(unconvertedSound.Path))
             {
                 WaveChannel32 wav = new WaveChannel32(reader);
@@ -78,6 +78,28 @@ namespace GO_Radio.Classes
             File.Delete(unconvertedSound.Path);
 
             return new SoundNew(path);
+        }
+
+        public static void Create(SoundNew sound, string output)
+        {
+            int sampleRate = 22050;
+            int bits = 16;
+            int channels = 1;
+
+            // ReSample
+            //string path = string.Format("{0}\\audio\\{1}{2}", ProgramSettings.Instance.PathSounds, unconvertedSound.Name, ".wav");
+            using (var reader = new MediaFoundationReader(sound.Path))
+            {
+                WaveChannel32 wav = new WaveChannel32(reader);
+                wav.Volume = sound.Volume / 100;
+                wav.PadWithZeroes = false;
+
+                using (var resampler = new MediaFoundationResampler(wav, new WaveFormat(sampleRate, bits, channels)))
+                {
+                    resampler.ResamplerQuality = 60;
+                    WaveFileWriter.CreateWaveFile(output, resampler);
+                }
+            }
         }
     }
 }

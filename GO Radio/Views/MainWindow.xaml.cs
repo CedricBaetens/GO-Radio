@@ -64,7 +64,7 @@ namespace GO_Radio
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             // Settings
-            ProgramSettings.Init();
+            ProgramSettings.Instance.Load();
 
             // SoundController
             SoundController.Load();
@@ -72,7 +72,7 @@ namespace GO_Radio
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
             // Settings
-            ProgramSettings.Save();
+            ProgramSettings.Instance.Save();
 
             // SoundController
             SoundController.Exit();

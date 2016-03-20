@@ -70,7 +70,7 @@ namespace GO_Radio.Classes
         public void Save()
         {
             string json = JsonConvert.SerializeObject(Keys, Formatting.Indented);
-            string loc = Path.Combine(ProgramSettings.AppFolder ,"keybindings.json");
+            string loc = Path.Combine(ProgramSettings.Instance.AppFolder ,"keybindings.json");
 
             try
             {

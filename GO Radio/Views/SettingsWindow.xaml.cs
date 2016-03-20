@@ -28,8 +28,8 @@ namespace GO_Radio.Views
         {
             InitializeComponent();
 
-            PathSounds = ProgramSettings.PathSounds;
-            PathCsgo = ProgramSettings.PathCsgo;
+            PathSounds = ProgramSettings.Instance.PathSounds;
+            PathCsgo = ProgramSettings.Instance.PathCsgo;
 
             DataContext = this;
         }
@@ -64,8 +64,8 @@ namespace GO_Radio.Views
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            ProgramSettings.PathCsgo = PathCsgo;
-            ProgramSettings.PathSounds = PathSounds;
+            ProgramSettings.Instance.PathCsgo = PathCsgo;
+            ProgramSettings.Instance.PathSounds = PathSounds;
         }
     }
 }

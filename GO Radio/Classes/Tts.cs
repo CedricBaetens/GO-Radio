@@ -15,7 +15,7 @@ namespace GO_Radio.Classes
         int count = 0;
         public SoundNew GetSound(string text)
         {
-            string pathNotConv = string.Format("{0}\\audio\\tmp\\Text To Speech {1}.wav", ProgramSettings.PathSounds, count++);
+            string pathNotConv = string.Format("{0}\\audio\\tmp\\Text To Speech {1}.wav", ProgramSettings.Instance.PathSounds, count++);
 
             using (var synth = new SpeechSynthesizer())
             {

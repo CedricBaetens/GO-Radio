@@ -144,15 +144,20 @@ namespace GO_Radio.Classes
                     Sound = sound;
                 }
             }
-            catch (Exception){}
+            catch (Exception e){
+                int a = 0;
+            }
         }
         private void CopyToGameDirectory(SoundNew sound)
         {
-            if (File.Exists(ProgramSettings.PathCsgo + "\\voice_input.wav"))
-                File.Delete(ProgramSettings.PathCsgo + "\\voice_input.wav");
+            if (File.Exists(ProgramSettings.Instance.PathCsgo + "\\voice_input.wav"))
+                File.Delete(ProgramSettings.Instance.PathCsgo + "\\voice_input.wav");
 
-            if (!string.IsNullOrEmpty(sound.GetPath()))
-                File.Copy(sound.GetPath(), ProgramSettings.PathCsgo + "\\voice_input.wav");
+            AudioHelper.Create(sound, ProgramSettings.Instance.PathCsgo + "\\voice_input.wav");
+
+            int a = 0;
+            //if (!string.IsNullOrEmpty(sound.GetPath()))
+            //    File.Copy(sound.GetPath(), ProgramSettings.Instance.PathCsgo + "\\voice_input.wav");
         }
     }
 }

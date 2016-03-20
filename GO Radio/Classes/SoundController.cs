@@ -192,9 +192,9 @@ namespace GO_Radio.Classes
         // Public methods
         public void Load()
         {
-            if (File.Exists(ProgramSettings.PathSounds + "\\data.json"))
+            if (File.Exists(ProgramSettings.Instance.PathSounds + "\\data.json"))
             {
-                string json = File.ReadAllText(ProgramSettings.PathSounds + "\\data.json");
+                string json = File.ReadAllText(ProgramSettings.Instance.PathSounds + "\\data.json");
                 CategoriesList.Import(JsonConvert.DeserializeObject<ObservableCollection<Category>>(json));
                 CategoriesList.UpdateDictionary();
             }
@@ -221,7 +221,7 @@ namespace GO_Radio.Classes
 
             try
             {
-                File.WriteAllText(ProgramSettings.PathSounds + "\\data.json", json);
+                File.WriteAllText(ProgramSettings.Instance.PathSounds + "\\data.json", json);
             }
             catch (Exception)
             {
