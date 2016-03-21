@@ -173,7 +173,6 @@ namespace GO_Radio.Classes
             IdEntered = "";
             timerClearInput.Stop();
         }
-
         private void ConsoleChecker_OnCommandDetected(object sender, ConsoleChecker.ProgressEventArgs e)
         {
             switch (e.Detected.Command)

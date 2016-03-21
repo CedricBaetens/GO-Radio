@@ -22,7 +22,10 @@ namespace GO_Radio
     {
         // Singleton Patern
         private static ProgramSettings instance;
-        private ProgramSettings() { }
+        private ProgramSettings()
+        {
+            AudioDeviceSettings = new AudioDeviceSettings();
+        }
         public static ProgramSettings Instance
         {
             get
@@ -44,6 +47,9 @@ namespace GO_Radio
         public string PathVideo { get { return PathSounds + "\\audio\\tmp\\vid\\"; } }
         public string PathNew { get { return PathSounds + "\\new\\"; } }
         public string AppFolder { get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GO Radio"); } }
+
+        //[DataMember]
+        public AudioDeviceSettings AudioDeviceSettings { get; set; }
 
         // Public Methods
         public void Save()
@@ -126,7 +132,7 @@ namespace GO_Radio
             CheckFolder(Instance.PathTemp);
             CheckFolder(Instance.PathVideo);
             CheckFolder(Instance.PathNew);
-            CheckFolder(Instance.AppFolder);      
+            CheckFolder(Instance.AppFolder);
         }  
         private void CreateFolders()
         {

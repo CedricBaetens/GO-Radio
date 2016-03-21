@@ -26,32 +26,39 @@ namespace GO_Radio.Classes
 
         public void CheckForUpdate()
         {
-            WebClient webClient = new WebClient();
-            webClient.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
-            webClient.Headers.Add("Cache-Control", "no-cache");
-
-            Random r = new Random();
-            var random = r.Next();
-
-            var textFromFile = webClient.DownloadString(url + "?rand=" + random);
-
-            // Xml
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(textFromFile);
-            XmlNode versionNode = doc.DocumentElement.SelectSingleNode("version");
-            XmlNode urlNode = doc.DocumentElement.SelectSingleNode("url");
-
-            latestVersion = new Version(versionNode.InnerText);
-            latesestVersionUrl = urlNode.InnerText;
-
-            if (latestVersion > currentVersion)
+            try
             {
-                if(MessageBox.Show("New version availible, would you like to download it?","Update!",MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                WebClient webClient = new WebClient();
+                webClient.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
+                webClient.Headers.Add("Cache-Control", "no-cache");
+
+                Random r = new Random();
+                var random = r.Next();
+
+                var textFromFile = webClient.DownloadString(url + "?rand=" + random);
+
+                // Xml
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(textFromFile);
+                XmlNode versionNode = doc.DocumentElement.SelectSingleNode("version");
+                XmlNode urlNode = doc.DocumentElement.SelectSingleNode("url");
+
+                latestVersion = new Version(versionNode.InnerText);
+                latesestVersionUrl = urlNode.InnerText;
+
+                if (latestVersion > currentVersion)
                 {
-                    DownloadWindow dw = new DownloadWindow(latesestVersionUrl, latestVersion);
-                    dw.ShowDialog();
+                    if (MessageBox.Show("New version availible, would you like to download it?", "Update!", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    {
+                        DownloadWindow dw = new DownloadWindow(latesestVersionUrl, latestVersion);
+                        dw.ShowDialog();
+                    }
                 }
             }
+            catch (Exception e)
+            {
+                //
+            }          
         }
     }
 }

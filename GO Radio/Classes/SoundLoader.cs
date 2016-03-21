@@ -1,4 +1,5 @@
-﻿using PropertyChanged;
+﻿using NAudio.Wave;
+using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,6 +25,10 @@ namespace GO_Radio.Classes
 
         public SoundState State { get; set; }
 
+        private WaveIn virtualInput;
+        private WaveOut virtualOutput;
+        private WaveOut speakers;
+
         public enum SoundState
         {
             LOADED,
@@ -40,6 +45,8 @@ namespace GO_Radio.Classes
             timer.Interval = 1;
             timer.Elapsed += Timer_Elapsed;
             timer.Start();
+
+            CorrectDevices();
         }
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
@@ -158,6 +165,38 @@ namespace GO_Radio.Classes
             int a = 0;
             //if (!string.IsNullOrEmpty(sound.GetPath()))
             //    File.Copy(sound.GetPath(), ProgramSettings.Instance.PathCsgo + "\\voice_input.wav");
+        }
+
+
+        // Audio device
+        public void CorrectDevices()
+        {
+            // Find Input Device
+            for (int i = 0; i < WaveIn.DeviceCount; i++)
+            {
+                var input = WaveIn.GetCapabilities(i);
+                if (input.ProductName.Contains("CABLE Output (VB-Audio Virtual"))
+                {
+                    virtualInput = new WaveIn();
+                    virtualInput.DeviceNumber = i;
+                }
+            }
+
+            // Find Output Device
+            for (int i = 0; i < WaveOut.DeviceCount; i++)
+            {
+                var output = WaveOut.GetCapabilities(i);
+                if (output.ProductName.Contains("CABLE Input (VB-Audio Virtual C"))
+                {
+                    virtualOutput = new WaveOut();
+                    virtualOutput.DeviceNumber = i;
+                }
+            }
+
+            // Default Audio Device
+            speakers = new WaveOut();
+            speakers.DeviceNumber = 0;
+
         }
     }
 }
