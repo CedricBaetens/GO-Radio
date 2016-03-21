@@ -24,7 +24,6 @@ namespace GO_Radio
         private static ProgramSettings instance;
         private ProgramSettings()
         {
-            AudioDeviceSettings = new AudioDeviceSettings();
         }
         public static ProgramSettings Instance
         {
@@ -47,9 +46,6 @@ namespace GO_Radio
         public string PathVideo { get { return PathSounds + "\\audio\\tmp\\vid\\"; } }
         public string PathNew { get { return PathSounds + "\\new\\"; } }
         public string AppFolder { get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GO Radio"); } }
-
-        //[DataMember]
-        public AudioDeviceSettings AudioDeviceSettings { get; set; }
 
         // Public Methods
         public void Save()

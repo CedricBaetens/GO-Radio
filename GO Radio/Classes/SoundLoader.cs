@@ -25,9 +25,11 @@ namespace GO_Radio.Classes
 
         public SoundState State { get; set; }
 
-        private WaveIn virtualInput;
+        private WaveIn microphone;
         private WaveOut virtualOutput;
+        private WaveOut virtualOutputForMic;
         private WaveOut speakers;
+        private BufferedWaveProvider bwp;
 
         public enum SoundState
         {
@@ -116,12 +118,19 @@ namespace GO_Radio.Classes
         {
             State = SoundState.PLAYING;
             stopwatch.Start();
+
+            speakers.Play();
+            virtualOutput.Play();
+
         }
         private void Stop()
         {
             State = SoundState.STOPPED;
             stopwatch.Reset();
             LoadSong(Sound);
+
+            speakers.Stop();
+            virtualOutput.Stop();
         }
         private void Pauze()
         {
@@ -149,6 +158,12 @@ namespace GO_Radio.Classes
 
                     CopyToGameDirectory(sound);
                     Sound = sound;
+
+                    var reader = new WaveFileReader(Sound.Path);
+                    speakers.Init(reader);
+
+                    var reader2 = new WaveFileReader(Sound.Path);
+                    virtualOutput.Init(reader2);
                 }
             }
             catch (Exception e){
@@ -171,17 +186,6 @@ namespace GO_Radio.Classes
         // Audio device
         public void CorrectDevices()
         {
-            // Find Input Device
-            for (int i = 0; i < WaveIn.DeviceCount; i++)
-            {
-                var input = WaveIn.GetCapabilities(i);
-                if (input.ProductName.Contains("CABLE Output (VB-Audio Virtual"))
-                {
-                    virtualInput = new WaveIn();
-                    virtualInput.DeviceNumber = i;
-                }
-            }
-
             // Find Output Device
             for (int i = 0; i < WaveOut.DeviceCount; i++)
             {
@@ -190,6 +194,9 @@ namespace GO_Radio.Classes
                 {
                     virtualOutput = new WaveOut();
                     virtualOutput.DeviceNumber = i;
+
+                    virtualOutputForMic = new WaveOut();
+                    virtualOutputForMic.DeviceNumber = i;
                 }
             }
 
@@ -197,6 +204,23 @@ namespace GO_Radio.Classes
             speakers = new WaveOut();
             speakers.DeviceNumber = 0;
 
+            // Micro
+            microphone = new WaveIn();
+            microphone.DeviceNumber = 0;
+            microphone.WaveFormat = new NAudio.Wave.WaveFormat(44100, NAudio.Wave.WaveIn.GetCapabilities(0).Channels);
+
+            microphone.DataAvailable += Microphone_DataAvailable;
+            bwp = new BufferedWaveProvider(microphone.WaveFormat);
+            bwp.DiscardOnBufferOverflow = true;
+
+            virtualOutputForMic.Init(bwp);
+            microphone.StartRecording();
+            virtualOutputForMic.Play();
+        }
+
+        private void Microphone_DataAvailable(object sender, WaveInEventArgs e)
+        {
+            bwp.AddSamples(e.Buffer, 0, e.BytesRecorded);
         }
     }
 }
