@@ -120,12 +120,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\ActiveProcess.cs" />
     <Compile Include="Classes\AutoUpdater.cs" />
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\CategoryList.cs" />
     <Compile Include="Classes\Cfg.cs" />
+    <Compile Include="Classes\Config\ConfigSelection.cs" />
     <Compile Include="Classes\Convertors.cs" />
     <Compile Include="Classes\KeyBinding.cs" />
+    <Compile Include="Classes\KeyboardController.cs" />
+    <Compile Include="Classes\KeyEvent.cs" />
     <Compile Include="Classes\SoundLoader.cs" />
     <Compile Include="Classes\NAudioHelper.cs" />
     <Compile Include="Classes\ProgramSettings.cs" />

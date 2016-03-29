@@ -59,49 +59,55 @@ namespace GO_Radio.Classes
         // Butoon Commands
         public void PlayPause()
         {
-            switch (State)
+            if (ActiveProcess.IsCSGO())
             {
-                case SoundState.LOADED:
-                    Play();
-                    break;
-                case SoundState.STOPPED:
-                    Play();
-                    break;
-                case SoundState.PLAYING:
-                    Pauze();
-                    break;
-                case SoundState.PAUSED:
-                    Play();
-                    break;
-                case SoundState.LOADEDSTILLPLAYING:
-                    Stop();
-                    break;
-                default:
-                    break;
-            }
+                switch (State)
+                {
+                    case SoundState.LOADED:
+                        Play();
+                        break;
+                    case SoundState.STOPPED:
+                        Play();
+                        break;
+                    case SoundState.PLAYING:
+                        Pauze();
+                        break;
+                    case SoundState.PAUSED:
+                        Play();
+                        break;
+                    case SoundState.LOADEDSTILLPLAYING:
+                        Stop();
+                        break;
+                    default:
+                        break;
+                }
+            }   
         }
         public void PlayStop()
         {
-            switch (State)
+            if (ActiveProcess.IsCSGO())
             {
-                case SoundState.LOADED:
-                    Play();
-                    break;
-                case SoundState.STOPPED:
-                    Play();
-                    break;
-                case SoundState.PLAYING:
-                    Stop();
-                    break;
-                case SoundState.PAUSED:
-                    Play();
-                    break;
-                case SoundState.LOADEDSTILLPLAYING:
-                    Stop();
-                    break;
-                default:
-                    break;
-            }      
+                switch (State)
+                {
+                    case SoundState.LOADED:
+                        Play();
+                        break;
+                    case SoundState.STOPPED:
+                        Play();
+                        break;
+                    case SoundState.PLAYING:
+                        Stop();
+                        break;
+                    case SoundState.PAUSED:
+                        Play();
+                        break;
+                    case SoundState.LOADEDSTILLPLAYING:
+                        Stop();
+                        break;
+                    default:
+                        break;
+                }
+            }           
         }
 
         // State Functions

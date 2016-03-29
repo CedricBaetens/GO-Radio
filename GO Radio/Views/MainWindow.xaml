@@ -42,6 +42,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -79,7 +80,10 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}" Margin="20,10,10,10">GO Radio</TextBlock>
+                <StackPanel>
+                    <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}">GO Radio</TextBlock>
+                </StackPanel>
+
                 <StackPanel Grid.Column="1" HorizontalAlignment="Right" Margin="5">
                     <TextBlock HorizontalAlignment="Right">Play/Stop: "PAGE UP"</TextBlock>
                     <TextBlock HorizontalAlignment="Right">Play/Pauze: "PAGE DOWN"</TextBlock>
@@ -89,8 +93,18 @@
             </Grid>
         </materialDesign:ColorZone>
 
+        <!--Configuration-->
+        <ComboBox ItemsSource="{Binding Config.Configurations}" SelectedItem="{Binding Config.ActiveConfiguration}" Grid.Row="2" Margin="10">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"></TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Button Grid.Row="2" Grid.Column="1" Command="{Binding CommandStart}">Start</Button>
+
         <!--Collection-->
-        <ScrollViewer Name="scrollViewer" VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="2" Grid.Row="2">
+        <ScrollViewer Name="scrollViewer" VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="2" Grid.Row="3">
             <StackPanel>
                 <!--CATEGORIES-->
                 <ItemsControl ItemsSource="{Binding CategoriesList.Categories}"  Visibility="{Binding Path=ShowList, Converter={StaticResource BoolInversToVisibility}}">
@@ -174,7 +188,7 @@
         </ScrollViewer>
 
         <!--Add new items-->
-        <materialDesign:PopupBox Grid.Row="2" 
+        <materialDesign:PopupBox Grid.Row="3" 
                                  Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}"                                        
                                  PlacementMode="TopAndAlignCentres"                                         
                                  ToolTipService.Placement="Left"
@@ -195,7 +209,7 @@
         </materialDesign:PopupBox>
 
         <!--Footer-->
-        <materialDesign:ColorZone Grid.Row="3" Mode="PrimaryMid" Grid.ColumnSpan="2">
+        <materialDesign:ColorZone Grid.Row="4" Mode="PrimaryMid" Grid.ColumnSpan="2">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
@@ -233,7 +247,7 @@
                 <TextBlock Grid.Column="2" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="20,10,10,10" VerticalAlignment="Center">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0}">
-                            <Binding Path="IdEntered" />
+                            <Binding Path="Keyboard.Input" />
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>

@@ -22,17 +22,15 @@ namespace GO_Radio.Classes
     {
         // Properties
         public CategoryList CategoriesList { get; set; }
-        public string IdEntered { get; set; } = "";
         public SoundLoader SoundLoader { get; set; }
         public Tts TextToSpeech { get; set; }
-        public KeyBinder KeyBindings { get; set; }
+        public ConfigSelection Config { get; set; }
+        public KeyboardController Keyboard { get; set; }
 
         public bool SoundIsPlaying { get; set; } = false;
 
         // Varaibles
-        private LowLevelKeyboardListener keyboardHook;
         private SoundPlayer soundPlayer;
-        private System.Timers.Timer timerClearInput;
         private ConsoleChecker consoleChecker;
         private ConsoleWindow consoleWindow;
 
@@ -43,142 +41,44 @@ namespace GO_Radio.Classes
             CategoriesList = new CategoryList();            
             TextToSpeech = new Tts();
             SoundLoader = new SoundLoader();
-            KeyBindings = new KeyBinder();
+            Config = new ConfigSelection();
+            Keyboard = new KeyboardController();
 
-            keyboardHook = new LowLevelKeyboardListener();
             soundPlayer = new SoundPlayer();
             consoleChecker = new ConsoleChecker();
-            timerClearInput = new System.Timers.Timer(5000);
             consoleWindow = new ConsoleWindow();
 
-            // Events
-            keyboardHook.OnKeyPressed += KeyboardHook_OnKeyPressed;           
-            timerClearInput.Elapsed += TimerClearInput_Elapsed;
+
+            // Events        
+            Keyboard.IdEntered += Keyboard_IdEntered;
+            Keyboard.ButtonPressed += Keyboard_ButtonPressed;
             consoleChecker.OnCommandDetected += ConsoleChecker_OnCommandDetected;
         }
 
-        // Events
-        private void KeyboardHook_OnKeyPressed(object sender, KeyPressedArgs e)
+        private void Keyboard_ButtonPressed(object sender, KeyboardController.ButtonEventArgs e)
         {
-            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinder.KeyTranslation.Console].Key)
-                consoleWindow.Display();
-
-            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinder.KeyTranslation.PlayStop].Key)
-                SoundLoader.PlayStop();
-
-            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinder.KeyTranslation.PlayPauze].Key)
-                SoundLoader.PlayPause();
-
-            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinder.KeyTranslation.Random].Key)
-                IdEntered += "+";
-
-            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinder.KeyTranslation.K0].Key)
-                IdEntered += "0";
-
-            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinder.KeyTranslation.K1].Key)
-                IdEntered += "1";
-
-            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinder.KeyTranslation.K2].Key)
-                IdEntered += "2";
-
-            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinder.KeyTranslation.K3].Key)
-                IdEntered += "3";
-
-            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinder.KeyTranslation.K4].Key)
-                IdEntered += "4";
-
-            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinder.KeyTranslation.K5].Key)
-                IdEntered += "5";
-
-            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinder.KeyTranslation.K6].Key)
-                IdEntered += "6";
-
-            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinder.KeyTranslation.K7].Key)
-                IdEntered += "7";
-
-            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinder.KeyTranslation.K8].Key)
-                IdEntered += "8";
-
-            if (e.KeyPressed == KeyBindings.Keys[(int)KeyBinder.KeyTranslation.K9].Key)
-                IdEntered += "9";
-
-
-
-            if (IdEntered.Contains("+"))
+            switch(e.Key)
             {
-                var IdEnteredCharArr = IdEntered.Replace("+", "").ToCharArray();
-
-                List<int> temp = new List<int>();
-
-                foreach (var sound in CategoriesList.Sounds)
-                {
-                    var soundCharArray = sound.Key.ToString("0000").ToCharArray();
-
-                    bool keep = true;
-                    for (int i = 0; i < IdEnteredCharArr.Length; i++)
-                    {
-                        if (soundCharArray[i] != IdEnteredCharArr[i])
-                        {
-                            keep = false;
-                        }
-                    }
-
-                    if (keep)
-                    {
-                        temp.Add(sound.Key);
-                    }
-                }
-
-                if (temp.Count > 0)
-                {
-                    Random rnd = new Random();
-                    var random = rnd.Next(temp.Count);
-
-                    IdEntered = temp[random].ToString("0000");
-                }
-                else
-                {
-                    IdEntered = "";
-                }
-
-            }
-            if (IdEntered.Length >= 4)
-            {
-                // Check if id is valid
-                if (!string.IsNullOrEmpty(IdEntered))
-                {
-                    int id = Convert.ToInt32(IdEntered);
-                    var sound = GetSoundById(id);
-
-                    // Load Sound
-                    if (sound != null)
-                    {
-                        SoundLoader.LoadSong(sound);
-                        soundPlayer.SoundLocation = sound.IsTrimmed ? SoundLoader.Sound.PathTrim : SoundLoader.Sound.Path;
-                        soundPlayer.Load();
-                    }
-                }
-
-                IdEntered = "";
-            }
-
-
-            if (IdEntered != "")
-            {
-                timerClearInput.Start();
+                case KeyboardController.PressedKey.PlayStop:
+                    SoundLoader.PlayStop();
+                    break;
+                case KeyboardController.PressedKey.PlayPauze:
+                    SoundLoader.PlayPause();
+                    break;
             }
         }
-        private void TimerClearInput_Elapsed(object sender, ElapsedEventArgs e)
+        private void Keyboard_IdEntered(object sender, KeyboardController.IdEventArgs e)
         {
-            IdEntered = "";
-            timerClearInput.Stop();
+            SoundLoader.LoadSong(CategoriesList.GetSoundById(e.Input));
         }
+
+        
         private void ConsoleChecker_OnCommandDetected(object sender, ConsoleChecker.ProgressEventArgs e)
         {
             switch (e.Detected.Command)
             {
                 case Commandos.LOAD:
-                    SoundLoader.LoadSong(GetSoundById(Convert.ToInt32(e.Detected.Response)));
+                    SoundLoader.LoadSong(CategoriesList.GetSoundById(Convert.ToInt32(e.Detected.Response)));
                     break;
                 case Commandos.TTS:
                     SoundLoader.LoadSong(TextToSpeech.GetSound(e.Detected.Response));
@@ -199,18 +99,16 @@ namespace GO_Radio.Classes
             }
 
             //TextToSpeech.Start();
-            keyboardHook.HookKeyboard();
-            SoundLoader.LoadSong(GetSoundById(0));
+            SoundLoader.LoadSong(CategoriesList.GetSoundById(0));
 
-            KeyBindings.Load();
-            Cfg.Create.Init(KeyBindings);
+            Cfg.Create.Init(Keyboard.KeyBindings);
             Cfg.Create.CategoryList(CategoriesList);
 
         }
         public void Exit()
         {
             Save();
-            keyboardHook.UnHookKeyboard();
+            Keyboard.UnHook();
         }
 
         // Private methods
@@ -226,20 +124,10 @@ namespace GO_Radio.Classes
             {
                 System.Windows.MessageBox.Show("Error writing data, please make sure the sound folder exists.");
             }
-
-            KeyBindings.Save();
         }
-        private SoundNew GetSoundById(int id)
+        private void Start()
         {
-            try
-            {
-                var sound = CategoriesList.Sounds[id];
-                return sound;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            //Config.ActiveConfiguration.
         }
 
         // Command
@@ -248,25 +136,26 @@ namespace GO_Radio.Classes
         public ICommand CommandAddCategory => new RelayCommand(ShowCategoryWindow);
         public ICommand CommandAddSound => new RelayCommand(ShowSoundWindow);
         public ICommand CommandPlayPauzeSound => new RelayCommand(SoundplayerPlayPauzeSound);
+        public ICommand CommandStart => new RelayCommand(Start);
 
         private void ShowCategoryWindow()
         {
-            keyboardHook.UnHookKeyboard();
+            Keyboard.UnHook();
 
             AddCategoryWindow acw = new AddCategoryWindow(CategoriesList);
             acw.ShowDialog();
             Save();
 
-            keyboardHook.HookKeyboard();
+            Keyboard.Hook();
         }
         private void ShowSoundWindow()
         {
-            keyboardHook.UnHookKeyboard();
+            Keyboard.UnHook();
 
             ImportWindow iw = new ImportWindow(CategoriesList);
             iw.ShowDialog();
 
-            keyboardHook.HookKeyboard();
+            Keyboard.Hook();
             CategoriesList.UpdateDictionary();
             Save();
         }
@@ -288,14 +177,14 @@ namespace GO_Radio.Classes
         }
         private void ShowKeyBinding()
         {
-            keyboardHook.UnHookKeyboard();
+            Keyboard.UnHook();
 
-            KeyBindingWindow kbw = new KeyBindingWindow(KeyBindings);
+            KeyBindingWindow kbw = new KeyBindingWindow(Keyboard.KeyBindings);
             kbw.ShowDialog();
 
-            Cfg.Create.Init(KeyBindings);
+            Cfg.Create.Init(Keyboard.KeyBindings);
 
-            keyboardHook.HookKeyboard();
+            Keyboard.Hook();
         }
     }
 }

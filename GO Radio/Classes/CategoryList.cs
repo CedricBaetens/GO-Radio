@@ -85,5 +85,56 @@ namespace GO_Radio.Classes
             }         
             return true;
         }
+
+        public SoundNew GetSoundById(int id)
+        {
+            if (Sounds.ContainsKey(id))
+            {
+                return Sounds[id];
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public SoundNew GetSoundById(string id)
+        {
+            // Get Random Song
+            if (id.Contains("+"))
+            {
+                var IdEnteredCharArr = id.Replace("+", "").ToCharArray();
+                List<int> temp = new List<int>();
+                foreach (var sound in Sounds)
+                {
+                    var soundCharArray = sound.Key.ToString("0000").ToCharArray();
+
+                    bool keep = true;
+                    for (int i = 0; i < IdEnteredCharArr.Length; i++)
+                    {
+                        if (soundCharArray[i] != IdEnteredCharArr[i])
+                        {
+                            keep = false;
+                        }
+                    }
+
+                    if (keep)
+                    {
+                        temp.Add(sound.Key);
+                    }
+                }
+
+                if (temp.Count > 0)
+                {
+                    Random rnd = new Random();
+                    var random = rnd.Next(temp.Count);
+
+                    return GetSoundById(temp[random]);
+                }
+                return null;
+            }
+
+            // Return sound
+            return GetSoundById(Convert.ToInt32(id));           
+        }
     }
 }
