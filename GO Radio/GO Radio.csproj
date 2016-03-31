@@ -121,31 +121,33 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Classes\ActiveProcess.cs" />
+    <Compile Include="Classes\ApplicationTypes\ApplicationType.cs" />
     <Compile Include="Classes\AutoUpdater.cs" />
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\CategoryList.cs" />
     <Compile Include="Classes\Cfg.cs" />
-    <Compile Include="Classes\Config\ConfigSelection.cs" />
+    <Compile Include="Classes\ApplicationTypes\ApplicationSelection.cs" />
     <Compile Include="Classes\Convertors.cs" />
+    <Compile Include="Classes\ILoadSave.cs" />
     <Compile Include="Classes\KeyBinding.cs" />
     <Compile Include="Classes\KeyboardController.cs" />
     <Compile Include="Classes\KeyEvent.cs" />
+    <Compile Include="Classes\ApplicationTypes\Other.cs" />
     <Compile Include="Classes\SoundLoader.cs" />
     <Compile Include="Classes\NAudioHelper.cs" />
     <Compile Include="Classes\ProgramSettings.cs" />
     <Compile Include="Classes\KeyboardHook.cs" />
     <Compile Include="Classes\RellayCommand.cs" />
-    <Compile Include="Classes\SoundController.cs" />
+    <Compile Include="Classes\MainController.cs" />
+    <Compile Include="Classes\SoundLoaderAdvanced.cs" />
     <Compile Include="Classes\SoundUnconverted.cs" />
     <Compile Include="Classes\SoundNew.cs" />
+    <Compile Include="Classes\ApplicationTypes\SourceGame.cs" />
     <Compile Include="Classes\Tts.cs" />
     <Compile Include="Classes\WPF_Extended_Extended\TimeSpanExtended.cs" />
     <Compile Include="Classes\ConsoleChecker.cs" />
     <Compile Include="Views\AudioDeviceWindow.xaml.cs">
       <DependentUpon>AudioDeviceWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ConsoleWindow.xaml.cs">
-      <DependentUpon>ConsoleWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DownloadWindow.xaml.cs">
       <DependentUpon>DownloadWindow.xaml</DependentUpon>
@@ -174,10 +176,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AudioDeviceWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ConsoleWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

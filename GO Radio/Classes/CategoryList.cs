@@ -1,7 +1,9 @@
-﻿using PropertyChanged;
+﻿using Newtonsoft.Json;
+using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +12,7 @@ using System.Windows;
 namespace GO_Radio.Classes
 {
     [ImplementPropertyChanged]
-    public class CategoryList
+    public class CategoryList : ILoadSave
     {
         public Dictionary<int, SoundNew> Sounds { get; set; }   // Used for easy finding of songs
         public ObservableCollection<Category> Categories { get; set; }
@@ -46,14 +48,6 @@ namespace GO_Radio.Classes
         {
             Categories.Remove(cat);
         }
-        public void Import(ObservableCollection<Category> Categories)
-        {
-            foreach (var item in Categories)
-            {
-                Add(item);
-            }
-        }
-
         public void UpdateDictionary()
         {
             Dictionary<int, SoundNew> dic = new Dictionary<int, SoundNew>();
@@ -135,6 +129,30 @@ namespace GO_Radio.Classes
 
             // Return sound
             return GetSoundById(Convert.ToInt32(id));           
+        }
+
+        // Interface Methods
+        public void Load()
+        {
+            if (File.Exists(ProgramSettings.Instance.PathSounds + "\\data.json"))
+            {
+                string json = File.ReadAllText(ProgramSettings.Instance.PathSounds + "\\data.json");
+                Categories = JsonConvert.DeserializeObject<ObservableCollection<Category>>(json);
+                UpdateDictionary();
+            }
+        }
+        public void Save()
+        {
+            string json = JsonConvert.SerializeObject(Categories, Formatting.Indented);
+
+            try
+            {
+                File.WriteAllText(ProgramSettings.Instance.PathSounds + "\\data.json", json);
+            }
+            catch (Exception)
+            {
+                System.Windows.MessageBox.Show("Error writing data, please make sure the sound folder exists.");
+            }
         }
     }
 }

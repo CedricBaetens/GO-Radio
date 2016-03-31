@@ -35,9 +35,7 @@ namespace GO_Radio
     public partial class MainWindow : Window
     {
         #region Properties
-        public SoundController SoundController { get; set; }
-        public bool ShowList { get; set; } = false;
-        public bool SoundIsPlaying { get; set; }
+        public MainController MainController { get; set; }
         #endregion
 
         AutoUpdater au;
@@ -50,12 +48,6 @@ namespace GO_Radio
             // Updates
             au = new AutoUpdater("http://www.baellon.com/goradioapp/version.txt", Assembly.GetExecutingAssembly().GetName().Version);
             au.CheckForUpdate();
-
-            // Instanciate
-            SoundController = new SoundController();
-
-            // Binding
-            DataContext = SoundController;
         }
         #endregion
 
@@ -66,8 +58,12 @@ namespace GO_Radio
             // Settings
             ProgramSettings.Instance.Load();
 
-            // SoundController
-            SoundController.Load();
+            // Instanciate
+            MainController = new MainController();
+            MainController.Load();
+
+            // Binding
+            DataContext = MainController;
         }
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
@@ -75,7 +71,7 @@ namespace GO_Radio
             ProgramSettings.Instance.Save();
 
             // SoundController
-            SoundController.Exit();
+            MainController.Exit();
 
             // Cfg
             Cfg.Remove.Init();

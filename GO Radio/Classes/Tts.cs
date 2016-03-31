@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace GO_Radio.Classes
 {
-    public class Tts
+    public static class Tts
     {
-        int count = 0;
-        public SoundNew GetSound(string text)
+        static int count = 0;
+        public static SoundNew GetSound(string text)
         {
             string pathNotConv = string.Format("{0}\\audio\\tmp\\Text To Speech {1}.wav", ProgramSettings.Instance.PathSounds, count++);
 

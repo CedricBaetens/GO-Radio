@@ -28,9 +28,9 @@ namespace GO_Radio.Classes
             return null;
         }
 
-        public static bool IsCSGO()
+        public static bool IsSame(string input)
         {
-            return GetActiveWindowTitle() == "Counter-Strike: Global Offensive" ? true : false;
+            return GetActiveWindowTitle() == input ? true : false;
         }
     }
 }

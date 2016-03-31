@@ -18,7 +18,7 @@ namespace GO_Radio
     /// </summary>
     [ImplementPropertyChanged]
     [DataContract]
-    public class ProgramSettings
+    public class ProgramSettings : ILoadSave
     {
         // Singleton Patern
         private static ProgramSettings instance;

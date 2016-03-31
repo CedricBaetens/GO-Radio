@@ -134,4 +134,40 @@ namespace GO_Radio.Classes
             return null;
         }
     }
+
+    [ValueConversion(typeof(ApplicationSelection.ApplicationState), typeof(bool))]
+    public class ApplicationStateToBool : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if ((ApplicationSelection.ApplicationState)value == (ApplicationSelection.ApplicationState)parameter)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return null;
+        }
+    }
+
+    [ValueConversion(typeof(ApplicationSelection.ApplicationState), typeof(Visibility))]
+    public class ApplicationStateToVisibility : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if ((ApplicationSelection.ApplicationState)value == (ApplicationSelection.ApplicationState)parameter)
+            {
+                return Visibility.Visible;
+            }
+            return Visibility.Hidden;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return null;
+        }
+    }
 }

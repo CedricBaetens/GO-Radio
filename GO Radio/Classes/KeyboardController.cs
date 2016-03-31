@@ -26,7 +26,6 @@ namespace GO_Radio.Classes
             // Events
             timerClearInput.Elapsed += TimerClearInput_Elapsed;
             keyboardHook.OnKeyPressed += KeyboardHook_OnKeyPressed;
-            keyboardHook.HookKeyboard();
         }
 
         public void Hook()
@@ -36,6 +35,7 @@ namespace GO_Radio.Classes
         public void UnHook()
         {
             keyboardHook.UnHookKeyboard();
+            Input = "";
         }
 
 
