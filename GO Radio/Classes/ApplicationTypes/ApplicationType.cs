@@ -49,7 +49,7 @@ namespace GO_Radio.Classes
             SoundLoader.LoadSong(Data.GetSoundById(e.Input));
         }
 
-        public void Start()
+        public virtual void Start()
         {
             Keyboard.Hook();
         }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GO_Radio.Classes
 {
@@ -38,6 +39,16 @@ namespace GO_Radio.Classes
                 default:
                     break;
             }
+        }
+
+        public override void Start()
+        {
+            base.Start();
+
+            MessageBox.Show("Dont forget to type 'exec radio' in the console!");
+            Cfg.Create.Init(Keyboard.KeyBindings);
+            Cfg.Create.CategoryList(Data);
+
         }
     }
 }
