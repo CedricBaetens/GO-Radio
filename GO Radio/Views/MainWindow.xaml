@@ -13,7 +13,7 @@
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
-        WindowStyle="SingleBorderWindow" KeyDown="Window_KeyDown" PreviewKeyDown="Window_PreviewKeyDown"
+        WindowStyle="SingleBorderWindow"
         >
 
     <Window.Resources>

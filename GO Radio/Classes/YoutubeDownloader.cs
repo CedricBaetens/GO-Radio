@@ -94,7 +94,7 @@ namespace GO_Radio
                 item.CurrentState = ItemToDownload.Status.DONE;
                 FireConvertionComplete();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 item.CurrentState = ItemToDownload.Status.FAILED;
             }

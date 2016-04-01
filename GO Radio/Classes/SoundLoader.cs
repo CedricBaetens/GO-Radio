@@ -142,8 +142,9 @@ namespace GO_Radio.Classes
                     Sound = sound;
                 }
             }
-            catch (Exception e){
-                int a = 0;
+            catch (Exception)
+            {
+                //
             }
         }
 
@@ -153,10 +154,6 @@ namespace GO_Radio.Classes
                 File.Delete(copyPath + "\\voice_input.wav");
 
             AudioHelper.Create(sound, copyPath + "\\voice_input.wav");
-
-            int a = 0;
-            //if (!string.IsNullOrEmpty(sound.GetPath()))
-            //    File.Copy(sound.GetPath(), ProgramSettings.Instance.PathCsgo + "\\voice_input.wav");
         }
     }
 }

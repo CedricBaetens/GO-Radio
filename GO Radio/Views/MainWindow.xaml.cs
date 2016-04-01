@@ -79,34 +79,10 @@ namespace GO_Radio
 
         #endregion
 
-        private void ShowSettingsWindow()
-        {
-            SettingsWindow sw = new SettingsWindow();
-            sw.ShowDialog();
-        }
-
         // Fix scrollwheel on datagrid
         private void DataGrid_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
         }
-
-        private void Window_KeyDown(object sender, KeyEventArgs e)
-        {
-            System.Windows.Forms.Keys key = (System.Windows.Forms.Keys)e.Key;
-            int a = 0;
-        }
-
-        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            int a = 0;
-        }
-
-        // Command Binding
-        //public ICommand CommandViewCategories { get { return new RelayCommand(ViewCategories); } }
-        //public ICommand CommandViewList { get { return new RelayCommand(ViewList); } }
-        //public ICommand CommandSettings { get { return new RelayCommand(ShowSettingsWindow); } }
-        //public ICommand CommandTextToSpeech { get { return new RelayCommand(TextToSpeech); } }
-        //public ICommand CommandPlayPauzeSound { get { return new RelayCommand(PlayPauzeSound); } }
     }
 }

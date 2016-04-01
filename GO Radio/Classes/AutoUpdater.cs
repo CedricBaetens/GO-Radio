@@ -55,7 +55,7 @@ namespace GO_Radio.Classes
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //
             }          

@@ -97,7 +97,7 @@ namespace GO_Radio
             {
                 Command = (Commandos)Enum.Parse(typeof(Commandos), split[0].ToUpper());
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Command = Commandos.UNKNOWN;
             }
