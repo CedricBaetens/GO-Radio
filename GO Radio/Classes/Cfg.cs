@@ -22,7 +22,7 @@ namespace GO_Radio.Classes
                 content.Add(string.Format("bind {0} bs_play", keybindings.Keys[(int)KeyBinder.KeyTranslation.PlayPauze].KeyCsGo));
                 content.Add(string.Format("bind {0} bs_play", keybindings.Keys[(int)KeyBinder.KeyTranslation.PlayStop].KeyCsGo));
 
-                File.WriteAllLines(ProgramSettings.Instance.PathCsgo + "\\csgo\\cfg\\radio.cfg", content);
+                //File.WriteAllLines(ProgramSettings.Instance.PathCsgo + "\\csgo\\cfg\\radio.cfg", content);
             }
             public static void CategoryList(CategoryList list)
             {
@@ -36,7 +36,7 @@ namespace GO_Radio.Classes
                     content.Add(string.Format("alias c{0} \"exec radio_category_soundlist{0}.cfg\"", count++));
                 }
 
-                File.WriteAllLines(ProgramSettings.Instance.PathCsgo + "\\csgo\\cfg\\radio_categorylist.cfg", content);
+                //File.WriteAllLines(ProgramSettings.Instance.PathCsgo + "\\csgo\\cfg\\radio_categorylist.cfg", content);
             }
             private static void SongList(Category category, int index)
             {
@@ -49,7 +49,7 @@ namespace GO_Radio.Classes
                     content.Add(string.Format("alias {0} \"exec radio_category_soundload{0}.cfg\"",sound.Id.ToString("0000")));
                 }
 
-                File.WriteAllLines(string.Format("{0}\\csgo\\cfg\\radio_category_soundlist{1}.cfg", ProgramSettings.Instance.PathCsgo,index), content);
+                //File.WriteAllLines(string.Format("{0}\\csgo\\cfg\\radio_category_soundlist{1}.cfg", ProgramSettings.Instance.PathCsgo,index), content);
             }
             private static void SongLoad(SoundNew sound)
             {
@@ -57,14 +57,14 @@ namespace GO_Radio.Classes
 
                 content.Add(string.Format("echo load {0};condump; ", sound.Id.ToString("0000")));
 
-                File.WriteAllLines(string.Format("{0}\\csgo\\cfg\\radio_category_soundload{1}.cfg", ProgramSettings.Instance.PathCsgo, sound.Id.ToString("0000")), content);
+                //File.WriteAllLines(string.Format("{0}\\csgo\\cfg\\radio_category_soundload{1}.cfg", ProgramSettings.Instance.PathCsgo, sound.Id.ToString("0000")), content);
             }
         }
         public static class Remove
         {
             public static void Init()
             {
-                File.Delete(ProgramSettings.Instance.PathCsgo + "\\csgo\\cfg\\radio.cfg");
+                //File.Delete(ProgramSettings.Instance.PathCsgo + "\\csgo\\cfg\\radio.cfg");
             }
         }       
     }

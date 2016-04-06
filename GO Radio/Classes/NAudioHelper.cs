@@ -62,7 +62,8 @@ namespace GO_Radio.Classes
              int channels = 1;
 
             // ReSample
-            string path = string.Format("{0}\\audio\\{1}{2}", ProgramSettings.Instance.PathSounds, unconvertedSound.Name, ".wav");
+            //string path = string.Format("{0}\\audio\\{1}{2}", ProgramSettings.Instance.PathSounds, unconvertedSound.Name, ".wav");
+            string path = ""; // NEEDS TO BE DELETED
             using (var reader = new MediaFoundationReader(unconvertedSound.Path))
             {
                 WaveChannel32 wav = new WaveChannel32(reader);

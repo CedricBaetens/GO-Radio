@@ -1,13 +1,14 @@
-﻿using System;
+﻿using GO_Radio.Classes.Settings;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GO_Radio.Classes.Settings
+namespace GO_Radio.Classes.ApplicationTypes
 {
-    class ProgramSelector
+    public class ProgramSelector
     {
         public enum ApplicationState
         {
@@ -50,12 +51,12 @@ namespace GO_Radio.Classes.Settings
         public void Start()
         {
             State = ApplicationState.RUNNING;
-            ActiveConfiguration.Start();
+            //ActiveConfiguration.Start();
         }
         public void Stop()
         {
             State = ApplicationState.STANDBY;
-            ActiveConfiguration.Stop();
+            //ActiveConfiguration.Stop();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GO_Radio.Classes.ApplicationTypes;
+using GO_Radio.Classes.Settings;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -135,12 +137,12 @@ namespace GO_Radio.Classes
         }
     }
 
-    [ValueConversion(typeof(ApplicationSelection.ApplicationState), typeof(bool))]
+    [ValueConversion(typeof(ProgramSelector.ApplicationState), typeof(bool))]
     public class ApplicationStateToBool : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if ((ApplicationSelection.ApplicationState)value == (ApplicationSelection.ApplicationState)parameter)
+            if ((ProgramSelector.ApplicationState)value == (ProgramSelector.ApplicationState)parameter)
             {
                 return true;
             }
@@ -153,12 +155,12 @@ namespace GO_Radio.Classes
         }
     }
 
-    [ValueConversion(typeof(ApplicationSelection.ApplicationState), typeof(Visibility))]
+    [ValueConversion(typeof(ProgramSelector.ApplicationState), typeof(Visibility))]
     public class ApplicationStateToVisibility : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if ((ApplicationSelection.ApplicationState)value == (ApplicationSelection.ApplicationState)parameter)
+            if ((ProgramSelector.ApplicationState)value == (ProgramSelector.ApplicationState)parameter)
             {
                 return Visibility.Visible;
             }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GO_Radio.Classes.Settings
 {
-    class ProgramSelectionSetting
+    public class ProgramSelectionSetting
     {
     }
 }

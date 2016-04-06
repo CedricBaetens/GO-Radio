@@ -14,8 +14,8 @@
         ResizeMode="NoResize">
     <Window.Resources>
         <ResourceDictionary>
-            <classes:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
-            <classes:BooleanInversToVisibilityConverter x:Key="BoolInversToVisibility"/>
+            <!--<classes:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+            <classes:BooleanInversToVisibilityConverter x:Key="BoolInversToVisibility"/>-->
         </ResourceDictionary>
     </Window.Resources>
     

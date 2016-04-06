@@ -13,7 +13,8 @@
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
     <Window.Resources>
         <ResourceDictionary>
-            <classes:KeyToStringConvertor x:Key="KeyToStringConvertor"/>
+            <!--<classes:KeyToStringConvertor x:Key="KeyToStringConvertor"/>-->
+            <classes:KeyToStringConvertor x:Key="TEST"></classes:KeyToStringConvertor>
         </ResourceDictionary>
     </Window.Resources>
     

@@ -142,10 +142,12 @@ namespace GO_Radio.Views
         // Custom methods
         private ObservableCollection<SoundUnconverted> GetNewSounds()
         {
-            string[] newSoundsStrings = System.IO.Directory.GetFiles(ProgramSettings.Instance.PathSounds + "\\new", "*.*", System.IO.SearchOption.AllDirectories);
+            //string[] newSoundsStrings = System.IO.Directory.GetFiles(ProgramSettings.Instance.PathSounds + "\\new", "*.*", System.IO.SearchOption.AllDirectories);
 
-            return
-                new ObservableCollection<SoundUnconverted>(newSoundsStrings.Select(newSound => new SoundUnconverted(newSound)).ToList());
+            //return
+            //new ObservableCollection<SoundUnconverted>(newSoundsStrings.Select(newSound => new SoundUnconverted(newSound)).ToList());
+
+            return null;
         }  
     }
 }

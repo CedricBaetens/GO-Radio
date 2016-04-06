@@ -114,7 +114,8 @@ namespace GO_Radio
             var video = best;
 
             // Save video
-            var path = ProgramSettings.Instance.PathVideo + video.FullName;
+            //var path = ProgramSettings.Instance.PathVideo + video.FullName;
+            var path = ""; // HAS tO BE DELETED
             File.WriteAllBytes(path, video.GetBytes());
 
             return new DownloadedVideo() { Path = path, Name = video.Title };
@@ -127,7 +128,7 @@ namespace GO_Radio
             
             ffmpegProces.StartInfo.UseShellExecute = false;
             ffmpegProces.StartInfo.FileName = "ffmpeg.exe";
-            ffmpegProces.StartInfo.Arguments = string.Format("-y -i \"{0}\" \"{1}{2}.mp3\"", video.Path, ProgramSettings.Instance.PathNew, ReplaceInvalidChar(video.Name));
+            //ffmpegProces.StartInfo.Arguments = string.Format("-y -i \"{0}\" \"{1}{2}.mp3\"", video.Path, ProgramSettings.Instance.PathNew, ReplaceInvalidChar(video.Name));
             ffmpegProces.StartInfo.CreateNoWindow = true;
             ffmpegProces.Start();
             ffmpegProces.WaitForExit();
@@ -184,12 +185,12 @@ namespace GO_Radio
         }
         private void EmptyVideoFolder()
         {
-            // Clear vid folder
-            DirectoryInfo dir = new DirectoryInfo(ProgramSettings.Instance.PathVideo);
-            foreach (FileInfo fi in dir.GetFiles())
-            {
-                fi.Delete();
-            }
+            //// Clear vid folder
+            //DirectoryInfo dir = new DirectoryInfo(ProgramSettings.Instance.PathVideo);
+            //foreach (FileInfo fi in dir.GetFiles())
+            //{
+            //    fi.Delete();
+            //}
         }
 
         // Classes

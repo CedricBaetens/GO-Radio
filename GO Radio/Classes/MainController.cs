@@ -15,6 +15,7 @@ using System.Timers;
 using System.Windows.Forms;
 using System.Drawing;
 using GO_Radio.Classes.Settings;
+using GO_Radio.Classes.ApplicationTypes;
 
 namespace GO_Radio.Classes
 {
@@ -77,19 +78,19 @@ namespace GO_Radio.Classes
         }
         private void SoundplayerPlayPauzeSound()
         {
-            if (soundPlayer.IsLoadCompleted)
-            {
-                if (SoundIsPlaying)
-                {
-                    soundPlayer.Stop();
-                    SoundIsPlaying = false;
-                }
-                else
-                {
-                    soundPlayer.Play();
-                    SoundIsPlaying = true;
-                }
-            }
+            //if (soundPlayer.IsLoadCompleted)
+            //{
+            //    if (SoundIsPlaying)
+            //    {
+            //        soundPlayer.Stop();
+            //        SoundIsPlaying = false;
+            //    }
+            //    else
+            //    {
+            //        soundPlayer.Play();
+            //        SoundIsPlaying = true;
+            //    }
+            //}
         }
         private void ShowKeyBinding()
         {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GO_Radio.Classes.Settings
 {
-    class UserSettings
+    public class UserSettings
     {
         public ProgramSelectionSetting CsgoSettings { get; set; }
         public ProgramSelectionSetting SkypeSettings { get; set; }

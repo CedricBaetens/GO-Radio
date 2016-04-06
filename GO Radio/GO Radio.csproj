@@ -56,6 +56,14 @@
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Release\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="libvideo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VideoLibrary.1.3.3\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\libvideo.dll</HintPath>
@@ -121,21 +129,18 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Classes\ActiveProcess.cs" />
-    <Compile Include="Classes\ApplicationTypes\ApplicationType.cs" />
     <Compile Include="Classes\AutoUpdater.cs" />
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\CategoryList.cs" />
     <Compile Include="Classes\Cfg.cs" />
-    <Compile Include="Classes\ApplicationTypes\ApplicationSelection.cs" />
     <Compile Include="Classes\Convertors.cs" />
     <Compile Include="Classes\ILoadSave.cs" />
     <Compile Include="Classes\KeyBinding.cs" />
     <Compile Include="Classes\KeyboardController.cs" />
     <Compile Include="Classes\KeyEvent.cs" />
-    <Compile Include="Classes\ApplicationTypes\Other.cs" />
-    <Compile Include="Classes\Settings\ProgramSelection.cs" />
+    <Compile Include="Classes\ApplicationTypes\ProgramSelection.cs" />
     <Compile Include="Classes\Settings\ProgramSelectionSetting.cs" />
-    <Compile Include="Classes\Settings\ProgramSelector.cs" />
+    <Compile Include="Classes\ApplicationTypes\ProgramSelector.cs" />
     <Compile Include="Classes\Settings\SettingsController.cs" />
     <Compile Include="Classes\Settings\UserSettings.cs" />
     <Compile Include="Classes\SoundLoader.cs" />
@@ -147,7 +152,6 @@
     <Compile Include="Classes\SoundLoaderAdvanced.cs" />
     <Compile Include="Classes\SoundUnconverted.cs" />
     <Compile Include="Classes\SoundNew.cs" />
-    <Compile Include="Classes\ApplicationTypes\SourceGame.cs" />
     <Compile Include="Classes\Tts.cs" />
     <Compile Include="Classes\WPF_Extended_Extended\TimeSpanExtended.cs" />
     <Compile Include="Classes\ConsoleChecker.cs" />
@@ -165,9 +169,6 @@
     </Compile>
     <Compile Include="Views\MoveSoundWindow.xaml.cs">
       <DependentUpon>MoveSoundWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsWindow.xaml.cs">
-      <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TextToSpeechWindow.xaml.cs">
       <DependentUpon>TextToSpeechWindow.xaml</DependentUpon>
@@ -222,10 +223,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\SettingsWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\TextToSpeechWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

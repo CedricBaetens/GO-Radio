@@ -53,12 +53,12 @@ namespace GO_Radio
 
         private string GetLastLine()
         {
-            if (File.Exists(ProgramSettings.Instance.PathCsgo + "\\csgo\\condump000.txt"))
-            {
-                var lastLine = File.ReadLines(ProgramSettings.Instance.PathCsgo + "\\csgo\\condump000.txt").Last();
-                File.Delete(ProgramSettings.Instance.PathCsgo + "\\csgo\\condump000.txt");
-                return lastLine;
-            }
+            //if (File.Exists(ProgramSettings.Instance.PathCsgo + "\\csgo\\condump000.txt"))
+            //{
+            //    var lastLine = File.ReadLines(ProgramSettings.Instance.PathCsgo + "\\csgo\\condump000.txt").Last();
+            //    File.Delete(ProgramSettings.Instance.PathCsgo + "\\csgo\\condump000.txt");
+            //    return lastLine;
+            //}
             return "";
         }
         private bool IsValidCommand(ConsoleCommand input)
