@@ -133,9 +133,14 @@
     <Compile Include="Classes\KeyboardController.cs" />
     <Compile Include="Classes\KeyEvent.cs" />
     <Compile Include="Classes\ApplicationTypes\Other.cs" />
+    <Compile Include="Classes\Settings\ProgramSelection.cs" />
+    <Compile Include="Classes\Settings\ProgramSelectionSetting.cs" />
+    <Compile Include="Classes\Settings\ProgramSelector.cs" />
+    <Compile Include="Classes\Settings\SettingsController.cs" />
+    <Compile Include="Classes\Settings\UserSettings.cs" />
     <Compile Include="Classes\SoundLoader.cs" />
     <Compile Include="Classes\NAudioHelper.cs" />
-    <Compile Include="Classes\ProgramSettings.cs" />
+    <Compile Include="Classes\Settings\ProgramSettings.cs" />
     <Compile Include="Classes\KeyboardHook.cs" />
     <Compile Include="Classes\RellayCommand.cs" />
     <Compile Include="Classes\MainController.cs" />

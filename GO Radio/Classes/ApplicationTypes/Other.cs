@@ -8,5 +8,9 @@ namespace GO_Radio.Classes
 {
     public class Other : ApplicationType
     {
+        public Other(CategoryList data) : base(data)
+        {
+
+        }
     }
 }

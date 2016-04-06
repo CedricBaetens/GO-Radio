@@ -28,6 +28,7 @@ using System.Reflection;
 using System.Threading;
 using NAudio.Wave;
 using System.Deployment.Application;
+using GO_Radio.Classes.Settings;
 
 namespace GO_Radio
 {
@@ -45,9 +46,15 @@ namespace GO_Radio
         {
             InitializeComponent();
 
+            // Initialize
+            MainController = new MainController();
+
             // Updates
             au = new AutoUpdater("http://www.baellon.com/goradioapp/version.txt", Assembly.GetExecutingAssembly().GetName().Version);
             au.CheckForUpdate();
+
+            // Binding
+            DataContext = MainController;
         }
         #endregion
 
@@ -55,26 +62,11 @@ namespace GO_Radio
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            // Settings
-            ProgramSettings.Instance.Load();
-
-            // Instanciate
-            MainController = new MainController();
             MainController.Load();
-
-            // Binding
-            DataContext = MainController;
         }
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
-            // Settings
-            ProgramSettings.Instance.Save();
-
-            // SoundController
-            MainController.Exit();
-
-            // Cfg
-            Cfg.Remove.Init();
+            MainController.Save();
         }
 
         #endregion

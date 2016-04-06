@@ -19,13 +19,15 @@ namespace GO_Radio.Classes
         public KeyboardController Keyboard { get; set; }
         public SoundLoader SoundLoader { get; set; }
 
-        public ApplicationType()
+        public ApplicationType(CategoryList data)
         {
             Keyboard = new KeyboardController();
 
             // Events
             Keyboard.IdEntered += Keyboard_IdEntered;
             Keyboard.ButtonPressed += Keyboard_ButtonPressed;
+
+            Data = data;
         }
 
         // Events

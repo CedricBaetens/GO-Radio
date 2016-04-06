@@ -134,25 +134,25 @@ namespace GO_Radio.Classes
         // Interface Methods
         public void Load()
         {
-            if (File.Exists(ProgramSettings.Instance.PathSounds + "\\data.json"))
-            {
-                string json = File.ReadAllText(ProgramSettings.Instance.PathSounds + "\\data.json");
-                Categories = JsonConvert.DeserializeObject<ObservableCollection<Category>>(json);
-                UpdateDictionary();
-            }
+            //if (File.Exists(ProgramSettings.Instance.PathSounds + "\\data.json"))
+            //{
+            //    string json = File.ReadAllText(ProgramSettings.Instance.PathSounds + "\\data.json");
+            //    Categories = JsonConvert.DeserializeObject<ObservableCollection<Category>>(json);
+            //    UpdateDictionary();
+            //}
         }
         public void Save()
         {
-            string json = JsonConvert.SerializeObject(Categories, Formatting.Indented);
+            //string json = JsonConvert.SerializeObject(Categories, Formatting.Indented);
 
-            try
-            {
-                File.WriteAllText(ProgramSettings.Instance.PathSounds + "\\data.json", json);
-            }
-            catch (Exception)
-            {
-                System.Windows.MessageBox.Show("Error writing data, please make sure the sound folder exists.");
-            }
+            //try
+            //{
+            //    File.WriteAllText(ProgramSettings.Instance.PathSounds + "\\data.json", json);
+            //}
+            //catch (Exception)
+            //{
+            //    System.Windows.MessageBox.Show("Error writing data, please make sure the sound folder exists.");
+            //}
         }
     }
 }

@@ -31,14 +31,13 @@ namespace GO_Radio.Classes
         {
             // Instanciete 
             Data = new CategoryList();
-
             Configurations = new ObservableCollection<ApplicationType>
             {
                 new SourceGame(Data)
                 {
                     Name ="Counter Strike: Global Offensive"
                 },
-                new Other()
+                new Other(Data)
                 {
                     Name ="Other (Skype, ...) (Still in development)",
                     IsSelectable = false
@@ -49,7 +48,6 @@ namespace GO_Radio.Classes
         }
 
         
-
         // Interface Methods
         public void Start()
         {
@@ -64,7 +62,7 @@ namespace GO_Radio.Classes
 
         public void Exit()
         {
-            //Keyboard.UnHook();
+            ActiveConfiguration.Stop();
         }
 
         public bool IsIdle()

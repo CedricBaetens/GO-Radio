@@ -14,51 +14,33 @@ using GO_Radio.Views;
 using System.Timers;
 using System.Windows.Forms;
 using System.Drawing;
+using GO_Radio.Classes.Settings;
 
 namespace GO_Radio.Classes
 {
     [ImplementPropertyChanged]
     public class MainController : ILoadSave
     {
-        // Properties  
-        public ApplicationSelection ApplicationSelection { get; set; }
-
-        public bool SoundIsPlaying { get; set; } = false;
-
-        // Varaibles
-        private SoundPlayer soundPlayer;
+        private SettingsController settings;
+        private ProgramSelector programSelector;
 
         // Constructor
         public MainController()
         {
-            // Instanciate         
-            ApplicationSelection = new ApplicationSelection();
-
-            soundPlayer = new SoundPlayer();
+            settings = new SettingsController();
+            programSelector = new ProgramSelector();
         }
     
-        // Public methods      
-        public void Exit()
-        {
-            Save();
-            ApplicationSelection.Exit();
-        }
-
        // Interface Methods
         public void Load()
         {
-            ApplicationSelection.Data.Load();
-
-            ////TextToSpeech.Start();
-            //SoundLoader.LoadSong(CategoriesList.GetSoundById(0));
-
-            //Cfg.Create.Init(Keyboard.KeyBindings);
-            //Cfg.Create.CategoryList(CategoriesList);
-
+            // Load the usersettings and pass them to the program
+            programSelector.Load(settings.LoadJSON());
         }
         public void Save()
         {
-            ApplicationSelection.Data.Save();
+            // Get the latest usersettings from the program and save them as JSON.
+            settings.SaveJSON(programSelector.GetUserSettings());
         }
 
         // Command
@@ -67,31 +49,31 @@ namespace GO_Radio.Classes
         public ICommand CommandAddCategory => new RelayCommand(ShowCategoryWindow);
         public ICommand CommandAddSound => new RelayCommand(ShowSoundWindow);
         public ICommand CommandPlayPauzeSound => new RelayCommand(SoundplayerPlayPauzeSound);
-        public ICommand CommandStart => new RelayCommand(ApplicationSelection.Start);
-        public ICommand CommandStop => new RelayCommand(ApplicationSelection.Stop);
+        //public ICommand CommandStart => new RelayCommand(ApplicationSelection.Start);
+        //public ICommand CommandStop => new RelayCommand(ApplicationSelection.Stop);
 
         private void ShowCategoryWindow()
         {
-            if (ApplicationSelection.IsIdle())
-            {
-                AddCategoryWindow acw = new AddCategoryWindow(ApplicationSelection.Data);
-                acw.ShowDialog();
-                Save();
-            }
+            //if (ApplicationSelection.IsIdle())
+            //{
+            //    AddCategoryWindow acw = new AddCategoryWindow(ApplicationSelection.Data);
+            //    acw.ShowDialog();
+            //    Save();
+            //}
 
         }
         private void ShowSoundWindow()
         {
-            if (ApplicationSelection.IsIdle())
-            {
+            //if (ApplicationSelection.IsIdle())
+            //{
 
-                ImportWindow iw = new ImportWindow(ApplicationSelection.Data);
-                iw.ShowDialog();
+            //    ImportWindow iw = new ImportWindow(ApplicationSelection.Data);
+            //    iw.ShowDialog();
 
-                ApplicationSelection.Data.UpdateDictionary();
-                Save();
+            //    ApplicationSelection.Data.UpdateDictionary();
+            //    Save();
 
-            }
+            //}
         }
         private void SoundplayerPlayPauzeSound()
         {
