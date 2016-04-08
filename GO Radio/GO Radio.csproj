@@ -129,6 +129,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Classes\ActiveProcess.cs" />
+    <Compile Include="Classes\ApplicationTypes\SourceGame.cs" />
     <Compile Include="Classes\AutoUpdater.cs" />
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\CategoryList.cs" />
@@ -145,7 +146,6 @@
     <Compile Include="Classes\Settings\UserSettings.cs" />
     <Compile Include="Classes\SoundLoader.cs" />
     <Compile Include="Classes\NAudioHelper.cs" />
-    <Compile Include="Classes\Settings\ProgramSettings.cs" />
     <Compile Include="Classes\KeyboardHook.cs" />
     <Compile Include="Classes\RellayCommand.cs" />
     <Compile Include="Classes\MainController.cs" />

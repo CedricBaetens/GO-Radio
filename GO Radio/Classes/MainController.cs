@@ -23,25 +23,25 @@ namespace GO_Radio.Classes
     public class MainController : ILoadSave
     {
         private SettingsController settings;
-        private ProgramSelector programSelector;
+        public ProgramSelector ProgramSelector { get; set; }
 
         // Constructor
         public MainController()
         {
             settings = new SettingsController();
-            programSelector = new ProgramSelector();
+            ProgramSelector = new ProgramSelector();
         }
     
        // Interface Methods
         public void Load()
         {
             // Load the usersettings and pass them to the program
-            programSelector.Load(settings.LoadJSON());
+            ProgramSelector.Load(settings.LoadUserSettingsFromJSON());
         }
         public void Save()
         {
             // Get the latest usersettings from the program and save them as JSON.
-            settings.SaveJSON(programSelector.GetUserSettings());
+            settings.SaveUserSettingsToJSON(ProgramSelector.GetUserSettings());
         }
 
         // Command
@@ -50,8 +50,8 @@ namespace GO_Radio.Classes
         public ICommand CommandAddCategory => new RelayCommand(ShowCategoryWindow);
         public ICommand CommandAddSound => new RelayCommand(ShowSoundWindow);
         public ICommand CommandPlayPauzeSound => new RelayCommand(SoundplayerPlayPauzeSound);
-        //public ICommand CommandStart => new RelayCommand(ApplicationSelection.Start);
-        //public ICommand CommandStop => new RelayCommand(ApplicationSelection.Stop);
+        public ICommand CommandStart => new RelayCommand(ProgramSelector.Start);
+        public ICommand CommandStop => new RelayCommand(ProgramSelector.Stop);
 
         private void ShowCategoryWindow()
         {

@@ -100,8 +100,8 @@
         </materialDesign:ColorZone>
 
         <!--Configuration-->
-        <ComboBox ItemsSource="{Binding ApplicationSelection.Configurations}" 
-                  SelectedItem="{Binding ApplicationSelection.ActiveConfiguration}" 
+        <ComboBox ItemsSource="{Binding ProgramSelector.Programs}" 
+                  SelectedItem="{Binding ProgramSelector.ActiveProgram}" 
                   Grid.Row="2" Margin="10"
                   IsEnabled="{Binding Path=ApplicationSelection.State, Converter={StaticResource ApplicationStateToBool}, ConverterParameter={x:Static apptypes:ProgramSelector+ApplicationState.STANDBY}}">
             <ComboBox.ItemTemplate>
@@ -117,14 +117,14 @@
                 </Style>
             </ComboBox.ItemContainerStyle>
         </ComboBox>
-        <!--<Button Grid.Row="2" Grid.Column="1" Command="{Binding CommandStart}" Visibility="{Binding Path=State, Converter={StaticResource ApplicationStateToVisibility}, ConverterParameter={x:Static classes:ProgramSelector+ApplicationState.STANDBY}}">Start</Button>
-        <Button Grid.Row="2" Grid.Column="1" Command="{Binding CommandStop}" Visibility="{Binding Path=State, Converter={StaticResource ApplicationStateToVisibility}, ConverterParameter={x:Static classes:ProgramSelector+ApplicationState.RUNNING}}">Stop</Button>-->
+        <Button Grid.Row="2" Grid.Column="1" Command="{Binding CommandStart}" Visibility="{Binding Path=ProgramSelector.State, Converter={StaticResource ApplicationStateToVisibility}, ConverterParameter={x:Static apptypes:ProgramSelector+ApplicationState.STANDBY}}">Start</Button>
+        <Button Grid.Row="2" Grid.Column="1" Command="{Binding CommandStop}" Visibility="{Binding Path=ProgramSelector.State, Converter={StaticResource ApplicationStateToVisibility}, ConverterParameter={x:Static apptypes:ProgramSelector+ApplicationState.RUNNING}}">Stop</Button>
 
         <!--Collection-->
         <ScrollViewer Name="scrollViewer" VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="2" Grid.Row="3">
             <StackPanel>
                 <!--CATEGORIES-->
-                <ItemsControl ItemsSource="{Binding ApplicationSelection.Data.Categories}"  Visibility="{Binding Path=ShowList, Converter={StaticResource BoolInversToVisibility}}">
+                <ItemsControl ItemsSource="{Binding ProgramSelector.Data.Categories}"  Visibility="{Binding Path=ShowList, Converter={StaticResource BoolInversToVisibility}}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Expander Margin="10" ExpandDirection="Down">
@@ -264,7 +264,7 @@
                 <TextBlock Grid.Column="2" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="20,10,10,10" VerticalAlignment="Center">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0}">
-                            <Binding Path="ApplicationSelection.ActiveConfiguration.Keyboard.Input" />
+                            <Binding Path="ProgramSelector.ActiveProgram.keyboard.Input" />
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>

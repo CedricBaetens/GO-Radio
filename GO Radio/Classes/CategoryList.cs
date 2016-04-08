@@ -12,7 +12,7 @@ using System.Windows;
 namespace GO_Radio.Classes
 {
     [ImplementPropertyChanged]
-    public class CategoryList : ILoadSave
+    public class CategoryList
     {
         public Dictionary<int, SoundNew> Sounds { get; set; }   // Used for easy finding of songs
         public ObservableCollection<Category> Categories { get; set; }
@@ -132,14 +132,15 @@ namespace GO_Radio.Classes
         }
 
         // Interface Methods
-        public void Load()
+        public void Load(string path)
         {
-            //if (File.Exists(ProgramSettings.Instance.PathSounds + "\\data.json"))
-            //{
-            //    string json = File.ReadAllText(ProgramSettings.Instance.PathSounds + "\\data.json");
-            //    Categories = JsonConvert.DeserializeObject<ObservableCollection<Category>>(json);
-            //    UpdateDictionary();
-            //}
+            path = path + "\\data.json";
+            if (File.Exists(path))
+            {
+                string json = File.ReadAllText(path);
+                Categories = JsonConvert.DeserializeObject<ObservableCollection<Category>>(json);
+                UpdateDictionary();
+            }
         }
         public void Save()
         {

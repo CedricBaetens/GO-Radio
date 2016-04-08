@@ -12,7 +12,7 @@ namespace GO_Radio.Classes.Settings
     {
         public string AppFolder { get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GO Radio"); } }
 
-        public UserSettings LoadJSON()
+        public UserSettings LoadUserSettingsFromJSON()
         {
             string loc = Path.Combine(AppFolder, "settings.json");
             if (File.Exists(loc))
@@ -22,7 +22,7 @@ namespace GO_Radio.Classes.Settings
             }
             return new UserSettings();
         }
-        public void SaveJSON(UserSettings settings)
+        public void SaveUserSettingsToJSON(UserSettings settings)
         {
             string json = JsonConvert.SerializeObject(settings, Formatting.Indented);
             try
