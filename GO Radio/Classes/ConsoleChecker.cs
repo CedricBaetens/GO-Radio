@@ -23,14 +23,24 @@ namespace GO_Radio
 
         // Variables
         private Timer checkTimer;
+        private string path;
 
         // Constructor
         public ConsoleChecker()
         {
-            checkTimer = new Timer();
+            checkTimer = new Timer(250);
             checkTimer.Elapsed += CheckTimer_Elapsed;
-            checkTimer.Interval = 250;
+        }
+
+        public void Start(string path)
+        {
+            this.path = path;
             checkTimer.Start();
+        }
+
+        public void Stop()
+        {
+            checkTimer.Stop();
         }
 
         private void CheckTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -53,12 +63,12 @@ namespace GO_Radio
 
         private string GetLastLine()
         {
-            //if (File.Exists(ProgramSettings.Instance.PathCsgo + "\\csgo\\condump000.txt"))
-            //{
-            //    var lastLine = File.ReadLines(ProgramSettings.Instance.PathCsgo + "\\csgo\\condump000.txt").Last();
-            //    File.Delete(ProgramSettings.Instance.PathCsgo + "\\csgo\\condump000.txt");
-            //    return lastLine;
-            //}
+            if (File.Exists(path + "\\csgo\\condump000.txt"))
+            {
+                var lastLine = File.ReadLines(path + "\\csgo\\condump000.txt").Last();
+                File.Delete(path + "\\csgo\\condump000.txt");
+                return lastLine;
+            }
             return "";
         }
         private bool IsValidCommand(ConsoleCommand input)

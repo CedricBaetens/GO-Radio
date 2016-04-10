@@ -30,7 +30,8 @@ namespace GO_Radio.Classes
 
         public static bool IsSame(string input)
         {
-            return GetActiveWindowTitle() == input ? true : false;
+            var active = GetActiveWindowTitle();
+            return active == input ? true : false;
         }
     }
 }

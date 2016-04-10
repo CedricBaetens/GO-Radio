@@ -9,8 +9,8 @@ namespace GO_Radio.Classes.Settings
 {
     public class UserSettings
     {
-        public string SoundPath { get; set; }
-        public ProgramSelectionSetting CsgoSettings { get; set; }
-        public ProgramSelectionSetting SkypeSettings { get; set; }
+        public string SoundPath { get; set; } = "";
+        public ProgramSelectionSetting CsgoSettings { get; set; } = new ProgramSelectionSetting();
+        public ProgramSelectionSetting SkypeSettings { get; set; } = new ProgramSelectionSetting();
     }
 }

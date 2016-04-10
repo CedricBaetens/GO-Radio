@@ -43,13 +43,20 @@ namespace GO_Radio.Classes
             stopwatch = new Stopwatch();
             timer = new Timer(1);
             timer.Elapsed += Timer_Elapsed;
-            timer.Start();
+            //timer.Start();
 
-            State = SoundState.NOTLOADED;
+            //State = SoundState.NOTLOADED;
         }
-        public SoundLoader(string path) : this()
+
+        public void Start(string path)
         {
             copyPath = path;
+            timer.Start();
+            State = SoundState.NOTLOADED;
+        }
+        public void Stop()
+        {
+            timer.Stop();
         }
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
@@ -66,13 +73,13 @@ namespace GO_Radio.Classes
                 case SoundState.LOADED:
                 case SoundState.STOPPED:
                 case SoundState.PAUSED:
-                    Play();
+                    StatePlay();
                     break;
                 case SoundState.PLAYING:
-                    Pauze();
+                    StatePauze();
                     break;              
                 case SoundState.LOADEDSTILLPLAYING:
-                    Stop();
+                    StateStop();
                     break;
             }
         }
@@ -84,11 +91,11 @@ namespace GO_Radio.Classes
                 case SoundState.LOADED:
                 case SoundState.STOPPED:
                 case SoundState.PAUSED:
-                    Play();
+                    StatePlay();
                     break;
                 case SoundState.PLAYING:
                 case SoundState.LOADEDSTILLPLAYING:
-                    Stop();
+                    StateStop();
                     break;
             }
         }
@@ -103,18 +110,17 @@ namespace GO_Radio.Classes
                 stopwatch.Reset();
             }
         }
-        private void Play()
+        private void StatePlay()
         {
             State = SoundState.PLAYING;
             stopwatch.Start();
         }
-        private void Stop()
+        private void StateStop()
         {
             State = SoundState.STOPPED;
             stopwatch.Reset();
-            LoadSong(Sound);
         }
-        private void Pauze()
+        private void StatePauze()
         {
             State = SoundState.PAUSED;
             stopwatch.Stop();

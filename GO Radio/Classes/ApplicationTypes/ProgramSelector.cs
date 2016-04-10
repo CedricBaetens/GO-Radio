@@ -46,8 +46,7 @@ namespace GO_Radio.Classes.ApplicationTypes
         {
             userSettings = settings;
 
-            Programs[0].Setting = userSettings.CsgoSettings;
-            Programs[1].Setting = userSettings.SkypeSettings;
+            Programs[0].Load(userSettings.CsgoSettings);
 
             // Load sound data
             if (!Directory.Exists(userSettings.SoundPath))
@@ -65,7 +64,9 @@ namespace GO_Radio.Classes.ApplicationTypes
                     Directory.CreateDirectory(userSettings.SoundPath + "\\new");
                 }
             }
+
             Data.Load(userSettings.SoundPath);
+            AudioHelper.Load(userSettings.SoundPath);
         }
         public UserSettings GetUserSettings()
         {
@@ -78,8 +79,7 @@ namespace GO_Radio.Classes.ApplicationTypes
         public void Start()
         {
             State = ApplicationState.RUNNING;
-            ActiveProgram.Load(Data);
-            ActiveProgram.Start();
+            ActiveProgram.Start(Data);
         }
         public void Stop()
         {

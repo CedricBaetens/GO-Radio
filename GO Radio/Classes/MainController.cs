@@ -65,7 +65,7 @@ namespace GO_Radio.Classes
         }
         private void ShowSoundWindow()
         {
-            //if (ApplicationSelection.IsIdle())
+            //if (ProgramSelector.IsIdle())
             //{
 
             //    ImportWindow iw = new ImportWindow(ApplicationSelection.Data);

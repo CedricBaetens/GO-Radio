@@ -54,7 +54,7 @@
         </Grid.RowDefinitions>
 
         <!--Menu-->
-        <Menu Grid.Row="0" IsMainMenu="True" Grid.ColumnSpan="2">
+        <Menu Grid.Row="0" IsMainMenu="True" Grid.ColumnSpan="2" IsEnabled="{Binding Path=ProgramSelector.State, Converter={StaticResource ApplicationStateToBool}, ConverterParameter={x:Static apptypes:ProgramSelector+ApplicationState.STANDBY}}">
             <MenuItem Header="File" Height="25">
                 <MenuItem Header="Import" Command="{Binding CommandAddSound}"/>
                 <Separator/>
@@ -86,9 +86,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel>
-                    <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}">GO Radio</TextBlock>
-                </StackPanel>
+                <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}" VerticalAlignment="Center" Margin="25,0,0,0">GO Radio</TextBlock>
 
                 <StackPanel Grid.Column="1" HorizontalAlignment="Right" Margin="5">
                     <TextBlock HorizontalAlignment="Right">Play/Stop: "PAGE UP"</TextBlock>
@@ -214,7 +212,8 @@
                                  HorizontalAlignment="Right"
                                  VerticalAlignment="Bottom"
                                  Width="40"
-                                 Height="40" Grid.Column="1" >
+                                 Height="40" Grid.Column="1" 
+                                 IsEnabled="{Binding Path=ProgramSelector.State, Converter={StaticResource ApplicationStateToBool}, ConverterParameter={x:Static apptypes:ProgramSelector+ApplicationState.STANDBY}}">
             <StackPanel>
                 <Button ToolTip="Import a new sound." Command="{Binding CommandAddSound}">
                     <Image Source="/Images/music-w.png" Margin="5"/>
@@ -252,19 +251,19 @@
                     <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0:0000} {1}">
-                                <Binding Path="ApplicationSelection.ActiveConfiguration.SoundLoader.Sound.Id" />
-                                <Binding Path="ApplicationSelection.ActiveConfiguration.SoundLoader.Sound.Name" />
+                                <Binding Path="ProgramSelector.ActiveProgram.SoundLoader.Sound.Id" />
+                                <Binding Path="ProgramSelector.ActiveProgram.SoundLoader.Sound.Name" />
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>
-                    <TextBlock Text="{Binding ApplicationSelection.ActiveConfiguration.SoundLoader.TimePlaying}"/>
-                    <TextBlock Text="{Binding ApplicationSelection.ActiveConfiguration.SoundLoader.State}"/>
+                    <TextBlock Text="{Binding ProgramSelector.ActiveProgram.SoundLoader.TimePlaying}"/>
+                    <TextBlock Text="{Binding ProgramSelector.ActiveProgram.SoundLoader.State}"/>
                 </StackPanel>
 
                 <TextBlock Grid.Column="2" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="20,10,10,10" VerticalAlignment="Center">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0}">
-                            <Binding Path="ProgramSelector.ActiveProgram.keyboard.Input" />
+                            <Binding Path="ProgramSelector.ActiveProgram.Keyboard.Input" />
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>

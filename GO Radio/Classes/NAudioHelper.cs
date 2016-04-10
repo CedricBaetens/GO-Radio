@@ -16,6 +16,12 @@ namespace GO_Radio.Classes
     [ImplementPropertyChanged]
     public static class AudioHelper
     {
+        static string soundPath;
+        
+        public static void Load(string path)
+        {
+            soundPath = path;
+        }
         public static void TrimWavFile(string inPath,string outPath, TimeSpan cutFromStart, TimeSpan cutFromEnd)
         {
 
@@ -62,8 +68,7 @@ namespace GO_Radio.Classes
              int channels = 1;
 
             // ReSample
-            //string path = string.Format("{0}\\audio\\{1}{2}", ProgramSettings.Instance.PathSounds, unconvertedSound.Name, ".wav");
-            string path = ""; // NEEDS TO BE DELETED
+            string path = string.Format("{0}\\audio\\{1}{2}", soundPath, unconvertedSound.Name, ".wav");// NEEDS TO BE DELETED
             using (var reader = new MediaFoundationReader(unconvertedSound.Path))
             {
                 WaveChannel32 wav = new WaveChannel32(reader);

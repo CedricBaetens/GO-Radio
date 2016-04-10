@@ -12,11 +12,18 @@ namespace GO_Radio.Classes
 {
     public static class Tts
     {
+        static string path;
         static int count = 0;
+
+        public static void Start(string inpath)
+        {
+            path = inpath;
+        }
+
         public static SoundNew GetSound(string text)
         {
-            //string pathNotConv = string.Format("{0}\\audio\\tmp\\Text To Speech {1}.wav", ProgramSettings.Instance.PathSounds, count++);
-            string pathNotConv = "";// HAS TO BE DELETED
+            string pathNotConv = string.Format("{0}\\audio\\tmp\\Text To Speech {1}.wav", path, count++);
+            //string pathNotConv = "";// HAS TO BE DELETED
 
             using (var synth = new SpeechSynthesizer())
             {

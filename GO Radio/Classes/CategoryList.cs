@@ -17,6 +17,8 @@ namespace GO_Radio.Classes
         public Dictionary<int, SoundNew> Sounds { get; set; }   // Used for easy finding of songs
         public ObservableCollection<Category> Categories { get; set; }
 
+        public string Path { get; set; }
+
         public CategoryList()
         {
             Categories = new ObservableCollection<Category>();
@@ -134,6 +136,7 @@ namespace GO_Radio.Classes
         // Interface Methods
         public void Load(string path)
         {
+            Path = path;
             path = path + "\\data.json";
             if (File.Exists(path))
             {

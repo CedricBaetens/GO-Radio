@@ -5,25 +5,42 @@ using System.Linq;
 
 namespace GO_Radio.Classes
 {
-    static class Cfg
+    public class Cfg
     {
-        public static class Create
-        {
-            public static void Init(KeyBinder keybindings)
-            {
-                List<string> content = new List<string>();
-                content.Add("alias bs_play bs_play_on");
-                content.Add("alias bs_play_on \"alias bs_play bs_play_off; voice_inputfromfile 1; voice_loopback 1; +voicerecord\"");
-                content.Add("alias bs_play_off \"-voicerecord; voice_inputfromfile 0; voice_loopback 0; alias bs_play bs_play_on\"");
-                content.Add("alias tts \"condump;\"");
-                content.Add("alias la \"exec radio_categorylist\"");
-                content.Add("alias radiounbind \"exec radio_unbindall\"");
-                content.Add("con_logfile radiolog.txt");
-                content.Add(string.Format("bind {0} bs_play", keybindings.Keys[(int)KeyBinder.KeyTranslation.PlayPauze].KeyCsGo));
-                content.Add(string.Format("bind {0} bs_play", keybindings.Keys[(int)KeyBinder.KeyTranslation.PlayStop].KeyCsGo));
+        string path;
+        KeyBinder keybindings;
 
-                //File.WriteAllLines(ProgramSettings.Instance.PathCsgo + "\\csgo\\cfg\\radio.cfg", content);
-            }
+        public void Start(string path, KeyBinder keybindings)
+        {
+            this.path = path;
+            this.keybindings = keybindings;
+
+            CreateInit();
+        }
+
+        public void Stop()
+        {
+            File.Delete(path + "\\csgo\\cfg\\radio.cfg");
+        }
+
+        private void CreateInit()
+        {
+            List<string> content = new List<string>();
+            content.Add("alias bs_play bs_play_on");
+            content.Add("alias bs_play_on \"alias bs_play bs_play_off; voice_inputfromfile 1; voice_loopback 1; +voicerecord\"");
+            content.Add("alias bs_play_off \"-voicerecord; voice_inputfromfile 0; voice_loopback 0; alias bs_play bs_play_on\"");
+            content.Add("alias tts \"condump;\"");
+            content.Add("alias la \"exec radio_categorylist\"");
+            content.Add("alias radiounbind \"exec radio_unbindall\"");
+            content.Add("con_logfile radiolog.txt");
+            content.Add(string.Format("bind {0} bs_play", keybindings.Keys[(int)KeyBinder.KeyTranslation.PlayPauze].KeyCsGo));
+            content.Add(string.Format("bind {0} bs_play", keybindings.Keys[(int)KeyBinder.KeyTranslation.PlayStop].KeyCsGo));
+
+            File.WriteAllLines(path + "\\csgo\\cfg\\radio.cfg", content);
+        }
+
+        public static class Create
+        {           
             public static void CategoryList(CategoryList list)
             {
                 List<string> content = new List<string>();

@@ -13,19 +13,29 @@ namespace GO_Radio.Classes.ApplicationTypes
         public ProgramSelectionSetting Setting { get; set; }
         public bool IsSelectable { get; set; } = true;
 
-        protected CategoryList data;
+        public KeyboardController Keyboard { get; set; }
+
+        protected CategoryList data;     
 
         public ProgramSelection()
         {
             Setting = new ProgramSelectionSetting();
+            Keyboard = new KeyboardController();
         }
 
-        public virtual void Start(){}
-        public virtual void Stop(){}
+        public void Load(ProgramSelectionSetting settings)
+        {
+            Setting = settings;
+        }
 
-        public void Load(CategoryList data)
+        public virtual void Start(CategoryList data)
         {
             this.data = data;
+            Keyboard.Hook();
+        }
+        public virtual void Stop()
+        {
+            Keyboard.UnHook();
         }
     }
 }
