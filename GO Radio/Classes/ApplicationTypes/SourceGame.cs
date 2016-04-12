@@ -21,16 +21,38 @@ namespace GO_Radio.Classes.ApplicationTypes
 
         public SourceGame()
         {
-            Keyboard.ButtonPressed += Keyboard_ButtonPressed;
-            Keyboard.IdEntered += Keyboard_IdEntered;
-
+            // Instance
             SoundLoader = new SoundLoader();
             cfg = new Cfg();
-
             consoleChecker = new ConsoleChecker();
+
+            // Events
+            Keyboard.ButtonPressed += Keyboard_ButtonPressed;
+            Keyboard.IdEntered += Keyboard_IdEntered;
             consoleChecker.OnCommandDetected += ConsoleChecker_OnCommandDetected;
         }
 
+        private void Keyboard_IdEntered(object sender, KeyboardController.IdEventArgs e)
+        {
+            SoundLoader.LoadSong(data.GetSoundById(e.Input));
+        }
+        private void Keyboard_ButtonPressed(object sender, KeyboardController.ButtonEventArgs e)
+        {
+            if (ActiveProcess.IsSame(processName))
+            {
+                switch (e.Key)
+                {
+                    case KeyboardController.PressedKey.PlayPauze:
+                        SoundLoader.PlayPause();
+                        break;
+                    case KeyboardController.PressedKey.PlayStop:
+                        SoundLoader.PlayStop();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
         private void ConsoleChecker_OnCommandDetected(object sender, ConsoleChecker.ProgressEventArgs e)
         {
             switch (e.Detected.Command)
@@ -89,29 +111,6 @@ namespace GO_Radio.Classes.ApplicationTypes
             SoundLoader.Stop();
             cfg.Stop();
             consoleChecker.Stop();
-        }
-
-        private void Keyboard_IdEntered(object sender, KeyboardController.IdEventArgs e)
-        {
-            SoundLoader.LoadSong(data.GetSoundById(e.Input));
-        }
-
-        private void Keyboard_ButtonPressed(object sender, KeyboardController.ButtonEventArgs e)
-        {
-            if (ActiveProcess.IsSame(processName))
-            {
-                switch (e.Key)
-                {
-                    case KeyboardController.PressedKey.PlayPauze:
-                        SoundLoader.PlayPause();
-                        break;
-                    case KeyboardController.PressedKey.PlayStop:
-                        SoundLoader.PlayStop();
-                        break;
-                    default:
-                        break;
-                }
-            }
         }
     }
 }

@@ -41,7 +41,7 @@ namespace GO_Radio.Classes
         public void Save()
         {
             // Get the latest usersettings from the program and save them as JSON.
-            settings.SaveUserSettingsToJSON(ProgramSelector.GetUserSettings());
+            settings.SaveUserSettingsToJSON(ProgramSelector.Save());
         }
 
         // Command
@@ -65,16 +65,11 @@ namespace GO_Radio.Classes
         }
         private void ShowSoundWindow()
         {
-            //if (ProgramSelector.IsIdle())
-            //{
-
-            //    ImportWindow iw = new ImportWindow(ApplicationSelection.Data);
-            //    iw.ShowDialog();
-
-            //    ApplicationSelection.Data.UpdateDictionary();
-            //    Save();
-
-            //}
+            if (ProgramSelector.IsIdle())
+            {
+                ImportWindow iw = new ImportWindow(ProgramSelector.Data);
+                iw.ShowDialog();
+            }
         }
         private void SoundplayerPlayPauzeSound()
         {

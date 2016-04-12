@@ -147,16 +147,16 @@ namespace GO_Radio.Classes
         }
         public void Save()
         {
-            //string json = JsonConvert.SerializeObject(Categories, Formatting.Indented);
+            string json = JsonConvert.SerializeObject(Categories, Formatting.Indented);
 
-            //try
-            //{
-            //    File.WriteAllText(ProgramSettings.Instance.PathSounds + "\\data.json", json);
-            //}
-            //catch (Exception)
-            //{
-            //    System.Windows.MessageBox.Show("Error writing data, please make sure the sound folder exists.");
-            //}
+            try
+            {
+                File.WriteAllText(Path + "\\data.json", json);
+            }
+            catch (Exception)
+            {
+                System.Windows.MessageBox.Show("Error writing data, please make sure the sound folder exists.");
+            }
         }
     }
 }

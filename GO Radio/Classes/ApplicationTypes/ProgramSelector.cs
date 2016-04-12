@@ -68,10 +68,15 @@ namespace GO_Radio.Classes.ApplicationTypes
             Data.Load(userSettings.SoundPath);
             AudioHelper.Load(userSettings.SoundPath);
         }
-        public UserSettings GetUserSettings()
+        public UserSettings Save()
         {
+            // Save sounddata
+            Data.Save();
+
+            // Return usersettings
             userSettings.CsgoSettings = Programs[0].Setting;
             userSettings.SkypeSettings = Programs[1].Setting;
+            userSettings.SoundPath = Data.Path;
 
             return userSettings;
         }
@@ -85,6 +90,11 @@ namespace GO_Radio.Classes.ApplicationTypes
         {
             State = ApplicationState.STANDBY;
             ActiveProgram.Stop();
+        }
+
+        public bool IsIdle()
+        {
+            return State == ApplicationState.STANDBY ? true : false;
         }
     }
 }

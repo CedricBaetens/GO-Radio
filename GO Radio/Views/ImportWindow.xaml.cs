@@ -14,23 +14,23 @@ namespace GO_Radio.Views
     public partial class ImportWindow : Window
     {
         // Public
-        public CategoryList Categories { get; set; }
+        public CategoryList Data { get; set; }
         public ObservableCollection<SoundUnconverted> NewSounds { get; set; }
         public YoutubeDownloader YtDownloader { get; set; }
         public string YoutubeUrl { get; set; }     
         public bool HasSounds { get { return NewSounds.Count > 0 ? true : false; }}
         
         // Constructor
-        public ImportWindow(CategoryList categories)
+        public ImportWindow(CategoryList data)
         {
             InitializeComponent();
 
             // Properites
-            this.Categories = categories;
+            this.Data = data;
 
             // Instanciate
             NewSounds = new ObservableCollection<SoundUnconverted>();
-            YtDownloader = new YoutubeDownloader();
+            YtDownloader = new YoutubeDownloader(Data.Path);
             YtDownloader.ConvertionComplete += YtDownloader_ConvertionComplete;
                 
             // Binding
@@ -53,19 +53,13 @@ namespace GO_Radio.Views
         {
             if (!YtDownloader.IsDone())
             {
-                if (MessageBox.Show("Download still in progress. Do you want to cancel all remaining downloads?", "Abort", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                {
-                    YtDownloader.End();
-                }
-                else
+                if (MessageBox.Show("Download still in progress. Do you want to cancel all remaining downloads?", "Abort", MessageBoxButton.YesNo) == MessageBoxResult.No)
                 {
                     e.Cancel = true;
                 }
             }
-            else
-            {
-                YtDownloader.End();
-            }
+            YtDownloader.End();
+            Data.UpdateDictionary();
         }
 
         // Buttons
@@ -138,16 +132,13 @@ namespace GO_Radio.Views
             }
         }
 
-
         // Custom methods
         private ObservableCollection<SoundUnconverted> GetNewSounds()
         {
-            //string[] newSoundsStrings = System.IO.Directory.GetFiles(ProgramSettings.Instance.PathSounds + "\\new", "*.*", System.IO.SearchOption.AllDirectories);
+            string[] newSoundsStrings = System.IO.Directory.GetFiles(Data.Path + "\\new", "*.*", System.IO.SearchOption.AllDirectories);
 
-            //return
-            //new ObservableCollection<SoundUnconverted>(newSoundsStrings.Select(newSound => new SoundUnconverted(newSound)).ToList());
-
-            return null;
+            return
+                new ObservableCollection<SoundUnconverted>(newSoundsStrings.Select(newSound => new SoundUnconverted(newSound)).ToList());
         }  
     }
 }

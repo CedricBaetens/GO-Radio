@@ -24,11 +24,13 @@ namespace GO_Radio
         bool isDownloading = false;
         int count = 0;
         Process ffmpegProces = new Process();
+        string soundFolderPath;
 
         // Constructor
-        public YoutubeDownloader()
+        public YoutubeDownloader(string path)
         {
             Queue = new ObservableCollection<ItemToDownload>();
+            this.soundFolderPath = path;
         }
 
         // Public Methods
@@ -94,7 +96,7 @@ namespace GO_Radio
                 item.CurrentState = ItemToDownload.Status.DONE;
                 FireConvertionComplete();
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 item.CurrentState = ItemToDownload.Status.FAILED;
             }
@@ -114,11 +116,10 @@ namespace GO_Radio
             var video = best;
 
             // Save video
-            //var path = ProgramSettings.Instance.PathVideo + video.FullName;
-            var path = ""; // HAS tO BE DELETED
-            File.WriteAllBytes(path, video.GetBytes());
+            var vidpath = soundFolderPath + "\\audio\\tmp\\vid\\" + video.FullName;
+            File.WriteAllBytes(vidpath, video.GetBytes());
 
-            return new DownloadedVideo() { Path = path, Name = video.Title };
+            return new DownloadedVideo() { Path = vidpath, Name = video.Title };
 
 
         }
@@ -128,7 +129,7 @@ namespace GO_Radio
             
             ffmpegProces.StartInfo.UseShellExecute = false;
             ffmpegProces.StartInfo.FileName = "ffmpeg.exe";
-            //ffmpegProces.StartInfo.Arguments = string.Format("-y -i \"{0}\" \"{1}{2}.mp3\"", video.Path, ProgramSettings.Instance.PathNew, ReplaceInvalidChar(video.Name));
+            ffmpegProces.StartInfo.Arguments = string.Format("-y -i \"{0}\" \"{1}{2}.mp3\"", video.Path, soundFolderPath + "\\new\\", ReplaceInvalidChar(video.Name));
             ffmpegProces.StartInfo.CreateNoWindow = true;
             ffmpegProces.Start();
             ffmpegProces.WaitForExit();

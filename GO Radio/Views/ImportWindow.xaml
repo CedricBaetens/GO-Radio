@@ -14,8 +14,8 @@
         ResizeMode="NoResize">
     <Window.Resources>
         <ResourceDictionary>
-            <!--<classes:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
-            <classes:BooleanInversToVisibilityConverter x:Key="BoolInversToVisibility"/>-->
+            <classes:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+            <classes:BooleanInversToVisibilityConverter x:Key="BoolInversToVisibility"/>
         </ResourceDictionary>
     </Window.Resources>
     
@@ -62,7 +62,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <ComboBox Grid.Row="3" Grid.Column="0" ItemsSource="{Binding Categories.Categories}" Name="cbCategories" SelectedIndex="0" materialDesign:TextFieldAssist.Hint="Category" materialDesign:TextFieldAssist.HintOpacity=".26">
+            <ComboBox Grid.Row="3" Grid.Column="0" ItemsSource="{Binding Data.Categories}" Name="cbCategories" SelectedIndex="0" materialDesign:TextFieldAssist.Hint="Category" materialDesign:TextFieldAssist.HintOpacity=".26">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}"></TextBlock>
