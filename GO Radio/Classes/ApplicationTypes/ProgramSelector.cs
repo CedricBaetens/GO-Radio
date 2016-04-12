@@ -21,14 +21,16 @@ namespace GO_Radio.Classes.ApplicationTypes
             UNDEFINED
         };
 
-        // Diffrent Application Selections
+        // Properties
         public ObservableCollection<ProgramSelection> Programs { get; set; }
         public ProgramSelection ActiveProgram { get; set; }
         public ApplicationState State { get; set; }
         public CategoryList Data { get; set; }
 
+        // Variables
         private UserSettings userSettings;
 
+        // Constructor
         public ProgramSelector()
         {
             Programs = new ObservableCollection<ProgramSelection>()
@@ -47,6 +49,7 @@ namespace GO_Radio.Classes.ApplicationTypes
             userSettings = settings;
 
             Programs[0].Load(userSettings.CsgoSettings);
+            Programs[1].Load(userSettings.SkypeSettings);
 
             // Load sound data
             if (!Directory.Exists(userSettings.SoundPath))
@@ -80,7 +83,6 @@ namespace GO_Radio.Classes.ApplicationTypes
 
             return userSettings;
         }
-
         public void Start()
         {
             State = ApplicationState.RUNNING;
@@ -91,7 +93,6 @@ namespace GO_Radio.Classes.ApplicationTypes
             State = ApplicationState.STANDBY;
             ActiveProgram.Stop();
         }
-
         public bool IsIdle()
         {
             return State == ApplicationState.STANDBY ? true : false;

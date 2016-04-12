@@ -247,7 +247,8 @@
                     </Button>
                 </StackPanel>
 
-                <StackPanel Grid.Column="1"  VerticalAlignment="Center">
+                <StackPanel Grid.Column="1"  VerticalAlignment="Center" 
+                            Visibility="{Binding Path=ProgramSelector.State, Converter={StaticResource ApplicationStateToVisibility}, ConverterParameter={x:Static apptypes:ProgramSelector+ApplicationState.RUNNING}}">
                     <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0:0000} {1}">
