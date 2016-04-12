@@ -1,29 +1,20 @@
-﻿using NAudio.Wave;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Speech.Synthesis;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Speech.Synthesis;
 
 namespace GO_Radio.Classes
 {
-    public static class Tts
+    public class TextToSpeech
     {
-        static string path;
-        static int count = 0;
+        string _path;
+        int _count;
 
-        public static void Start(string inpath)
+        public void Start(string inpath)
         {
-            path = inpath;
+            _path = inpath;
         }
 
-        public static SoundNew GetSound(string text)
+        public SoundNew GetSound(string text)
         {
-            string pathNotConv = string.Format("{0}\\audio\\tmp\\Text To Speech {1}.wav", path, count++);
-            //string pathNotConv = "";// HAS TO BE DELETED
+            string pathNotConv = string.Format("{0}\\audio\\tmp\\Text To Speech {1}.wav", _path, _count++);
 
             using (var synth = new SpeechSynthesizer())
             {

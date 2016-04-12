@@ -129,6 +129,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Classes\ActiveProcess.cs" />
+    <Compile Include="Classes\ApplicationTypes\GenericApplication.cs" />
     <Compile Include="Classes\ApplicationTypes\SourceGame.cs" />
     <Compile Include="Classes\AutoUpdater.cs" />
     <Compile Include="Classes\Category.cs" />
@@ -150,9 +151,10 @@
     <Compile Include="Classes\RellayCommand.cs" />
     <Compile Include="Classes\MainController.cs" />
     <Compile Include="Classes\SoundLoaderAdvanced.cs" />
+    <Compile Include="Classes\SoundLoaderDevice.cs" />
     <Compile Include="Classes\SoundUnconverted.cs" />
     <Compile Include="Classes\SoundNew.cs" />
-    <Compile Include="Classes\Tts.cs" />
+    <Compile Include="Classes\TextToSpeech.cs" />
     <Compile Include="Classes\WPF_Extended_Extended\TimeSpanExtended.cs" />
     <Compile Include="Classes\ConsoleChecker.cs" />
     <Compile Include="Views\AudioDeviceWindow.xaml.cs">

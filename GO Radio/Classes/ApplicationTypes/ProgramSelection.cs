@@ -1,9 +1,4 @@
 ﻿using GO_Radio.Classes.Settings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GO_Radio.Classes.ApplicationTypes
 {
@@ -14,23 +9,22 @@ namespace GO_Radio.Classes.ApplicationTypes
         public bool IsSelectable { get; set; } = true;
 
         public KeyboardController Keyboard { get; set; }
-
-        protected CategoryList data;     
+        protected CategoryList Data;
+        protected TextToSpeech Tts;
 
         public ProgramSelection()
         {
             Setting = new ProgramSelectionSetting();
             Keyboard = new KeyboardController();
+            Tts = new TextToSpeech();
         }
-
         public void Load(ProgramSelectionSetting settings)
         {
             Setting = settings;
         }
-
         public virtual void Start(CategoryList data)
         {
-            this.data = data;
+            Data = data;
             Keyboard.Hook();
         }
         public virtual void Stop()

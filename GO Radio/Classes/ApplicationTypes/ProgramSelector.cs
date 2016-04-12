@@ -36,11 +36,11 @@ namespace GO_Radio.Classes.ApplicationTypes
             Programs = new ObservableCollection<ProgramSelection>()
             {
                 new SourceGame() { Name="Counter Strike: Global Offensive" },
-                new ProgramSelection() { Name="Skype (Still in development", IsSelectable = false }
+                new GenericApplication() { Name="Generic Application", IsSelectable = false }
             };
             Data = new CategoryList();
 
-            ActiveProgram = Programs[0];
+            ActiveProgram = Programs[1];
             State = ApplicationState.STANDBY;
         }
 
@@ -56,7 +56,7 @@ namespace GO_Radio.Classes.ApplicationTypes
             {
                 FolderBrowserDialog fbd = new FolderBrowserDialog()
                 {
-                    Description = "Please select a location where you want your sounds to be stored."
+                    Description = @"Please select a location where you want your sounds to be stored."
                 };
                 fbd.ShowDialog();
 
