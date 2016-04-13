@@ -30,7 +30,7 @@ namespace GO_Radio.Classes.ApplicationTypes
             Programs = new ObservableCollection<ProgramSelection>()
             {
                 new SourceGame() { Name="Counter Strike: Global Offensive" },
-                new GenericApplication() { Name="Generic Application", IsSelectable = false }
+                //new GenericApplication() { Name="Generic Application", IsSelectable = false }
             };
             Data = new CategoryList();
 
@@ -43,7 +43,7 @@ namespace GO_Radio.Classes.ApplicationTypes
             _userSettings = settings;
 
             Programs[0].Load(_userSettings.CsgoSettings);
-            Programs[1].Load(_userSettings.SkypeSettings);
+            //Programs[1].Load(_userSettings.SkypeSettings);
 
             // Load sound data
             if (!Directory.Exists(_userSettings.SoundPath))
@@ -72,7 +72,7 @@ namespace GO_Radio.Classes.ApplicationTypes
 
             // Return usersettings
             _userSettings.CsgoSettings = Programs[0].Setting;
-            _userSettings.SkypeSettings = Programs[1].Setting;
+            //_userSettings.SkypeSettings = Programs[1].Setting;
             _userSettings.SoundPath = Data.Path;
 
             return _userSettings;

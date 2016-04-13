@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName 'GO Radio'
-#define MyAppVersion GetFileVersion('C:\Users\Baellon\Documents\Repos\go-radio\GO Radio\bin\x86\Release\GO Radio.exe')
+#define MyAppVersion GetFileVersion('C:\Users\Baellon\Documents\Source\go-radio\GO Radio\bin\x86\Release\GO Radio.exe')
 #define MyAppPublisher "Digital Ba."
 #define MyAppURL "http://www.example.com/"
 #define MyAppExeName "GO Radio.exe"
@@ -35,8 +35,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\Baellon\Documents\Repos\go-radio\GO Radio\bin\x86\Release\GO Radio.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Baellon\Documents\Repos\go-radio\GO Radio\bin\x86\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\Baellon\Documents\Source\go-radio\GO Radio\bin\x86\Release\GO Radio.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Baellon\Documents\Source\go-radio\GO Radio\bin\x86\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
