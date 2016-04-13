@@ -36,8 +36,8 @@ namespace GO_Radio
         {
             this.path = path;
             checkTimer.Start();
+            ClearAllDumpFiles();
         }
-
         public void Stop()
         {
             checkTimer.Stop();
@@ -49,18 +49,27 @@ namespace GO_Radio
 
             var text = GetLastLine();
             if (!string.IsNullOrEmpty(text))
-            {
-                
+            {             
                 ConsoleCommand command = new ConsoleCommand(text);
                 if (IsValidCommand(command))
                 {
                     CommandDetected(command);
                 }
             }
-
             checkTimer.Start();
         }
 
+        private void ClearAllDumpFiles()
+        {
+            var dumpfiles = Directory.GetFiles(path + "\\csgo", "*condump*");
+            foreach (var file in dumpfiles)
+            {
+                if (File.Exists(file))
+                {
+                    File.Delete(file);
+                }
+            }
+        }
         private string GetLastLine()
         {
             if (File.Exists(path + "\\csgo\\condump000.txt"))

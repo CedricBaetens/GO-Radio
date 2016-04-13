@@ -40,7 +40,7 @@ namespace GO_Radio.Classes.ApplicationTypes
             };
             Data = new CategoryList();
 
-            ActiveProgram = Programs[1];
+            ActiveProgram = Programs[0];
             State = ApplicationState.STANDBY;
         }
 
