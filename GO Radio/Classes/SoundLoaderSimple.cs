@@ -29,8 +29,8 @@ namespace GO_Radio.Classes
 
         protected override void StatePauze()
         {
-            CopyToGameDirectory(SoundPauzed);
             base.StatePauze();
+            CopyToGameDirectory(SoundPauzed);           
         }
 
         protected override void Reset()

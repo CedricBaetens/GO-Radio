@@ -36,6 +36,7 @@ namespace GO_Radio.Classes.ApplicationTypes
                 SoundLoader.Start() 
                 ? ProgramSelector.ApplicationState.RUNNING : ProgramSelector.ApplicationState.STANDBY;
 
+            // Sta
             if (State == ProgramSelector.ApplicationState.RUNNING)
                 base.Start(data);
         }
