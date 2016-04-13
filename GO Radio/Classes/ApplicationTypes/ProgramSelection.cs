@@ -24,6 +24,7 @@ namespace GO_Radio.Classes.ApplicationTypes
         {
             Setting = settings;
         }
+
         public virtual void Start(CategoryList data)
         {
             Data = data;

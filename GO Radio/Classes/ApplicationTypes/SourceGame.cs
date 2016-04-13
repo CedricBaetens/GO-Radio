@@ -17,7 +17,7 @@ namespace GO_Radio.Classes.ApplicationTypes
         public SourceGame()
         {
             // Instance
-            SoundLoader = new SoundLoader();
+            SoundLoader = new SoundLoaderSimple();
             _cfg = new Cfg();
             _consoleChecker = new ConsoleChecker();
 
@@ -29,7 +29,7 @@ namespace GO_Radio.Classes.ApplicationTypes
 
         private void Keyboard_IdEntered(object sender, KeyboardController.IdEventArgs e)
         {
-            SoundLoader.LoadSong(Data.GetSoundById(e.Input));
+            SoundLoader.LoadSound(Data.GetSoundById(e.Input));
         }
         private void Keyboard_ButtonPressed(object sender, KeyboardController.ButtonEventArgs e)
         {
@@ -53,7 +53,7 @@ namespace GO_Radio.Classes.ApplicationTypes
                 case Commandos.LOAD:
                     break;
                 case Commandos.TTS:
-                    SoundLoader.LoadSong(Tts.GetSound(e.Detected.Response));
+                    SoundLoader.LoadSound(Tts.GetSound(e.Detected.Response));
                     break;
                 case Commandos.UNKNOWN:
                     break;

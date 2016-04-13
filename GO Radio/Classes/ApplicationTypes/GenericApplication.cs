@@ -23,6 +23,7 @@ namespace GO_Radio.Classes.ApplicationTypes
         {
             SoundLoader.LoadSound(Data.GetSoundById(e.Input));
         }
+
         private void Keyboard_ButtonPressed(object sender, KeyboardController.ButtonEventArgs e)
         {
             throw new NotImplementedException();
@@ -31,16 +32,12 @@ namespace GO_Radio.Classes.ApplicationTypes
 
         public override void Start(CategoryList data)
         {
-            base.Start(data);
-
             State = 
                 SoundLoader.Start() 
                 ? ProgramSelector.ApplicationState.RUNNING : ProgramSelector.ApplicationState.STANDBY;
-        }
 
-        public override void Stop()
-        {
-            base.Stop();
+            if (State == ProgramSelector.ApplicationState.RUNNING)
+                base.Start(data);
         }
     }
 }

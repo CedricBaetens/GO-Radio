@@ -1,12 +1,7 @@
 ﻿using GO_Radio.Classes.Settings;
 using PropertyChanged;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GO_Radio.Classes.ApplicationTypes
@@ -27,7 +22,7 @@ namespace GO_Radio.Classes.ApplicationTypes
         public CategoryList Data { get; set; }
 
         // Variables
-        private UserSettings userSettings;
+        private UserSettings _userSettings;
 
         // Constructor
         public ProgramSelector()
@@ -39,19 +34,19 @@ namespace GO_Radio.Classes.ApplicationTypes
             };
             Data = new CategoryList();
 
-            ActiveProgram = Programs[1];
+            ActiveProgram = Programs[0];
             State = ApplicationState.STANDBY;
         }
 
         public void Load(UserSettings settings)
         {
-            userSettings = settings;
+            _userSettings = settings;
 
-            Programs[0].Load(userSettings.CsgoSettings);
-            Programs[1].Load(userSettings.SkypeSettings);
+            Programs[0].Load(_userSettings.CsgoSettings);
+            Programs[1].Load(_userSettings.SkypeSettings);
 
             // Load sound data
-            if (!Directory.Exists(userSettings.SoundPath))
+            if (!Directory.Exists(_userSettings.SoundPath))
             {
                 FolderBrowserDialog fbd = new FolderBrowserDialog()
                 {
@@ -61,14 +56,14 @@ namespace GO_Radio.Classes.ApplicationTypes
 
                 if (!string.IsNullOrEmpty(fbd.SelectedPath))
                 {
-                    userSettings.SoundPath = fbd.SelectedPath + "\\Sounds";
-                    Directory.CreateDirectory(userSettings.SoundPath + "\\audio");
-                    Directory.CreateDirectory(userSettings.SoundPath + "\\new");
+                    _userSettings.SoundPath = fbd.SelectedPath + "\\Sounds";
+                    Directory.CreateDirectory(_userSettings.SoundPath + "\\audio");
+                    Directory.CreateDirectory(_userSettings.SoundPath + "\\new");
                 }
             }
 
-            Data.Load(userSettings.SoundPath);
-            AudioHelper.Load(userSettings.SoundPath);
+            Data.Load(_userSettings.SoundPath);
+            AudioHelper.Load(_userSettings.SoundPath);
         }
         public UserSettings Save()
         {
@@ -76,11 +71,11 @@ namespace GO_Radio.Classes.ApplicationTypes
             Data.Save();
 
             // Return usersettings
-            userSettings.CsgoSettings = Programs[0].Setting;
-            userSettings.SkypeSettings = Programs[1].Setting;
-            userSettings.SoundPath = Data.Path;
+            _userSettings.CsgoSettings = Programs[0].Setting;
+            _userSettings.SkypeSettings = Programs[1].Setting;
+            _userSettings.SoundPath = Data.Path;
 
-            return userSettings;
+            return _userSettings;
         }
         public void Start()
         {
@@ -94,7 +89,7 @@ namespace GO_Radio.Classes.ApplicationTypes
         }
         public bool IsIdle()
         {
-            return State == ApplicationState.STANDBY ? true : false;
+            return State == ApplicationState.STANDBY;
         }
     }
 }
