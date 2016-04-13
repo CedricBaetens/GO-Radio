@@ -17,149 +17,163 @@ namespace GO_Radio.Classes
     {
         // Properties
         public SoundNew Sound { get; set; }
-        public SoundNew SoundPauzed { get; set; }
-        public TimeSpan TimePlaying { get; set; }
-        public SoundState State { get; set; }
 
-        // Variables
-        private Stopwatch stopwatch;
-        private Timer timer;
-        private string copyPath = "";
-
-        // Enum
-        public enum SoundState
+        public virtual bool Start()
         {
-            LOADED,
-            STOPPED,
-            PLAYING,
-            PAUSED,
-            LOADEDSTILLPLAYING,
-            NOTLOADED
+            return true;
         }
 
-        // Constructor
-        public SoundLoader()
-        {
-            stopwatch = new Stopwatch();
-            timer = new Timer(1);
-            timer.Elapsed += Timer_Elapsed;
-            //timer.Start();
 
-            //State = SoundState.NOTLOADED;
+        public virtual void LoadSound(SoundNew sound)
+        {
+
         }
 
-        public void Start(string path)
-        {
-            copyPath = path;
-            timer.Start();
-            State = SoundState.NOTLOADED;
-        }
-        public void Stop()
-        {
-            timer.Stop();
-        }
+        //// Properties
+        //public SoundNew Sound { get; set; }
+        //public SoundNew SoundPauzed { get; set; }
+        //public TimeSpan TimePlaying { get; set; }
+        //public SoundState State { get; set; }
 
-        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            TimePlaying = stopwatch.Elapsed;
-        }
+        //// Variables
+        //private Stopwatch stopwatch;
+        //private Timer timer;
+        //private string copyPath = "";
 
-        // Button Commands
-        public void PlayPause()
-        {
-            switch (State)
-            {
-                case SoundState.NOTLOADED:
-                case SoundState.LOADED:
-                case SoundState.STOPPED:
-                case SoundState.PAUSED:
-                    StatePlay();
-                    break;
-                case SoundState.PLAYING:
-                    StatePauze();
-                    break;              
-                case SoundState.LOADEDSTILLPLAYING:
-                    StateStop();
-                    break;
-            }
-        }
-        public void PlayStop()
-        {
-            switch (State)
-            {
-                case SoundState.NOTLOADED:
-                case SoundState.LOADED:
-                case SoundState.STOPPED:
-                case SoundState.PAUSED:
-                    StatePlay();
-                    break;
-                case SoundState.PLAYING:
-                case SoundState.LOADEDSTILLPLAYING:
-                    StateStop();
-                    break;
-            }
-        }
+        //// Enum
+        //public enum SoundState
+        //{
+        //    LOADED,
+        //    STOPPED,
+        //    PLAYING,
+        //    PAUSED,
+        //    LOADEDSTILLPLAYING,
+        //    NOTLOADED
+        //}
 
-        // State Functions
-        public void Reset()
-        {
-            if (MessageBox.Show("Make sure you are not playing any sound in game!","Reset Sound Monitor",MessageBoxButton.OKCancel)==MessageBoxResult.OK)
-            {
-                LoadSong(Sound);
-                State = SoundState.LOADED;
-                stopwatch.Reset();
-            }
-        }
-        private void StatePlay()
-        {
-            State = SoundState.PLAYING;
-            stopwatch.Start();
-        }
-        private void StateStop()
-        {
-            State = SoundState.STOPPED;
-            stopwatch.Reset();
-        }
-        private void StatePauze()
-        {
-            State = SoundState.PAUSED;
-            stopwatch.Stop();
+        //// Constructor
+        //public SoundLoader()
+        //{
+        //    stopwatch = new Stopwatch();
+        //    timer = new Timer(1);
+        //    timer.Elapsed += Timer_Elapsed;
+        //    //timer.Start();
 
-            // Copy sound and trim it
-            SoundPauzed = new SoundNew(Sound.GetPath());
-            SoundPauzed.Pauze(TimePlaying);
+        //    //State = SoundState.NOTLOADED;
+        //}
 
-            CopyToGameDirectory(SoundPauzed);
-        }
+        //public void Start(string path)
+        //{
+        //    copyPath = path;
+        //    timer.Start();
+        //    State = SoundState.NOTLOADED;
+        //}
+        //public void Stop()
+        //{
+        //    timer.Stop();
+        //}
 
-        // Load Functions
-        public void LoadSong(SoundNew sound)
-        {
-            try
-            {
-                if (sound != null)
-                {
-                    if (State == SoundState.PLAYING)
-                        State = SoundState.LOADEDSTILLPLAYING;
-                    else
-                        stopwatch.Reset();
+        //private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        //{
+        //    TimePlaying = stopwatch.Elapsed;
+        //}
 
-                    CopyToGameDirectory(sound);
-                    Sound = sound;
-                }
-            }
-            catch (Exception)
-            {
-                //
-            }
-        }
+        //// Button Commands
+        //public void PlayPause()
+        //{
+        //    switch (State)
+        //    {
+        //        case SoundState.NOTLOADED:
+        //        case SoundState.LOADED:
+        //        case SoundState.STOPPED:
+        //        case SoundState.PAUSED:
+        //            StatePlay();
+        //            break;
+        //        case SoundState.PLAYING:
+        //            StatePauze();
+        //            break;              
+        //        case SoundState.LOADEDSTILLPLAYING:
+        //            StateStop();
+        //            break;
+        //    }
+        //}
+        //public void PlayStop()
+        //{
+        //    switch (State)
+        //    {
+        //        case SoundState.NOTLOADED:
+        //        case SoundState.LOADED:
+        //        case SoundState.STOPPED:
+        //        case SoundState.PAUSED:
+        //            StatePlay();
+        //            break;
+        //        case SoundState.PLAYING:
+        //        case SoundState.LOADEDSTILLPLAYING:
+        //            StateStop();
+        //            break;
+        //    }
+        //}
 
-        private void CopyToGameDirectory(SoundNew sound)
-        {
-            if (File.Exists(copyPath + "\\voice_input.wav"))
-                File.Delete(copyPath + "\\voice_input.wav");
+        //// State Functions
+        //public void Reset()
+        //{
+        //    if (MessageBox.Show("Make sure you are not playing any sound in game!","Reset Sound Monitor",MessageBoxButton.OKCancel)==MessageBoxResult.OK)
+        //    {
+        //        LoadSong(Sound);
+        //        State = SoundState.LOADED;
+        //        stopwatch.Reset();
+        //    }
+        //}
+        //private void StatePlay()
+        //{
+        //    State = SoundState.PLAYING;
+        //    stopwatch.Start();
+        //}
+        //private void StateStop()
+        //{
+        //    State = SoundState.STOPPED;
+        //    stopwatch.Reset();
+        //}
+        //private void StatePauze()
+        //{
+        //    State = SoundState.PAUSED;
+        //    stopwatch.Stop();
 
-            AudioHelper.Create(sound, copyPath + "\\voice_input.wav");
-        }
+        //    // Copy sound and trim it
+        //    SoundPauzed = new SoundNew(Sound.GetPath());
+        //    SoundPauzed.Pauze(TimePlaying);
+
+        //    CopyToGameDirectory(SoundPauzed);
+        //}
+
+        //// Load Functions
+        //public void LoadSong(SoundNew sound)
+        //{
+        //    try
+        //    {
+        //        if (sound != null)
+        //        {
+        //            if (State == SoundState.PLAYING)
+        //                State = SoundState.LOADEDSTILLPLAYING;
+        //            else
+        //                stopwatch.Reset();
+
+        //            CopyToGameDirectory(sound);
+        //            Sound = sound;
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        //
+        //    }
+        //}
+
+        //private void CopyToGameDirectory(SoundNew sound)
+        //{
+        //    if (File.Exists(copyPath + "\\voice_input.wav"))
+        //        File.Delete(copyPath + "\\voice_input.wav");
+
+        //    AudioHelper.Create(sound, copyPath + "\\voice_input.wav");
+        //}
     }
 }

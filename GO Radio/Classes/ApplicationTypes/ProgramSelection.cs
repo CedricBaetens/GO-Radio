@@ -4,6 +4,7 @@ namespace GO_Radio.Classes.ApplicationTypes
 {
     public class ProgramSelection
     {
+        public ProgramSelector.ApplicationState State { get; set; }
         public string Name { get; set; }
         public ProgramSelectionSetting Setting { get; set; }
         public bool IsSelectable { get; set; } = true;
@@ -17,6 +18,7 @@ namespace GO_Radio.Classes.ApplicationTypes
             Setting = new ProgramSelectionSetting();
             Keyboard = new KeyboardController();
             Tts = new TextToSpeech();
+            State = ProgramSelector.ApplicationState.STANDBY;
         }
         public void Load(ProgramSelectionSetting settings)
         {
@@ -30,6 +32,7 @@ namespace GO_Radio.Classes.ApplicationTypes
         public virtual void Stop()
         {
             Keyboard.UnHook();
+            State = ProgramSelector.ApplicationState.STANDBY;
         }
     }
 }

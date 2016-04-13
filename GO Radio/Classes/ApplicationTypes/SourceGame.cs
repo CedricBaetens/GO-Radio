@@ -94,6 +94,8 @@ namespace GO_Radio.Classes.ApplicationTypes
             Tts.Start(data.Path);
             _cfg.Start(Setting.GamePath, Keyboard.KeyBindings);
             _consoleChecker.Start(Setting.GamePath);
+
+            State = ProgramSelector.ApplicationState.RUNNING;
         }
         public override void Stop()
         {

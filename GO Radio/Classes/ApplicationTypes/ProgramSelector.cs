@@ -17,8 +17,7 @@ namespace GO_Radio.Classes.ApplicationTypes
         public enum ApplicationState
         {
             STANDBY,
-            RUNNING,
-            UNDEFINED
+            RUNNING
         };
 
         // Properties
@@ -40,7 +39,7 @@ namespace GO_Radio.Classes.ApplicationTypes
             };
             Data = new CategoryList();
 
-            ActiveProgram = Programs[0];
+            ActiveProgram = Programs[1];
             State = ApplicationState.STANDBY;
         }
 
@@ -85,13 +84,13 @@ namespace GO_Radio.Classes.ApplicationTypes
         }
         public void Start()
         {
-            State = ApplicationState.RUNNING;
             ActiveProgram.Start(Data);
+            State = ActiveProgram.State;
         }
         public void Stop()
         {
-            State = ApplicationState.STANDBY;
             ActiveProgram.Stop();
+            State = ActiveProgram.State;
         }
         public bool IsIdle()
         {
