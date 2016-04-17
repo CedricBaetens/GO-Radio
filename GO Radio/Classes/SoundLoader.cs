@@ -21,7 +21,7 @@ namespace GO_Radio.Classes
 
         // Properties
         public SoundNew Sound { get; set; }
-        public SoundNew SoundPauzed { get; set; }
+        //public SoundNew SoundPauzed { get; set; }
         public SoundState State { get; set; }
         public TimeSpan TimePlaying { get; set; }
 
@@ -82,10 +82,6 @@ namespace GO_Radio.Classes
         {
             State = SoundState.PAUSED;
             Stopwatch.Stop();
-
-            // Trim sound
-            SoundPauzed = new SoundNew(Sound.GetPath());
-            SoundPauzed.Pauze(TimePlaying);
         }
 
         // Button Commands

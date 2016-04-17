@@ -1,4 +1,4 @@
 <doc>
-<version>1.0.0.3</version>
-<url>http://www.baellon.com/goradioapp/setup_GO Radio_1.0.0.3.exe</url>
+<version>1.0.0.2</version>
+<url>http://www.baellon.com/goradioapp/setup_GO Radio_1.0.0.2.exe</url>
 </doc>

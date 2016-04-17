@@ -27,10 +27,16 @@ namespace GO_Radio.Classes
             }
         }
 
+        public override void PlayStop()
+        {
+            base.PlayStop();
+            CopyToGameDirectory(Sound);
+        }
+
         protected override void StatePauze()
         {
             base.StatePauze();
-            CopyToGameDirectory(SoundPauzed);           
+            CopyToGameDirectory(Sound);           
         }
 
         protected override void Reset()
@@ -43,10 +49,14 @@ namespace GO_Radio.Classes
 
         private void CopyToGameDirectory(SoundNew sound)
         {
-            if (File.Exists(CopyPath + "\\voice_input.wav"))
-                File.Delete(CopyPath + "\\voice_input.wav");
-
-            AudioHelper.Create(sound, CopyPath + "\\voice_input.wav");
+            if (State == SoundState.LOADEDSTILLPLAYING)
+            {
+                AudioHelper.Create(sound, CopyPath, new TimeSpan(0));
+            }
+            else
+            {
+                AudioHelper.Create(sound, CopyPath, Stopwatch.Elapsed);
+            }
         }
     }
 }

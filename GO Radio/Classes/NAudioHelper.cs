@@ -55,9 +55,9 @@ namespace GO_Radio.Classes
 
         public static SoundNew Convert(SoundUnconverted unconvertedSound)
         {
-             int sampleRate = 22050;
-             int bits = 16;
-             int channels = 1;
+            int sampleRate = 22050;
+            int bits = 16;
+            int channels = 1;
 
             // ReSample
             string path = string.Format("{0}\\audio\\{1}{2}", soundPath, unconvertedSound.Name, ".wav");// NEEDS TO BE DELETED
@@ -71,21 +71,19 @@ namespace GO_Radio.Classes
                     WaveFileWriter.CreateWaveFile(path, resampler);
                 }
             }
-            
+
 
             File.Delete(unconvertedSound.Path);
 
             return new SoundNew(path);
         }
-
-        public static void Create(SoundNew sound, string output)
+        public static void Create(SoundNew sound, string path, TimeSpan extraTrim = new TimeSpan())
         {
             int sampleRate = 22050;
             int bits = 16;
             int channels = 1;
 
-            // ReSample
-            //string path = string.Format("{0}\\audio\\{1}{2}", ProgramSettings.Instance.PathSounds, unconvertedSound.Name, ".wav");
+            // ReSample to temp file
             using (var reader = new MediaFoundationReader(sound.Path))
             {
                 WaveChannel32 wav = new WaveChannel32(reader);
@@ -95,9 +93,17 @@ namespace GO_Radio.Classes
                 using (var resampler = new MediaFoundationResampler(wav, new WaveFormat(sampleRate, bits, channels)))
                 {
                     resampler.ResamplerQuality = 60;
-                    WaveFileWriter.CreateWaveFile(output, resampler);
+                    WaveFileWriter.CreateWaveFile(path + "\\temp.wav", resampler);
                 }
             }
+
+            // Remove old file
+            if (File.Exists(path + "\\voice_input.wav"))
+                File.Delete(path + "\\voice_input.wav");
+
+            // Trim file
+            TrimWavFile(path + "\\temp.wav", path + "\\voice_input.wav", sound.TrimStart + extraTrim, sound.TrimEnd);
+            File.Delete(path + "\\temp.wav");
         }
     }
 }

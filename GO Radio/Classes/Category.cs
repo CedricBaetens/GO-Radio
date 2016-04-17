@@ -161,7 +161,7 @@ namespace GO_Radio.Classes
         }
         private void RemoveTrim()
         {
-            SelectedSound.RemoveTrim();
+            //SelectedSound.RemoveTrim();
         }
         private void MoveSound()
         {

@@ -14,11 +14,9 @@ namespace GO_Radio.Classes
         public int Id { get; set; }
         public string Name { get; set; }
         public string Path { get; set; }
-        public string PathTrim { get; set; }
         public string Directory { get; set; }
         public string Extension { get; set; }
         public DateTime Date { get; set; }
-        public bool IsTrimmed { get { return string.IsNullOrEmpty(PathTrim) ? false : true; } }
         public TimeSpan TrimStart { get; set; }
         public TimeSpan TrimEnd { get; set; }
         public float Volume { get; set; } = 100;
@@ -47,39 +45,13 @@ namespace GO_Radio.Classes
             {
                 File.Delete(Path);
             }
-            if (File.Exists(PathTrim))
-            {
-                File.Delete(PathTrim);
-            }
         }
 
-        public void Trim()
-        {
-            var outPath = string.Format("{0}\\{1} trimmed.wav", Directory, Name);
-            AudioHelper.TrimWavFile(Path,outPath, TrimStart, TrimEnd);
-            PathTrim = outPath;
-        }
-        public void RemoveTrim()
-        {
-            File.Delete(PathTrim);
-            TrimStart = TimeSpan.Zero;
-            TrimEnd = TimeSpan.Zero;
-            PathTrim = "";
-        } 
         public void Pauze(TimeSpan time)
         {
             var outPath = string.Format("{0}\\tmp\\{1} pauzed.wav", Directory, Name);
             AudioHelper.TrimWavFile(Path, outPath, time, new TimeSpan(0,0,0,0));
             Path = outPath;
-        }
-
-        public string GetPath()
-        {
-            if (IsTrimmed)
-            {
-                return PathTrim;
-            }
-            return Path;
         }
     }
 }
