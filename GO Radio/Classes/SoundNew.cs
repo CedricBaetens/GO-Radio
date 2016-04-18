@@ -47,6 +47,12 @@ namespace GO_Radio.Classes
             }
         }
 
+        public void RemoveTrim()
+        {
+            TrimStart = new TimeSpan();
+            TrimEnd = new TimeSpan();
+        }
+
         public void Pauze(TimeSpan time)
         {
             var outPath = string.Format("{0}\\tmp\\{1} pauzed.wav", Directory, Name);
