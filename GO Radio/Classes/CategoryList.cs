@@ -142,6 +142,10 @@ namespace GO_Radio.Classes
             {
                 string json = File.ReadAllText(path);
                 Categories = JsonConvert.DeserializeObject<ObservableCollection<Category>>(json);
+                foreach (var cat in Categories)
+                {
+                    cat.Parent = this;
+                }
                 UpdateDictionary();
             }
         }

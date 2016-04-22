@@ -8,8 +8,6 @@ namespace GO_Radio.Classes.ApplicationTypes
     [ImplementPropertyChanged]
     class SourceGame : ProgramSelection
     {
-        public SoundLoader SoundLoader { get; set; }
-
         private const string processName = "Counter-Strike: Global Offensive";
         private readonly Cfg _cfg;
         private readonly ConsoleChecker _consoleChecker;

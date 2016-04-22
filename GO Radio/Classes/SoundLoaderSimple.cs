@@ -39,7 +39,7 @@ namespace GO_Radio.Classes
             CopyToGameDirectory(Sound);           
         }
 
-        protected override void Reset()
+        public override void Reset()
         {
             if (MessageBox.Show("Make sure you are not playing any sound in game!", "Reset Sound Monitor", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {

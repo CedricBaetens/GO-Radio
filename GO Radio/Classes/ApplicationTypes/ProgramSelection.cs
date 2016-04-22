@@ -4,6 +4,7 @@ namespace GO_Radio.Classes.ApplicationTypes
 {
     public class ProgramSelection
     {
+        public SoundLoader SoundLoader { get; set; }
         public ProgramSelector.ApplicationState State { get; set; }
         public string Name { get; set; }
         public ProgramSelectionSetting Setting { get; set; }

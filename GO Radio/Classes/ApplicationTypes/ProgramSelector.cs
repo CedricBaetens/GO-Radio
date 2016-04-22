@@ -30,7 +30,7 @@ namespace GO_Radio.Classes.ApplicationTypes
             Programs = new ObservableCollection<ProgramSelection>()
             {
                 new SourceGame() { Name="Counter Strike: Global Offensive" },
-                //new GenericApplication() { Name="Generic Application", IsSelectable = false }
+                new GenericApplication() { Name="Generic Application", IsSelectable = false }
             };
             Data = new CategoryList();
 

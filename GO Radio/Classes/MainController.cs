@@ -32,7 +32,7 @@ namespace GO_Radio.Classes
         }
 
         // Command
-        //public ICommand CommandResetPlayingMonitor => new RelayCommand(((SourceGame)ProgramSelector.ActiveProgram).SoundLoader.Reset);      // NEEDS TO BE CLEANED UP
+        public ICommand CommandResetPlayingMonitor => new RelayCommand(ProgramSelector.ActiveProgram.SoundLoader.Reset);      // NEEDS TO BE CLEANED UP
         public ICommand CommandKeyBinding => new RelayCommand(ShowKeyBinding);
         public ICommand CommandAddCategory => new RelayCommand(ShowCategoryWindow);
         public ICommand CommandAddSound => new RelayCommand(ShowSoundWindow);

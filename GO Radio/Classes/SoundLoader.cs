@@ -62,7 +62,7 @@ namespace GO_Radio.Classes
         }
 
         // State Functions
-        protected virtual void Reset()
+        public virtual void Reset()
         {
             LoadSound(Sound);
             State = SoundState.LOADED;
