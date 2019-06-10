@@ -27,9 +27,10 @@ namespace GO_Radio.Classes.Settings
             string json = JsonConvert.SerializeObject(settings, Formatting.Indented);
             try
             {
+                var dir = Directory.CreateDirectory(AppFolder);
                 File.WriteAllText(AppFolder + "\\settings.json", json);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 System.Windows.MessageBox.Show("Error writing settings.");
             }
