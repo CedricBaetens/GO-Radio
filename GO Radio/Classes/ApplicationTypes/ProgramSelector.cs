@@ -1,7 +1,10 @@
 ﻿using GO_Radio.Classes.Settings;
+using NAudio.Wave;
 using PropertyChanged;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace GO_Radio.Classes.ApplicationTypes
@@ -21,29 +24,33 @@ namespace GO_Radio.Classes.ApplicationTypes
         public ApplicationState State { get; set; }
         public CategoryList Data { get; set; }
 
+        public List<string> OutputDevices { get; set; }
+        public string SelectedOutputDevice { get; set; }
+
         // Variables
         private UserSettings _userSettings;
 
         // Constructor
         public ProgramSelector()
         {
-            Programs = new ObservableCollection<ProgramSelection>()
-            {
-                new SourceGame() { Name="Counter Strike: Global Offensive" },
-                new GenericApplication() { Name="Generic Application", IsSelectable = false }
-            };
+            ActiveProgram = new GenericApplication() { Name = "Generic Application" };
+            State = ApplicationState.STANDBY;
             Data = new CategoryList();
 
-            ActiveProgram = Programs[0];
-            State = ApplicationState.STANDBY;
+            OutputDevices = new List<string>();
+            for (int i = 0; i < WaveOut.DeviceCount; i++)
+            {
+                var output = WaveOut.GetCapabilities(i);
+                OutputDevices.Add(output.ProductName);
+            }
+            SelectedOutputDevice = OutputDevices.FirstOrDefault();
         }
 
         public void Load(UserSettings settings)
         {
             _userSettings = settings;
 
-            Programs[0].Load(_userSettings.CsgoSettings);
-            //Programs[1].Load(_userSettings.SkypeSettings);
+            ActiveProgram.Load(_userSettings.CsgoSettings);
 
             // Load sound data
             if (!Directory.Exists(_userSettings.SoundPath))
@@ -71,7 +78,7 @@ namespace GO_Radio.Classes.ApplicationTypes
             Data.Save();
 
             // Return usersettings
-            _userSettings.CsgoSettings = Programs[0].Setting;
+            _userSettings.CsgoSettings = ActiveProgram.Setting;
             //_userSettings.SkypeSettings = Programs[1].Setting;
             _userSettings.SoundPath = Data.Path;
 

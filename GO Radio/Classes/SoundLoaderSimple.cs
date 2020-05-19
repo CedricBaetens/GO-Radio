@@ -27,15 +27,14 @@ namespace GO_Radio.Classes
             }
         }
 
-        public override void PlayStop()
+
+        protected override void OnPlay()
         {
-            base.PlayStop();
             CopyToGameDirectory(Sound);
         }
 
-        protected override void StatePauze()
+        protected override void OnPauze()
         {
-            base.StatePauze();
             CopyToGameDirectory(Sound);           
         }
 

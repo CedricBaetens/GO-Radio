@@ -10,8 +10,6 @@ namespace GO_Radio.Classes.ApplicationTypes
     [ImplementPropertyChanged]
     class GenericApplication : ProgramSelection
     {
-        public SoundLoader SoundLoader { get; set; }
-
         public GenericApplication()
         {
             SoundLoader = new SoundLoaderDevice();
@@ -26,7 +24,15 @@ namespace GO_Radio.Classes.ApplicationTypes
 
         private void Keyboard_ButtonPressed(object sender, KeyboardController.ButtonEventArgs e)
         {
-            throw new NotImplementedException();
+            switch (e.Key)
+            {
+                case KeyboardController.PressedKey.PlayPauze:
+                    SoundLoader.PlayPause();
+                    break;
+                case KeyboardController.PressedKey.PlayStop:
+                    SoundLoader.PlayStop();
+                    break;
+            }
         }
 
 
@@ -39,6 +45,11 @@ namespace GO_Radio.Classes.ApplicationTypes
             // Sta
             if (State == ProgramSelector.ApplicationState.RUNNING)
                 base.Start(data);
+        }
+
+        public override void Stop()
+        {
+            SoundLoader.Stop();
         }
     }
 }

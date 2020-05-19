@@ -21,7 +21,6 @@ namespace GO_Radio.Classes
 
         // Properties
         public SoundNew Sound { get; set; }
-        //public SoundNew SoundPauzed { get; set; }
         public SoundState State { get; set; }
         public TimeSpan TimePlaying { get; set; }
 
@@ -68,24 +67,12 @@ namespace GO_Radio.Classes
             State = SoundState.LOADED;
             Stopwatch.Reset();
         }
-        protected virtual void StatePlay()
-        {
-            State = SoundState.PLAYING;
-            Stopwatch.Start();
-        }
-        protected virtual void StateStop()
-        {
-            State = SoundState.STOPPED;
-            Stopwatch.Reset();
-        }
-        protected virtual void StatePauze()
-        {
-            State = SoundState.PAUSED;
-            Stopwatch.Stop();
-        }
+        protected virtual void OnPlay() { }
+        protected virtual void OnStop() { }
+        protected virtual void OnPauze() { }
 
         // Button Commands
-        public virtual void PlayPause()
+        public void PlayPause()
         {
             switch (State)
             {
@@ -93,17 +80,29 @@ namespace GO_Radio.Classes
                 case SoundState.LOADED:
                 case SoundState.STOPPED:
                 case SoundState.PAUSED:
-                    StatePlay();
+                    {
+                        OnPlay();
+                        State = SoundState.PLAYING;
+                        Stopwatch.Start();
+                    }
                     break;
                 case SoundState.PLAYING:
-                    StatePauze();
+                    {
+                        OnPauze();
+                        State = SoundState.PAUSED;
+                        Stopwatch.Stop();
+                    }
                     break;
                 case SoundState.LOADEDSTILLPLAYING:
-                    StateStop();
+                    {
+                        OnStop();
+                        State = SoundState.STOPPED;
+                        Stopwatch.Reset();
+                    }
                     break;
             }
         }
-        public virtual void PlayStop()
+        public void PlayStop()
         {
             switch (State)
             {
@@ -111,11 +110,19 @@ namespace GO_Radio.Classes
                 case SoundState.LOADED:
                 case SoundState.STOPPED:
                 case SoundState.PAUSED:
-                    StatePlay();
+                    {
+                        OnPlay();
+                        State = SoundState.PLAYING;
+                        Stopwatch.Start();
+                    }
                     break;
                 case SoundState.PLAYING:
                 case SoundState.LOADEDSTILLPLAYING:
-                    StateStop();
+                    {
+                        OnStop();
+                        State = SoundState.STOPPED;
+                        Stopwatch.Reset();
+                    }
                     break;
             }
         }

@@ -7,13 +7,13 @@ using GO_Radio.Classes.ApplicationTypes;
 namespace GO_Radio.Classes
 {
     [ImplementPropertyChanged]
-    public class MainController : ILoadSave
+    public class MainViewModel
     {
         private SettingsController settings;
         public ProgramSelector ProgramSelector { get; set; }
 
         // Constructor
-        public MainController()
+        public MainViewModel()
         {
             settings = new SettingsController();
             ProgramSelector = new ProgramSelector();

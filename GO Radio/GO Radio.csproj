@@ -148,7 +148,6 @@
     <Compile Include="Classes\CategoryList.cs" />
     <Compile Include="Classes\Cfg.cs" />
     <Compile Include="Classes\Convertors.cs" />
-    <Compile Include="Classes\ILoadSave.cs" />
     <Compile Include="Classes\KeyBinding.cs" />
     <Compile Include="Classes\KeyboardController.cs" />
     <Compile Include="Classes\KeyEvent.cs" />
@@ -161,8 +160,7 @@
     <Compile Include="Classes\NAudioHelper.cs" />
     <Compile Include="Classes\KeyboardHook.cs" />
     <Compile Include="Classes\RellayCommand.cs" />
-    <Compile Include="Classes\MainController.cs" />
-    <Compile Include="Classes\SoundLoaderAdvanced.cs" />
+    <Compile Include="Classes\MainViewModel.cs" />
     <Compile Include="Classes\SoundLoaderDevice.cs" />
     <Compile Include="Classes\SoundLoaderSimple.cs" />
     <Compile Include="Classes\SoundUnconverted.cs" />

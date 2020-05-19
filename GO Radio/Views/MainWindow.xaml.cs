@@ -36,7 +36,7 @@ namespace GO_Radio
     public partial class MainWindow : Window
     {
         #region Properties
-        public MainController MainController { get; set; }
+        public MainViewModel MainController { get; set; }
         #endregion
 
         AutoUpdater au;
@@ -47,7 +47,7 @@ namespace GO_Radio
             InitializeComponent();
 
             // Initialize
-            MainController = new MainController();
+            MainController = new MainViewModel();
 
             // Updates
             au = new AutoUpdater("http://www.baellon.com/goradioapp/version.txt", Assembly.GetExecutingAssembly().GetName().Version);
