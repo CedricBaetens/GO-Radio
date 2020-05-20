@@ -3,6 +3,9 @@ using System.Windows.Input;
 using GO_Radio.Views;
 using GO_Radio.Classes.Settings;
 using GO_Radio.Classes.ApplicationTypes;
+using GameOverlay.Windows;
+using GameOverlay.Drawing;
+using System.Text;
 
 namespace GO_Radio.Classes
 {
@@ -10,6 +13,7 @@ namespace GO_Radio.Classes
     public class MainViewModel
     {
         private SettingsController settings;
+        private Overlay _Overlay;
         public ProgramSelector ProgramSelector { get; set; }
 
         // Constructor
@@ -17,9 +21,13 @@ namespace GO_Radio.Classes
         {
             settings = new SettingsController();
             ProgramSelector = new ProgramSelector();
+            _Overlay = new Overlay();
+            _Overlay.Show();
         }
-    
-       // Interface Methods
+
+       
+
+        // Interface Methods
         public void Load()
         {
             // Load the usersettings and pass them to the program
