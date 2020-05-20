@@ -153,28 +153,20 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Classes\ActiveProcess.cs" />
-    <Compile Include="Classes\ApplicationTypes\GenericApplication.cs" />
-    <Compile Include="Classes\ApplicationTypes\SourceGame.cs" />
     <Compile Include="Classes\AutoUpdater.cs" />
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\CategoryList.cs" />
     <Compile Include="Classes\Cfg.cs" />
     <Compile Include="Classes\Convertors.cs" />
     <Compile Include="Classes\KeyBinding.cs" />
-    <Compile Include="Classes\KeyboardController.cs" />
+    <Compile Include="Classes\KeyboardHook.cs" />
     <Compile Include="Classes\KeyEvent.cs" />
-    <Compile Include="Classes\ApplicationTypes\ProgramSelection.cs" />
-    <Compile Include="Classes\Settings\ProgramSelectionSetting.cs" />
-    <Compile Include="Classes\ApplicationTypes\ProgramSelector.cs" />
     <Compile Include="Classes\Settings\SettingsController.cs" />
     <Compile Include="Classes\Settings\UserSettings.cs" />
     <Compile Include="Classes\SoundLoader.cs" />
     <Compile Include="Classes\NAudioHelper.cs" />
-    <Compile Include="Classes\KeyboardHook.cs" />
     <Compile Include="Classes\RellayCommand.cs" />
     <Compile Include="Classes\MainViewModel.cs" />
-    <Compile Include="Classes\SoundLoaderDevice.cs" />
-    <Compile Include="Classes\SoundLoaderSimple.cs" />
     <Compile Include="Classes\SoundUnconverted.cs" />
     <Compile Include="Classes\SoundNew.cs" />
     <Compile Include="Classes\TextToSpeech.cs" />

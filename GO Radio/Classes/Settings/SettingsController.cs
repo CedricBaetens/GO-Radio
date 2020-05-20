@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace GO_Radio.Classes.Settings
 {
-    class SettingsController
+    static class SettingsController
     {
-        public string AppFolder { get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GO Radio"); } }
+        public static string AppFolder { get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GO Radio"); } }
 
-        public UserSettings LoadUserSettingsFromJSON()
+        public static UserSettings LoadUserSettingsFromJSON()
         {
             string loc = Path.Combine(AppFolder, "settings.json");
             if (File.Exists(loc))
@@ -22,7 +22,7 @@ namespace GO_Radio.Classes.Settings
             }
             return new UserSettings();
         }
-        public void SaveUserSettingsToJSON(UserSettings settings)
+        public static void SaveUserSettingsToJSON(UserSettings settings)
         {
             string json = JsonConvert.SerializeObject(settings, Formatting.Indented);
             try

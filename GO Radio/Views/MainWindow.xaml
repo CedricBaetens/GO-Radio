@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GO_Radio"
         xmlns:classes="clr-namespace:GO_Radio.Classes"
-        xmlns:apptypes="clr-namespace:GO_Radio.Classes.ApplicationTypes"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="GO Radio" 
@@ -55,7 +54,7 @@
 
         <!--Menu-->
         <Menu Grid.Row="0" IsMainMenu="True" Grid.ColumnSpan="2" >
-            <MenuItem Header="File" Height="25" IsEnabled="{Binding Path=ProgramSelector.State, Converter={StaticResource ApplicationStateToBool}, ConverterParameter={x:Static apptypes:ProgramSelector+ApplicationState.STANDBY}}">
+            <MenuItem Header="File" Height="25" IsEnabled="{Binding Path=State, Converter={StaticResource ApplicationStateToBool}, ConverterParameter={x:Static classes:MainViewModel+ApplicationState.STANDBY}}">
                 <MenuItem Header="Import" Command="{Binding CommandAddSound}"/>
                 <Separator/>
                 <MenuItem Header="Add Category" Command="{Binding CommandAddCategory}"/>
@@ -68,8 +67,9 @@
                 <MenuItem Header="Keybindings" Height="25" Command="{Binding CommandKeyBinding}"></MenuItem>
             </MenuItem>-->
 
-            <MenuItem Header="Extra" Height="25" IsEnabled="{Binding Path=ProgramSelector.State, Converter={StaticResource ApplicationStateToBool}, ConverterParameter={x:Static apptypes:ProgramSelector+ApplicationState.RUNNING}}">
+            <MenuItem Header="Extra" Height="25" IsEnabled="{Binding Path=ProgramSelector.State, Converter={StaticResource ApplicationStateToBool}, ConverterParameter={x:Static classes:MainViewModel+ApplicationState.RUNNING}}">
                 <MenuItem Header="Reset Playing Monitor" Height="25" Command="{Binding CommandResetPlayingMonitor}"></MenuItem>
+                <MenuItem Header="Show Overlay" Height="25" Command="{Binding CommandShowOverlay}"></MenuItem>
             </MenuItem>
 
             <!--<MenuItem Header="Settings" Height="25">
@@ -111,7 +111,7 @@
                 <!--<ComboBox ItemsSource="{Binding ProgramSelector.Programs}" 
                   SelectedItem="{Binding ProgramSelector.ActiveProgram}" 
                   Grid.Row="2" Margin="10"
-                 IsEnabled="{Binding Path=ProgramSelector.State, Converter={StaticResource ApplicationStateToBool}, ConverterParameter={x:Static apptypes:ProgramSelector+ApplicationState.STANDBY}}">
+                 IsEnabled="{Binding Path=ProgramSelector.State, Converter={StaticResource ApplicationStateToBool}, ConverterParameter={x:Static classes:MainViewModel+ApplicationState.STANDBY}}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}"></TextBlock>
@@ -119,18 +119,16 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>-->
 
-                <ComboBox ItemsSource="{Binding ProgramSelector.OutputDevices}" SelectedItem="{Binding ProgramSelector.SelectedOutputDevice, Mode=TwoWay}" Text="Select Option"
+                <ComboBox ItemsSource="{Binding OutputDevices}" SelectedItem="{Binding SelectedOutputDevice, Mode=TwoWay}" Text="Select Option"
                           Grid.Column="1" Margin="10"/>
 
 
                 <Button Grid.Column="2" Margin="10" HorizontalAlignment="Right" Width="120" Command="{Binding CommandStart}" 
-                        Visibility="{Binding Path=ProgramSelector.State, Converter={StaticResource ApplicationStateToVisibility}, ConverterParameter={x:Static apptypes:ProgramSelector+ApplicationState.STANDBY}}"
-                        IsEnabled="{Binding Path=ProgramSelector.ActiveProgram.IsSelectable}"
+                        Visibility="{Binding Path=State, Converter={StaticResource ApplicationStateToVisibility}, ConverterParameter={x:Static classes:MainViewModel+ApplicationState.STANDBY}}"
                         >Start
                 </Button>
                 <Button Grid.Column="2" Margin="10" HorizontalAlignment="Right" Width="120" Command="{Binding CommandStop}" 
-                        Visibility="{Binding Path=ProgramSelector.State, Converter={StaticResource ApplicationStateToVisibility}, ConverterParameter={x:Static apptypes:ProgramSelector+ApplicationState.RUNNING}}"
-                        IsEnabled="{Binding Path=ProgramSelector.ActiveProgram.IsSelectable}"
+                        Visibility="{Binding Path=State, Converter={StaticResource ApplicationStateToVisibility}, ConverterParameter={x:Static classes:MainViewModel+ApplicationState.RUNNING}}"
                         >Stop
                 </Button>
 
@@ -143,7 +141,7 @@
         <ScrollViewer Name="scrollViewer" VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="2" Grid.Row="3">
             <StackPanel>
                 <!--CATEGORIES-->
-                <ItemsControl ItemsSource="{Binding ProgramSelector.Data.Categories}">
+                <ItemsControl ItemsSource="{Binding Data.Categories}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Expander Margin="10" ExpandDirection="Down">
@@ -234,7 +232,7 @@
                                  VerticalAlignment="Bottom"
                                  Width="40"
                                  Height="40" Grid.Column="1" 
-                                 IsEnabled="{Binding Path=ProgramSelector.State, Converter={StaticResource ApplicationStateToBool}, ConverterParameter={x:Static apptypes:ProgramSelector+ApplicationState.STANDBY}}">
+                                 IsEnabled="{Binding Path=ProgramSelector.State, Converter={StaticResource ApplicationStateToBool}, ConverterParameter={x:Static classes:MainViewModel+ApplicationState.STANDBY}}">
             <StackPanel>
                 <Button ToolTip="Import a new sound." Command="{Binding CommandAddSound}">
                     <Image Source="/Images/music-w.png" Margin="5"/>
@@ -270,23 +268,23 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="1"  VerticalAlignment="Center" 
-                            Visibility="{Binding Path=ProgramSelector.State, Converter={StaticResource ApplicationStateToVisibility}, ConverterParameter={x:Static apptypes:ProgramSelector+ApplicationState.RUNNING}}">
+                            Visibility="{Binding Path=ProgramSelector.State, Converter={StaticResource ApplicationStateToVisibility}, ConverterParameter={x:Static classes:MainViewModel+ApplicationState.RUNNING}}">
                     <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0:0000} {1}">
-                                <Binding Path="ProgramSelector.ActiveProgram.SoundLoader.Sound.Id" />
-                                <Binding Path="ProgramSelector.ActiveProgram.SoundLoader.Sound.Name" />
+                                <Binding Path="SoundLoader.Sound.Id" />
+                                <Binding Path="SoundLoader.Sound.Name" />
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>
-                    <TextBlock Text="{Binding ProgramSelector.ActiveProgram.SoundLoader.TimePlaying}"/>
-                    <TextBlock Text="{Binding ProgramSelector.ActiveProgram.SoundLoader.State}"/>
+                    <TextBlock Text="{Binding SoundLoader.TimePlaying}"/>
+                    <TextBlock Text="{Binding SoundLoader.State}"/>
                 </StackPanel>
 
                 <TextBlock Grid.Column="2" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignBody2TextBlock}" Margin="20,10,10,10" VerticalAlignment="Center">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0}">
-                            <Binding Path="ProgramSelector.ActiveProgram.Keyboard.Input" />
+                            <Binding Path="Keyboard.Input" />
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>

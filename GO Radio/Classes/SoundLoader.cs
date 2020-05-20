@@ -1,4 +1,5 @@
-﻿using PropertyChanged;
+﻿using NAudio.Wave;
+using PropertyChanged;
 using System;
 using System.Diagnostics;
 using System.Timers;
@@ -6,7 +7,7 @@ using System.Timers;
 namespace GO_Radio.Classes
 {
     [ImplementPropertyChanged]
-    public abstract class SoundLoader
+    public class SoundLoader
     {
         // Enum
         public enum SoundState
@@ -28,9 +29,10 @@ namespace GO_Radio.Classes
         protected Stopwatch Stopwatch;
         protected string CopyPath = "";
         private readonly Timer _timer;
+        private WaveOut _WaveOut = new WaveOut();
 
         // Constructor
-        protected SoundLoader()
+        public SoundLoader()
         {
             Stopwatch = new Stopwatch();
             _timer = new Timer(1);
@@ -67,9 +69,29 @@ namespace GO_Radio.Classes
             State = SoundState.LOADED;
             Stopwatch.Reset();
         }
-        protected virtual void OnPlay() { }
-        protected virtual void OnStop() { }
-        protected virtual void OnPauze() { }
+        protected virtual void OnPlay()
+        {
+            if (State == SoundLoader.SoundState.PAUSED)
+            {
+                _WaveOut.Resume();
+            }
+            else
+            {
+                var waveReader = new WaveFileReader(Sound.Path);
+
+                _WaveOut.DeviceNumber = 0;
+                _WaveOut.Init(waveReader);
+                _WaveOut.Play();
+            }
+        }
+        protected virtual void OnStop()
+        {
+            _WaveOut.Stop();
+        }
+        protected virtual void OnPauze()
+        {
+            _WaveOut.Pause();
+        }
 
         // Button Commands
         public void PlayPause()
