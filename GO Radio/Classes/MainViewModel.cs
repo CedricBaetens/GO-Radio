@@ -26,8 +26,6 @@ namespace GO_Radio.Classes
         public ApplicationState State { get; set; }
         public CategoryList Data { get; set; }
 
-        public List<string> OutputDevices { get; set; }
-        public string SelectedOutputDevice { get; set; }
 
         public SoundLoader SoundLoader { get; set; } = new SoundLoader();
         public KeyboardHook Keyboard { get; set; } = new KeyboardHook();
@@ -47,14 +45,6 @@ namespace GO_Radio.Classes
 
             State = ApplicationState.STANDBY;
             Data = new CategoryList();
-
-            OutputDevices = new List<string>();
-            for (int i = 0; i < WaveOut.DeviceCount; i++)
-            {
-                var output = WaveOut.GetCapabilities(i);
-                OutputDevices.Add(output.ProductName);
-            }
-            SelectedOutputDevice = OutputDevices.FirstOrDefault();
         }
 
         // Interface Methods
@@ -100,6 +90,7 @@ namespace GO_Radio.Classes
         {
             Keyboard.Hook();
             State = SoundLoader.Start() ? ApplicationState.RUNNING : ApplicationState.STANDBY;
+
         }
         public void Stop()
         {

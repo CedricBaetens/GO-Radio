@@ -168,7 +168,7 @@ namespace GO_Radio
 
                 return video;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return null;
             }

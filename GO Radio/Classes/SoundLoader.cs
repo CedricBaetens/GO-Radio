@@ -1,7 +1,9 @@
 ﻿using NAudio.Wave;
 using PropertyChanged;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Timers;
 
 namespace GO_Radio.Classes
@@ -25,6 +27,9 @@ namespace GO_Radio.Classes
         public SoundState State { get; set; }
         public TimeSpan TimePlaying { get; set; }
 
+        public List<WaveOutCapabilities> OutputDevices { get; set; } = new List<WaveOutCapabilities>();
+        public WaveOutCapabilities SelectedOutputDevice { get; set; }
+
         // Variablbe
         protected Stopwatch Stopwatch;
         protected string CopyPath = "";
@@ -37,6 +42,13 @@ namespace GO_Radio.Classes
             Stopwatch = new Stopwatch();
             _timer = new Timer(1);
             _timer.Elapsed += Timer_Elapsed;
+
+            for (int i = 0; i < WaveOut.DeviceCount; i++)
+            {
+                var output = WaveOut.GetCapabilities(i);
+                OutputDevices.Add(output);
+            }
+            SelectedOutputDevice = OutputDevices.FirstOrDefault();
         }
 
         // Timer
@@ -47,6 +59,7 @@ namespace GO_Radio.Classes
 
         public virtual bool Start(string path = "")
         {
+            _WaveOut.DeviceNumber = OutputDevices.FindIndex(x => x.ProductName == SelectedOutputDevice.ProductName);
             CopyPath = path;
             _timer.Start();
             State = SoundState.NOTLOADED;
@@ -78,8 +91,6 @@ namespace GO_Radio.Classes
             else
             {
                 var waveReader = new WaveFileReader(Sound.Path);
-
-                _WaveOut.DeviceNumber = 0;
                 _WaveOut.Init(waveReader);
                 _WaveOut.Play();
             }

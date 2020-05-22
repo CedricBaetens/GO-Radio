@@ -119,7 +119,7 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>-->
 
-                <ComboBox ItemsSource="{Binding OutputDevices}" SelectedItem="{Binding SelectedOutputDevice, Mode=TwoWay}" Text="Select Option"
+                <ComboBox ItemsSource="{Binding SoundLoader.OutputDevices}" DisplayMemberPath="ProductName" SelectedItem="{Binding SoundLoader.SelectedOutputDevice, Mode=TwoWay}" Text="Select Option"
                           Grid.Column="1" Margin="10"/>
 
 
