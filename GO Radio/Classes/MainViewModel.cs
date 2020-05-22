@@ -27,24 +27,26 @@ namespace GO_Radio.Classes
         public CategoryList Data { get; set; }
 
 
-        public SoundLoader SoundLoader { get; set; } = new SoundLoader();
+
+        public ISoundLoader SoundLoader { get; set; }
         public KeyboardHook Keyboard { get; set; } = new KeyboardHook();
 
         // Variables
         private UserSettings _userSettings;
-        private Overlay _Overlay;
+        private readonly IOverlay _overlay;
 
         // Constructor
-        public MainViewModel()
+        public MainViewModel(ISoundLoader soundLoader, IOverlay overlay)
         {
+            SoundLoader = soundLoader;
+
             Keyboard = new KeyboardHook();
             Keyboard.IdEntered += Keyboard_IdEntered;
             Keyboard.ButtonPressed += Keyboard_ButtonPressed;
 
-            _Overlay = new Overlay();
-
             State = ApplicationState.STANDBY;
             Data = new CategoryList();
+            _overlay = overlay;
         }
 
         // Interface Methods
@@ -104,7 +106,7 @@ namespace GO_Radio.Classes
         }
 
         // Command
-        public ICommand CommandResetPlayingMonitor => new RelayCommand(SoundLoader.Reset);     
+        //public ICommand CommandResetPlayingMonitor => new RelayCommand(SoundLoader.Reset);     
         public ICommand CommandKeyBinding => new RelayCommand(ShowKeyBinding);
         public ICommand CommandAddCategory => new RelayCommand(ShowCategoryWindow);
         public ICommand CommandAddSound => new RelayCommand(ShowSoundWindow);
@@ -159,10 +161,10 @@ namespace GO_Radio.Classes
         }
         private void ShowOverlay()
         {
-            if (!_Overlay.Showed)
-                _Overlay.Show();
+            if (!_overlay.Showed)
+                _overlay.Show();
             else
-                _Overlay.Hide();
+                _overlay.Hide();
         }
 
 
@@ -170,9 +172,7 @@ namespace GO_Radio.Classes
         private void Keyboard_IdEntered(object sender, KeyboardHook.IdEventArgs e)
         {
             var sound = Data.GetSoundById(e.Input);
-
             SoundLoader.LoadSound(sound);
-            _Overlay.DisplaySound(sound);
         }
         private void Keyboard_ButtonPressed(object sender, KeyboardHook.ButtonEventArgs e)
         {

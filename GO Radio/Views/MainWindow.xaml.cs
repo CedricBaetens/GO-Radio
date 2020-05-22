@@ -35,30 +35,19 @@ namespace GO_Radio
     [ImplementPropertyChanged]
     public partial class MainWindow : Window
     {
-        #region Properties
         public MainViewModel MainController { get; set; }
-        #endregion
 
-        AutoUpdater au;
-
-        #region Constructor
-        public MainWindow()
+        public MainWindow(MainViewModel mainViewModel)
         {
             InitializeComponent();
 
-            // Initialize
-            MainController = new MainViewModel();
-
-            // Updates
-            au = new AutoUpdater("http://www.baellon.com/goradioapp/version.txt", Assembly.GetExecutingAssembly().GetName().Version);
-            au.CheckForUpdate();
+            //Initialize
+            MainController = mainViewModel;
 
             // Binding
             DataContext = MainController;
         }
-        #endregion
 
-        #region Window Events
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -69,7 +58,6 @@ namespace GO_Radio
             MainController.Save();
         }
 
-        #endregion
 
         // Fix scrollwheel on datagrid
         private void DataGrid_PreviewMouseWheel(object sender, MouseWheelEventArgs e)

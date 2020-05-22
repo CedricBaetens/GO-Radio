@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GO_Radio.Classes;
+using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +15,29 @@ namespace GO_Radio
     /// </summary>
     public partial class App : Application
     {
+        private IKernel _Container;
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            ConfigureContainer();
+            ComposeObjects();
+            Current.MainWindow.Show();
+        }
+
+        private void ConfigureContainer()
+        {
+            _Container = new StandardKernel();
+
+            _Container.Bind<MainViewModel>().To<MainViewModel>();
+
+            _Container.Bind<IOverlay>().To<Overlay>().InSingletonScope();
+            _Container.Bind<ISoundLoader>().To<SoundLoader>().InSingletonScope();
+        }
+
+        private void ComposeObjects()
+        {
+            Current.MainWindow = _Container.Get<MainWindow>();
+        }
     }
 }

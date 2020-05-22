@@ -5,11 +5,27 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Timers;
+using static GO_Radio.Classes.SoundLoader;
 
 namespace GO_Radio.Classes
 {
+    public interface ISoundLoader
+    {
+        SoundNew Sound { get; set; }
+        SoundState State { get; set; }
+        TimeSpan TimePlaying { get; set; }
+
+        bool Start(string path = "");
+        void Stop();
+
+        void PlayPause();
+        void PlayStop();
+
+        void LoadSound(SoundNew sound);
+
+    }
     [ImplementPropertyChanged]
-    public class SoundLoader
+    public class SoundLoader : ISoundLoader
     {
         // Enum
         public enum SoundState
@@ -34,10 +50,11 @@ namespace GO_Radio.Classes
         protected Stopwatch Stopwatch;
         protected string CopyPath = "";
         private readonly Timer _timer;
+        private readonly IOverlay _Overlay;
         private WaveOut _WaveOut = new WaveOut();
 
         // Constructor
-        public SoundLoader()
+        public SoundLoader(IOverlay overlay)
         {
             Stopwatch = new Stopwatch();
             _timer = new Timer(1);
@@ -49,6 +66,7 @@ namespace GO_Radio.Classes
                 OutputDevices.Add(output);
             }
             SelectedOutputDevice = OutputDevices.FirstOrDefault();
+            _Overlay = overlay;
         }
 
         // Timer
@@ -57,7 +75,7 @@ namespace GO_Radio.Classes
             TimePlaying = Stopwatch.Elapsed;
         }
 
-        public virtual bool Start(string path = "")
+        public bool Start(string path = "")
         {
             _WaveOut.DeviceNumber = OutputDevices.FindIndex(x => x.ProductName == SelectedOutputDevice.ProductName);
             CopyPath = path;
@@ -65,18 +83,19 @@ namespace GO_Radio.Classes
             State = SoundState.NOTLOADED;
             return true;
         }
-        public virtual void Stop()
+        public void Stop()
         {
             _timer.Stop();
         }
 
-        public virtual void LoadSound(SoundNew sound)
+        public void LoadSound(SoundNew sound)
         {
             Sound = sound;
+            _Overlay.DisplaySound(sound);
         }
 
         // State Functions
-        public virtual void Reset()
+        public void Reset()
         {
             LoadSound(Sound);
             State = SoundState.LOADED;
