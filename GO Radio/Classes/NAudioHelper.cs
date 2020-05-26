@@ -53,31 +53,31 @@ namespace GO_Radio.Classes
             }
         }
 
-        public static SoundNew Convert(SoundUnconverted unconvertedSound)
-        {
-            int sampleRate = 22050;
-            int bits = 16;
-            int channels = 1;
+        //public static SoundNew Convert(SoundUnconverted unconvertedSound)
+        //{
+        //    int sampleRate = 22050;
+        //    int bits = 16;
+        //    int channels = 1;
 
-            // ReSample
-            string path = string.Format("{0}\\audio\\{1}{2}", soundPath, unconvertedSound.Name, ".wav");// NEEDS TO BE DELETED
-            using (var reader = new MediaFoundationReader(unconvertedSound.Path))
-            {
-                WaveChannel32 wav = new WaveChannel32(reader);
-                //wav.Volume = (150 / 100) ^ 6;
-                using (var resampler = new MediaFoundationResampler(reader, new WaveFormat(sampleRate, bits, channels)))
-                {
-                    resampler.ResamplerQuality = 60;
-                    WaveFileWriter.CreateWaveFile(path, resampler);
-                }
-            }
+        //    // ReSample
+        //    string path = string.Format("{0}\\audio\\{1}{2}", soundPath, unconvertedSound.Name, ".wav");// NEEDS TO BE DELETED
+        //    using (var reader = new MediaFoundationReader(unconvertedSound.Path))
+        //    {
+        //        WaveChannel32 wav = new WaveChannel32(reader);
+        //        //wav.Volume = (150 / 100) ^ 6;
+        //        using (var resampler = new MediaFoundationResampler(reader, new WaveFormat(sampleRate, bits, channels)))
+        //        {
+        //            resampler.ResamplerQuality = 60;
+        //            WaveFileWriter.CreateWaveFile(path, resampler);
+        //        }
+        //    }
 
 
-            File.Delete(unconvertedSound.Path);
+        //    File.Delete(unconvertedSound.Path);
 
-            return new SoundNew(path);
-        }
-        public static void Create(SoundNew sound, string path, TimeSpan extraTrim = new TimeSpan())
+        //    return new SoundNew(path);
+        //}
+        public static void Create(Sound sound, string path, TimeSpan extraTrim = new TimeSpan())
         {
             int sampleRate = 22050;
             int bits = 16;

@@ -7,17 +7,53 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using static GO_Radio.Classes.KeyboardHook;
 
 namespace GO_Radio.Classes
 {
-    [ImplementPropertyChanged]
-    public class KeyboardHook
+    public class IdEventArgs : EventArgs
     {
+        public string Input { get; set; }
+        public IdEventArgs(string id)
+        {
+            Input = id;
+        }
+    }
+    public class ButtonEventArgs : EventArgs
+    {
+        public PressedKey Key { get; set; }
+        public ButtonEventArgs(PressedKey key)
+        {
+            Key = key;
+        }
+    }
+
+    public interface IKeyboarHook
+    {
+        event EventHandler<IdEventArgs> IdEntered;
+        event EventHandler<ButtonEventArgs> ButtonPressed;
+
+        void Hook();
+        void UnHook();
+    }
+
+    [ImplementPropertyChanged]
+    public class KeyboardHook : IKeyboarHook
+    {
+        public enum PressedKey
+        {
+            PlayPauze,
+            PlayStop
+        }
+
         public string Input { get; set; } = "";
         public KeyBinder KeyBindings { get; set; }
 
         private LowLevelKeyboardListener keyboardHook;
         private System.Timers.Timer timerClearInput;
+
+        public event EventHandler<IdEventArgs> IdEntered;
+        public event EventHandler<ButtonEventArgs> ButtonPressed;
 
         public KeyboardHook()
         {
@@ -115,49 +151,17 @@ namespace GO_Radio.Classes
         }
 
 
-        // Used for id event 
-        public delegate void IdUpdateEventHandler(object sender, IdEventArgs e);
-        public event IdUpdateEventHandler IdEntered;
         private void FireEventIdEntered(string id)
         {
-            // Make sure someone is listening to event
-            if (IdEntered == null) return;
-
-            IdEventArgs args = new IdEventArgs(id);
-            IdEntered(this, args);
+            if (IdEntered == null) 
+                return;
+            IdEntered?.Invoke(this, new IdEventArgs(id));
         }
-        public class IdEventArgs : EventArgs
-        {
-            public string Input { get; set; }
-            public IdEventArgs(string id)
-            {
-                Input = id;
-            }
-        }
-
-        // Used for button event
-        public delegate void ButtonUpdateEventHandler(object sender, ButtonEventArgs e);
-        public event ButtonUpdateEventHandler ButtonPressed;
         private void FireButtonEvent(PressedKey key)
         {
-            // Make sure someone is listening to event
-            if (ButtonPressed == null) return;
-
-            ButtonEventArgs args = new ButtonEventArgs(key);
-            ButtonPressed(this, args);
-        }
-        public class ButtonEventArgs : EventArgs
-        {
-            public PressedKey Key { get; set; }
-            public ButtonEventArgs(PressedKey key)
-            {
-                Key = key;
-            }
-        }
-        public enum PressedKey
-        {
-            PlayPauze,
-            PlayStop
+            if (ButtonPressed == null) 
+                return;
+            ButtonPressed.Invoke(this, new ButtonEventArgs(key));
         }
     }
 
@@ -223,7 +227,6 @@ namespace GO_Radio.Classes
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
         }
     }
-
     public class KeyPressedArgs : EventArgs
     {
         public Key KeyPressed { get; private set; }

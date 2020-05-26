@@ -30,9 +30,9 @@ namespace GO_Radio.Classes
         public int Size { get; set; } = 100;
 
         [DataMember]
-        public ObservableCollection<SoundNew> Sounds { get; set; }
+        public ObservableCollection<Sound> Sounds { get; set; }
 
-        public SoundNew SelectedSound { get; set; }
+        public Sound SelectedSound { get; set; }
 
         public CategoryList Parent { get; set; }
 
@@ -41,11 +41,11 @@ namespace GO_Radio.Classes
         // Constructor
         public Category()
         {
-            Sounds = new ObservableCollection<SoundNew>();
+            Sounds = new ObservableCollection<Sound>();
         }
 
         // Public methods
-        public void AddSound(SoundNew sound)
+        public void AddSound(Sound sound)
         {
             /* CHECK IF NUMBERS FOLLOW IN CATEGORY, VOODOO DO NOT TOUCH. IT MIGHT BITE  */
 
@@ -78,7 +78,7 @@ namespace GO_Radio.Classes
 
             // Add sound to list and sort it.
             Sounds.Add(sound);
-            Sounds = new ObservableCollection<SoundNew>(Sounds.OrderBy(o => o.Id).ToList());
+            Sounds = new ObservableCollection<Sound>(Sounds.OrderBy(o => o.Id).ToList());
         }
         public void MoveSound(Category category)
         {

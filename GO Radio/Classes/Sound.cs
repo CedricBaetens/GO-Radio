@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace GO_Radio.Classes
 {
     [ImplementPropertyChanged]
-    public class SoundNew
+    public class Sound
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -21,7 +21,7 @@ namespace GO_Radio.Classes
         public TimeSpan TrimEnd { get; set; }
         public float Volume { get; set; } = 100;
 
-        public SoundNew(string path, int id = -1)
+        public Sound(string path, int id = -1)
         {
             FileInfo file = new FileInfo(path);
 
@@ -34,7 +34,7 @@ namespace GO_Radio.Classes
             Date = DateTime.Now;
         }
 
-        public SoundNew()
+        public Sound()
         {
                 
         }

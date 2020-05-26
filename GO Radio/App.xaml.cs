@@ -33,6 +33,7 @@ namespace GO_Radio
 
             _Container.Bind<IOverlay>().To<Overlay>().InSingletonScope();
             _Container.Bind<ISoundLoader>().To<SoundLoader>().InSingletonScope();
+            _Container.Bind<IKeyboarHook>().To<KeyboardHook>().InSingletonScope();
         }
 
         private void ComposeObjects()

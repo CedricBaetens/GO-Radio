@@ -11,7 +11,7 @@ namespace GO_Radio.Classes
 {
     public interface ISoundLoader
     {
-        SoundNew Sound { get; set; }
+        Sound Sound { get; set; }
         SoundState State { get; set; }
         TimeSpan TimePlaying { get; set; }
 
@@ -21,7 +21,7 @@ namespace GO_Radio.Classes
         void PlayPause();
         void PlayStop();
 
-        void LoadSound(SoundNew sound);
+        void LoadSound(Sound sound);
 
     }
     [ImplementPropertyChanged]
@@ -39,7 +39,7 @@ namespace GO_Radio.Classes
         }
 
         // Properties
-        public SoundNew Sound { get; set; }
+        public Sound Sound { get; set; }
         public SoundState State { get; set; }
         public TimeSpan TimePlaying { get; set; }
 
@@ -88,10 +88,10 @@ namespace GO_Radio.Classes
             _timer.Stop();
         }
 
-        public void LoadSound(SoundNew sound)
+        public void LoadSound(Sound sound)
         {
             Sound = sound;
-            _Overlay.DisplaySound(sound);
+            _Overlay.DisplayLoadedSound(sound);
         }
 
         // State Functions
@@ -109,18 +109,22 @@ namespace GO_Radio.Classes
             }
             else
             {
-                var waveReader = new WaveFileReader(Sound.Path);
-                _WaveOut.Init(waveReader);
+                //var waveReader = new WaveFileReader(Sound.Path);
+                var reader = new Mp3FileReader(Sound.Path);
+                _WaveOut.Init(reader);
                 _WaveOut.Play();
             }
+            _Overlay.DisplayPlayingSound(Sound);
         }
         protected virtual void OnStop()
         {
             _WaveOut.Stop();
+            _Overlay.DisplayStoppedSound(Sound);
         }
         protected virtual void OnPauze()
         {
             _WaveOut.Pause();
+            _Overlay.DisplayPauzedSound(Sound);
         }
 
         // Button Commands

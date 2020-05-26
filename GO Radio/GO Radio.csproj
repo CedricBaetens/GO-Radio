@@ -163,14 +163,11 @@
     <Compile Include="Classes\KeyBinding.cs" />
     <Compile Include="Classes\KeyboardHook.cs" />
     <Compile Include="Classes\KeyEvent.cs" />
-    <Compile Include="Classes\Settings\SettingsController.cs" />
-    <Compile Include="Classes\Settings\UserSettings.cs" />
     <Compile Include="Classes\SoundLoader.cs" />
     <Compile Include="Classes\NAudioHelper.cs" />
     <Compile Include="Classes\RellayCommand.cs" />
     <Compile Include="Classes\MainViewModel.cs" />
-    <Compile Include="Classes\SoundUnconverted.cs" />
-    <Compile Include="Classes\SoundNew.cs" />
+    <Compile Include="Classes\Sound.cs" />
     <Compile Include="Classes\TextToSpeech.cs" />
     <Compile Include="Classes\WPF_Extended_Extended\TimeSpanExtended.cs" />
     <Compile Include="Classes\ConsoleChecker.cs" />

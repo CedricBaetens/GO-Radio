@@ -1,15 +1,8 @@
-﻿using PropertyChanged;
-using System.Windows.Input;
-using GO_Radio.Views;
-using GO_Radio.Classes.Settings;
-using GameOverlay.Windows;
-using GameOverlay.Drawing;
-using System.Text;
-using System.Windows.Forms;
+﻿using GO_Radio.Views;
+using PropertyChanged;
+using System;
 using System.IO;
-using System.Collections.Generic;
-using NAudio.Wave;
-using System.Linq;
+using System.Windows.Input;
 
 namespace GO_Radio.Classes
 {
@@ -29,51 +22,54 @@ namespace GO_Radio.Classes
 
 
         public ISoundLoader SoundLoader { get; set; }
-        public KeyboardHook Keyboard { get; set; } = new KeyboardHook();
+        public IKeyboarHook Keyboard { get; set; }
 
         // Variables
-        private UserSettings _userSettings;
         private readonly IOverlay _overlay;
 
+        private string _Path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GORadio");
+
         // Constructor
-        public MainViewModel(ISoundLoader soundLoader, IOverlay overlay)
+        public MainViewModel(ISoundLoader soundLoader, IOverlay overlay, IKeyboarHook keyboarHook)
         {
             SoundLoader = soundLoader;
-
-            Keyboard = new KeyboardHook();
+            Keyboard = keyboarHook;
             Keyboard.IdEntered += Keyboard_IdEntered;
             Keyboard.ButtonPressed += Keyboard_ButtonPressed;
+            _overlay = overlay;
 
             State = ApplicationState.STANDBY;
             Data = new CategoryList();
-            _overlay = overlay;
         }
 
         // Interface Methods
         public void Load()
         {
-            _userSettings = SettingsController.LoadUserSettingsFromJSON();
+            //_userSettings = SettingsController.LoadUserSettingsFromJSON();
 
 
-            // Load sound data
-            if (!Directory.Exists(_userSettings.SoundPath))
-            {
-                FolderBrowserDialog fbd = new FolderBrowserDialog()
-                {
-                    Description = @"Please select a location where you want your sounds to be stored."
-                };
-                fbd.ShowDialog();
+            //// Load sound data
+            //if (!Directory.Exists(_userSettings.SoundPath))
+            //{
+            //    FolderBrowserDialog fbd = new FolderBrowserDialog()
+            //    {
+            //        Description = @"Please select a location where you want your sounds to be stored."
+            //    };
+            //    fbd.ShowDialog();
 
-                if (!string.IsNullOrEmpty(fbd.SelectedPath))
-                {
-                    _userSettings.SoundPath = fbd.SelectedPath + "\\Sounds";
-                    Directory.CreateDirectory(_userSettings.SoundPath + "\\audio");
-                    Directory.CreateDirectory(_userSettings.SoundPath + "\\new");
-                }
-            }
+            //    if (!string.IsNullOrEmpty(fbd.SelectedPath))
+            //    {
+            //        _userSettings.SoundPath = fbd.SelectedPath + "\\Sounds";
+            //        Directory.CreateDirectory(_userSettings.SoundPath + "\\audio");
+            //        Directory.CreateDirectory(_userSettings.SoundPath + "\\new");
+            //    }
+            //}
 
-            Data.Load(_userSettings.SoundPath);
-            AudioHelper.Load(_userSettings.SoundPath);
+            Data.Load(_Path);
+
+
+            //Data.Load(_userSettings.SoundPath);
+            //AudioHelper.Load(_userSettings.SoundPath);
         }
         public void Save()
         {
@@ -83,8 +79,8 @@ namespace GO_Radio.Classes
 
             // Return usersettings
             //_userSettings.SkypeSettings = Programs[1].Setting;
-            _userSettings.SoundPath = Data.Path;
-            SettingsController.SaveUserSettingsToJSON(_userSettings);
+            //_userSettings.SoundPath = Data.Path;
+            //SettingsController.SaveUserSettingsToJSON(_userSettings);
         }
 
         // Public Methods
@@ -169,12 +165,12 @@ namespace GO_Radio.Classes
 
 
         // Events
-        private void Keyboard_IdEntered(object sender, KeyboardHook.IdEventArgs e)
+        private void Keyboard_IdEntered(object sender, IdEventArgs e)
         {
             var sound = Data.GetSoundById(e.Input);
             SoundLoader.LoadSound(sound);
         }
-        private void Keyboard_ButtonPressed(object sender, KeyboardHook.ButtonEventArgs e)
+        private void Keyboard_ButtonPressed(object sender, ButtonEventArgs e)
         {
             switch (e.Key)
             {

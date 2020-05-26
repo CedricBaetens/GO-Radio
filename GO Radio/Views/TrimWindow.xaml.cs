@@ -21,7 +21,7 @@ namespace GO_Radio.Views
     [ImplementPropertyChanged]
     public partial class TrimWindow : Window
     {
-        public SoundNew Sound { get; set; }
+        public Sound Sound { get; set; }
 
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
@@ -30,7 +30,7 @@ namespace GO_Radio.Views
         private bool isPlaying = false;
         private string tempPath;
 
-        public TrimWindow(SoundNew sound)
+        public TrimWindow(Sound sound)
         {
             InitializeComponent();
             Sound = sound;
