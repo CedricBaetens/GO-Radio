@@ -16,9 +16,9 @@ namespace GO_Radio
         void Show();
         void Hide();
         void DisplayLoadedSound(Sound sound);
-        void DisplayPlayingSound(Sound sound);
-        void DisplayStoppedSound(Sound sound);
-        void DisplayPauzedSound(Sound sound);
+        void DisplayPlayingSound();
+        void DisplayStoppedSound();
+        void DisplayPauzedSound();
     }
 
     public class Overlay : IOverlay
@@ -28,6 +28,10 @@ namespace GO_Radio
         public bool Showed { get; private set; }
 
         private Graphics _Gfx = new Graphics();
+
+
+        private Sound _LoadedSound;
+        private string _SoundState;
 
         private void Window_DrawGraphics(object sender, DrawGraphicsEventArgs e)
         {
@@ -42,10 +46,14 @@ namespace GO_Radio
 
             ////gfx.DrawTextWithBackground(gfx.CreateFont("Consolas", 14), gfx.CreateSolidBrush(255, 0, 0), gfx.CreateSolidBrush(0, 255, 0), 20, 20, infoText);
 
-            //if (_ActiveSound != null)
-            //    gfx.DrawTextWithBackground(gfx.CreateFont("Consolas", 14), gfx.CreateSolidBrush(255, 0, 0), gfx.CreateSolidBrush(0, 255, 0), 20, 20, $"{_ActiveSound.Name}");
+            // Sound
+            //if (_LoadedSound != null)
+            //    gfx.DrawTextWithBackground(gfx.CreateFont("Consolas", 14), gfx.CreateSolidBrush(255, 0, 0), gfx.CreateSolidBrush(0, 255, 0), 20, 20, $"{_LoadedSound.Id.ToString("0000")} {_LoadedSound.Name}");
             //else
-            //    gfx.DrawTextWithBackground(gfx.CreateFont("Consolas", 14), gfx.CreateSolidBrush(255, 0, 0), gfx.CreateSolidBrush(0, 255, 0), 20, 20, $"No active song");
+            //    gfx.DrawTextWithBackground(gfx.CreateFont("Consolas", 14), gfx.CreateSolidBrush(255, 0, 0), gfx.CreateSolidBrush(0, 255, 0), 20, 20, "");
+
+            //// Soundstate
+            //gfx.DrawTextWithBackground(gfx.CreateFont("Consolas", 14), gfx.CreateSolidBrush(255, 0, 0), gfx.CreateSolidBrush(0, 255, 0), 20, 50, _SoundState ?? "");
         }
 
         public Overlay()
@@ -78,44 +86,62 @@ namespace GO_Radio
             Showed = false;
         }
 
+
         public void DisplayLoadedSound(Sound sound)
         {
             if (Showed == false)
                 return;
 
             if (sound != null)
-                Display((gfx) => gfx.DrawTextWithBackground(gfx.CreateFont("Consolas", 14), gfx.CreateSolidBrush(255, 0, 0), gfx.CreateSolidBrush(0, 255, 0), 20, 20, $"Loaded: {sound.Name}"));
+                _LoadedSound = sound;
+
+            Draw();
         }
-        public void DisplayPlayingSound(Sound sound)
+        public void DisplayPlayingSound()
         {
             if (Showed == false)
                 return;
 
-            if (sound != null)
-                Display((gfx) => gfx.DrawTextWithBackground(gfx.CreateFont("Consolas", 14), gfx.CreateSolidBrush(255, 0, 0), gfx.CreateSolidBrush(0, 255, 0), 20, 20, $"Playing: {sound.Name}"));
+            if (_LoadedSound != null)
+                _SoundState = "Playing";
+
+            Draw();
         }
-        public void DisplayStoppedSound(Sound sound)
+        public void DisplayStoppedSound()
         {
             if (Showed == false)
                 return;
 
-            if (sound != null)
-                Display((gfx) => gfx.DrawTextWithBackground(gfx.CreateFont("Consolas", 14), gfx.CreateSolidBrush(255, 0, 0), gfx.CreateSolidBrush(0, 255, 0), 20, 20, $"Stopped: {sound.Name}"));
+            if (_LoadedSound != null)
+                _SoundState = "Stopped";
+
+            Draw();
         }
-        public void DisplayPauzedSound(Sound sound)
+        public void DisplayPauzedSound()
         {
             if (Showed == false)
                 return;
 
-            if (sound != null)
-                Display((gfx) => gfx.DrawTextWithBackground(gfx.CreateFont("Consolas", 14), gfx.CreateSolidBrush(255, 0, 0), gfx.CreateSolidBrush(0, 255, 0), 20, 20, $"Pauzed: {sound.Name}"));
+            if (_LoadedSound != null)
+                _SoundState = "Pauzed";
+
+            Draw();
         }
 
-        private void Display(Action<Graphics> func)
+        private void Draw()
         {
             _Gfx.BeginScene();
             _Gfx.ClearScene();
-            func(_Gfx);
+
+            // Sound
+            if (_LoadedSound != null)
+                _Gfx.DrawTextWithBackground(_Gfx.CreateFont("Consolas", 14), _Gfx.CreateSolidBrush(255, 0, 0), _Gfx.CreateSolidBrush(0, 255, 0), 20, 20, $"{_LoadedSound.Id.ToString("0000")} {_LoadedSound.Name}");
+            else
+                _Gfx.DrawTextWithBackground(_Gfx.CreateFont("Consolas", 14), _Gfx.CreateSolidBrush(255, 0, 0), _Gfx.CreateSolidBrush(0, 255, 0), 20, 20, "");
+
+            // Soundstate
+            _Gfx.DrawTextWithBackground(_Gfx.CreateFont("Consolas", 14), _Gfx.CreateSolidBrush(255, 0, 0), _Gfx.CreateSolidBrush(0, 255, 0), 20, 50, _SoundState ?? "");
+
             _Gfx.EndScene();
         }
     }

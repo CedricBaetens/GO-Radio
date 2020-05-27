@@ -232,7 +232,7 @@
                                  VerticalAlignment="Bottom"
                                  Width="40"
                                  Height="40" Grid.Column="1" 
-                                 IsEnabled="{Binding Path=ProgramSelector.State, Converter={StaticResource ApplicationStateToBool}, ConverterParameter={x:Static classes:MainViewModel+ApplicationState.STANDBY}}">
+                                 IsEnabled="{Binding Path=State, Converter={StaticResource ApplicationStateToBool}, ConverterParameter={x:Static classes:MainViewModel+ApplicationState.STANDBY}}">
             <StackPanel>
                 <Button ToolTip="Import a new sound." Command="{Binding CommandAddSound}">
                     <Image Source="/Images/music-w.png" Margin="5"/>

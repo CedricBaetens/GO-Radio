@@ -81,7 +81,7 @@
         <!--<TextBlock Grid.Row="1" Margin="10" Visibility="{Binding HasSounds, Converter={StaticResource BoolInversToVisibility}}">Their are no new songs to add!</TextBlock>-->
 
         <!--Youtube-->
-        <GroupBox Grid.Row="2" Header="Youtube" Margin="5">
+        <GroupBox Grid.Row="2" Header="Youtube" Margin="5" Visibility="Collapsed">
             <Grid Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>

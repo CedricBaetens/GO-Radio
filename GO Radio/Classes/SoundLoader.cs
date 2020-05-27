@@ -114,17 +114,17 @@ namespace GO_Radio.Classes
                 _WaveOut.Init(reader);
                 _WaveOut.Play();
             }
-            _Overlay.DisplayPlayingSound(Sound);
+            _Overlay.DisplayPlayingSound();
         }
         protected virtual void OnStop()
         {
             _WaveOut.Stop();
-            _Overlay.DisplayStoppedSound(Sound);
+            _Overlay.DisplayStoppedSound();
         }
         protected virtual void OnPauze()
         {
             _WaveOut.Pause();
-            _Overlay.DisplayPauzedSound(Sound);
+            _Overlay.DisplayPauzedSound();
         }
 
         // Button Commands

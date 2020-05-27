@@ -19,8 +19,6 @@ namespace GO_Radio.Classes
         public ApplicationState State { get; set; }
         public CategoryList Data { get; set; }
 
-
-
         public ISoundLoader SoundLoader { get; set; }
         public IKeyboarHook Keyboard { get; set; }
 
@@ -45,42 +43,11 @@ namespace GO_Radio.Classes
         // Interface Methods
         public void Load()
         {
-            //_userSettings = SettingsController.LoadUserSettingsFromJSON();
-
-
-            //// Load sound data
-            //if (!Directory.Exists(_userSettings.SoundPath))
-            //{
-            //    FolderBrowserDialog fbd = new FolderBrowserDialog()
-            //    {
-            //        Description = @"Please select a location where you want your sounds to be stored."
-            //    };
-            //    fbd.ShowDialog();
-
-            //    if (!string.IsNullOrEmpty(fbd.SelectedPath))
-            //    {
-            //        _userSettings.SoundPath = fbd.SelectedPath + "\\Sounds";
-            //        Directory.CreateDirectory(_userSettings.SoundPath + "\\audio");
-            //        Directory.CreateDirectory(_userSettings.SoundPath + "\\new");
-            //    }
-            //}
-
             Data.Load(_Path);
-
-
-            //Data.Load(_userSettings.SoundPath);
-            //AudioHelper.Load(_userSettings.SoundPath);
         }
         public void Save()
         {
-            // Get the latest usersettings from the program and save them as JSON.
-            // Save sounddata
             Data.Save();
-
-            // Return usersettings
-            //_userSettings.SkypeSettings = Programs[1].Setting;
-            //_userSettings.SoundPath = Data.Path;
-            //SettingsController.SaveUserSettingsToJSON(_userSettings);
         }
 
         // Public Methods
@@ -88,13 +55,12 @@ namespace GO_Radio.Classes
         {
             Keyboard.Hook();
             State = SoundLoader.Start() ? ApplicationState.RUNNING : ApplicationState.STANDBY;
-
         }
         public void Stop()
         {
             SoundLoader.Stop();
             Keyboard.UnHook();
-
+            State = MainViewModel.ApplicationState.STANDBY;
         }
         public bool IsIdle()
         {
@@ -102,7 +68,6 @@ namespace GO_Radio.Classes
         }
 
         // Command
-        //public ICommand CommandResetPlayingMonitor => new RelayCommand(SoundLoader.Reset);     
         public ICommand CommandKeyBinding => new RelayCommand(ShowKeyBinding);
         public ICommand CommandAddCategory => new RelayCommand(ShowCategoryWindow);
         public ICommand CommandAddSound => new RelayCommand(ShowSoundWindow);

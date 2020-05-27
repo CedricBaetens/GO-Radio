@@ -25,7 +25,7 @@ namespace GO_Radio.Views
             InitializeComponent();
 
             // Properites
-            this.Data = data;
+            Data = data;
 
             // Instanciate
             NewSounds = new ObservableCollection<Sound>();
@@ -132,14 +132,5 @@ namespace GO_Radio.Views
                 }
             }
         }
-
-        // Custom methods
-        //private ObservableCollection<SoundUnconverted> GetNewSounds()
-        //{
-        //    string[] newSoundsStrings = System.IO.Directory.GetFiles(Data.Path + "\\new", "*.*", System.IO.SearchOption.AllDirectories);
-
-        //    return
-        //        new ObservableCollection<SoundUnconverted>(newSoundsStrings.Select(newSound => new SoundUnconverted(newSound)).ToList());
-        //}  
     }
 }
