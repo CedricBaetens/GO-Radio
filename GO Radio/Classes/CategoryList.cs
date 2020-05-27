@@ -14,7 +14,7 @@ namespace GO_Radio.Classes
     [ImplementPropertyChanged]
     public class CategoryList
     {
-        public Dictionary<int, SoundNew> Sounds { get; set; }   // Used for easy finding of songs
+        public Dictionary<int, Sound> Sounds { get; set; }   // Used for easy finding of songs
         public ObservableCollection<Category> Categories { get; set; }
 
         public string Path { get; set; }
@@ -22,7 +22,7 @@ namespace GO_Radio.Classes
         public CategoryList()
         {
             Categories = new ObservableCollection<Category>();
-            Sounds = new Dictionary<int, SoundNew>();
+            Sounds = new Dictionary<int, Sound>();
         }
 
         public bool Add(Category cat)
@@ -52,7 +52,7 @@ namespace GO_Radio.Classes
         }
         public void UpdateDictionary()
         {
-            Dictionary<int, SoundNew> dic = new Dictionary<int, SoundNew>();
+            Dictionary<int, Sound> dic = new Dictionary<int, Sound>();
             foreach (var cat in Categories)
             {
                 foreach (var sound in cat.Sounds)
@@ -82,7 +82,7 @@ namespace GO_Radio.Classes
             return true;
         }
 
-        public SoundNew GetSoundById(int id)
+        public Sound GetSoundById(int id)
         {
             if (Sounds.ContainsKey(id))
             {
@@ -93,7 +93,7 @@ namespace GO_Radio.Classes
                 return null;
             }
         }
-        public SoundNew GetSoundById(string id)
+        public Sound GetSoundById(string id)
         {
             // Get Random Song
             if (id.Contains("+"))
@@ -152,15 +152,9 @@ namespace GO_Radio.Classes
         public void Save()
         {
             string json = JsonConvert.SerializeObject(Categories, Formatting.Indented);
-
-            try
-            {
-                File.WriteAllText(Path + "\\data.json", json);
-            }
-            catch (Exception)
-            {
-                System.Windows.MessageBox.Show("Error writing data, please make sure the sound folder exists.");
-            }
+            if (!Directory.Exists(Path))
+                Directory.CreateDirectory(Path);
+            File.WriteAllText(Path + "\\data.json", json);
         }
     }
 }

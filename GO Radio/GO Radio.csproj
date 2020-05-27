@@ -65,6 +65,9 @@
     <OutputPath>bin\x64\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GameOverlay, Version=4.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\GameOverlay.Net.4.2.0\lib\net45\GameOverlay.dll</HintPath>
+    </Reference>
     <Reference Include="libvideo, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VideoLibrary.2.0.3\lib\netstandard1.1\libvideo.dll</HintPath>
     </Reference>
@@ -84,9 +87,21 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="PropertyChanged, Version=1.53.0.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.1.53.0\lib\netstandard10\PropertyChanged.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="SharpDX, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.4.2.0\lib\net45\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct2D1, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.Direct2D1.4.2.0\lib\net45\SharpDX.Direct2D1.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DXGI, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.DXGI.4.2.0\lib\net45\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -141,35 +156,22 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Classes\ActiveProcess.cs" />
-    <Compile Include="Classes\ApplicationTypes\GenericApplication.cs" />
-    <Compile Include="Classes\ApplicationTypes\SourceGame.cs" />
-    <Compile Include="Classes\AutoUpdater.cs" />
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\CategoryList.cs" />
     <Compile Include="Classes\Cfg.cs" />
     <Compile Include="Classes\Convertors.cs" />
-    <Compile Include="Classes\ILoadSave.cs" />
     <Compile Include="Classes\KeyBinding.cs" />
-    <Compile Include="Classes\KeyboardController.cs" />
+    <Compile Include="Classes\KeyboardHook.cs" />
     <Compile Include="Classes\KeyEvent.cs" />
-    <Compile Include="Classes\ApplicationTypes\ProgramSelection.cs" />
-    <Compile Include="Classes\Settings\ProgramSelectionSetting.cs" />
-    <Compile Include="Classes\ApplicationTypes\ProgramSelector.cs" />
-    <Compile Include="Classes\Settings\SettingsController.cs" />
-    <Compile Include="Classes\Settings\UserSettings.cs" />
     <Compile Include="Classes\SoundLoader.cs" />
     <Compile Include="Classes\NAudioHelper.cs" />
-    <Compile Include="Classes\KeyboardHook.cs" />
     <Compile Include="Classes\RellayCommand.cs" />
-    <Compile Include="Classes\MainController.cs" />
-    <Compile Include="Classes\SoundLoaderAdvanced.cs" />
-    <Compile Include="Classes\SoundLoaderDevice.cs" />
-    <Compile Include="Classes\SoundLoaderSimple.cs" />
-    <Compile Include="Classes\SoundUnconverted.cs" />
-    <Compile Include="Classes\SoundNew.cs" />
+    <Compile Include="Classes\MainViewModel.cs" />
+    <Compile Include="Classes\Sound.cs" />
     <Compile Include="Classes\TextToSpeech.cs" />
     <Compile Include="Classes\WPF_Extended_Extended\TimeSpanExtended.cs" />
     <Compile Include="Classes\ConsoleChecker.cs" />
+    <Compile Include="Overlay.cs" />
     <Compile Include="Views\AudioDeviceWindow.xaml.cs">
       <DependentUpon>AudioDeviceWindow.xaml</DependentUpon>
     </Compile>

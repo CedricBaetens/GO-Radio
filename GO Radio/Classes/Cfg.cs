@@ -66,7 +66,7 @@ namespace GO_Radio.Classes
 
                 //File.WriteAllLines(string.Format("{0}\\csgo\\cfg\\radio_category_soundlist{1}.cfg", ProgramSettings.Instance.PathCsgo,index), content);
             }
-            private static void SongLoad(SoundNew sound)
+            private static void SongLoad(Sound sound)
             {
                 List<string> content = new List<string>();
 

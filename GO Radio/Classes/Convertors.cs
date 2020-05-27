@@ -1,13 +1,8 @@
-﻿using GO_Radio.Classes.ApplicationTypes;
-using GO_Radio.Classes.Settings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using static GO_Radio.Classes.MainViewModel;
 
 namespace GO_Radio.Classes
 {
@@ -137,12 +132,12 @@ namespace GO_Radio.Classes
         }
     }
 
-    [ValueConversion(typeof(ProgramSelector.ApplicationState), typeof(bool))]
+    [ValueConversion(typeof(ApplicationState), typeof(bool))]
     public class ApplicationStateToBool : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if ((ProgramSelector.ApplicationState)value == (ProgramSelector.ApplicationState)parameter)
+            if ((ApplicationState)value == (ApplicationState)parameter)
             {
                 return true;
             }
@@ -155,12 +150,12 @@ namespace GO_Radio.Classes
         }
     }
 
-    [ValueConversion(typeof(ProgramSelector.ApplicationState), typeof(Visibility))]
+    [ValueConversion(typeof(ApplicationState), typeof(Visibility))]
     public class ApplicationStateToVisibility : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if ((ProgramSelector.ApplicationState)value == (ProgramSelector.ApplicationState)parameter)
+            if ((ApplicationState)value == (ApplicationState)parameter)
             {
                 return Visibility.Visible;
             }

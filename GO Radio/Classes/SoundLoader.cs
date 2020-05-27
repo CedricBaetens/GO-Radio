@@ -1,12 +1,31 @@
-﻿using PropertyChanged;
+﻿using NAudio.Wave;
+using PropertyChanged;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Timers;
+using static GO_Radio.Classes.SoundLoader;
 
 namespace GO_Radio.Classes
 {
+    public interface ISoundLoader
+    {
+        Sound Sound { get; set; }
+        SoundState State { get; set; }
+        TimeSpan TimePlaying { get; set; }
+
+        bool Start(string path = "");
+        void Stop();
+
+        void PlayPause();
+        void PlayStop();
+
+        void LoadSound(Sound sound);
+
+    }
     [ImplementPropertyChanged]
-    public abstract class SoundLoader
+    public class SoundLoader : ISoundLoader
     {
         // Enum
         public enum SoundState
@@ -20,22 +39,34 @@ namespace GO_Radio.Classes
         }
 
         // Properties
-        public SoundNew Sound { get; set; }
-        //public SoundNew SoundPauzed { get; set; }
+        public Sound Sound { get; set; }
         public SoundState State { get; set; }
         public TimeSpan TimePlaying { get; set; }
+
+        public List<WaveOutCapabilities> OutputDevices { get; set; } = new List<WaveOutCapabilities>();
+        public WaveOutCapabilities SelectedOutputDevice { get; set; }
 
         // Variablbe
         protected Stopwatch Stopwatch;
         protected string CopyPath = "";
         private readonly Timer _timer;
+        private readonly IOverlay _Overlay;
+        private WaveOut _WaveOut = new WaveOut();
 
         // Constructor
-        protected SoundLoader()
+        public SoundLoader(IOverlay overlay)
         {
             Stopwatch = new Stopwatch();
             _timer = new Timer(1);
             _timer.Elapsed += Timer_Elapsed;
+
+            for (int i = 0; i < WaveOut.DeviceCount; i++)
+            {
+                var output = WaveOut.GetCapabilities(i);
+                OutputDevices.Add(output);
+            }
+            SelectedOutputDevice = OutputDevices.FirstOrDefault();
+            _Overlay = overlay;
         }
 
         // Timer
@@ -44,48 +75,60 @@ namespace GO_Radio.Classes
             TimePlaying = Stopwatch.Elapsed;
         }
 
-        public virtual bool Start(string path = "")
+        public bool Start(string path = "")
         {
+            _WaveOut.DeviceNumber = OutputDevices.FindIndex(x => x.ProductName == SelectedOutputDevice.ProductName);
             CopyPath = path;
             _timer.Start();
             State = SoundState.NOTLOADED;
             return true;
         }
-        public virtual void Stop()
+        public void Stop()
         {
             _timer.Stop();
         }
 
-        public virtual void LoadSound(SoundNew sound)
+        public void LoadSound(Sound sound)
         {
             Sound = sound;
+            _Overlay.DisplayLoadedSound(sound);
         }
 
         // State Functions
-        public virtual void Reset()
+        public void Reset()
         {
             LoadSound(Sound);
             State = SoundState.LOADED;
             Stopwatch.Reset();
         }
-        protected virtual void StatePlay()
+        protected virtual void OnPlay()
         {
-            State = SoundState.PLAYING;
-            Stopwatch.Start();
+            if (State == SoundLoader.SoundState.PAUSED)
+            {
+                _WaveOut.Resume();
+            }
+            else
+            {
+                //var waveReader = new WaveFileReader(Sound.Path);
+                var reader = new Mp3FileReader(Sound.Path);
+                _WaveOut.Init(reader);
+                _WaveOut.Play();
+            }
+            _Overlay.DisplayPlayingSound();
         }
-        protected virtual void StateStop()
+        protected virtual void OnStop()
         {
-            State = SoundState.STOPPED;
-            Stopwatch.Reset();
+            _WaveOut.Stop();
+            _Overlay.DisplayStoppedSound();
         }
-        protected virtual void StatePauze()
+        protected virtual void OnPauze()
         {
-            State = SoundState.PAUSED;
-            Stopwatch.Stop();
+            _WaveOut.Pause();
+            _Overlay.DisplayPauzedSound();
         }
 
         // Button Commands
-        public virtual void PlayPause()
+        public void PlayPause()
         {
             switch (State)
             {
@@ -93,17 +136,29 @@ namespace GO_Radio.Classes
                 case SoundState.LOADED:
                 case SoundState.STOPPED:
                 case SoundState.PAUSED:
-                    StatePlay();
+                    {
+                        OnPlay();
+                        State = SoundState.PLAYING;
+                        Stopwatch.Start();
+                    }
                     break;
                 case SoundState.PLAYING:
-                    StatePauze();
+                    {
+                        OnPauze();
+                        State = SoundState.PAUSED;
+                        Stopwatch.Stop();
+                    }
                     break;
                 case SoundState.LOADEDSTILLPLAYING:
-                    StateStop();
+                    {
+                        OnStop();
+                        State = SoundState.STOPPED;
+                        Stopwatch.Reset();
+                    }
                     break;
             }
         }
-        public virtual void PlayStop()
+        public void PlayStop()
         {
             switch (State)
             {
@@ -111,11 +166,19 @@ namespace GO_Radio.Classes
                 case SoundState.LOADED:
                 case SoundState.STOPPED:
                 case SoundState.PAUSED:
-                    StatePlay();
+                    {
+                        OnPlay();
+                        State = SoundState.PLAYING;
+                        Stopwatch.Start();
+                    }
                     break;
                 case SoundState.PLAYING:
                 case SoundState.LOADEDSTILLPLAYING:
-                    StateStop();
+                    {
+                        OnStop();
+                        State = SoundState.STOPPED;
+                        Stopwatch.Reset();
+                    }
                     break;
             }
         }

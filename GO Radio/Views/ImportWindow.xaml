@@ -7,7 +7,6 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="Import New Sound" Height="700" Width="450"
-        Loaded="ImportWindow_OnLoaded"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto" Closing="Window_Closing"
@@ -32,7 +31,7 @@
         </materialDesign:ColorZone>
 
         <!--Has Songs-->
-        <Grid Grid.Row="1" Margin="10,10,10,0" Visibility="{Binding HasSounds, Converter={StaticResource BoolToVisibility}}">
+        <Grid Grid.Row="1" Margin="10,10,10,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
@@ -46,6 +45,7 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,0,0,5">
+                <Button Margin="0,0,5,0" Width="120" Command="{Binding CommandImport}">Import</Button>
                 <Button Margin="0,0,5,0" Width="120" Command="{Binding CommandSelectAll}">Select All</Button>
                 <Button Width="120" Command="{Binding CommandDeselectAll}">Deselect All</Button>
             </StackPanel>
@@ -78,10 +78,10 @@
         </Grid>
 
         <!--No Songs-->
-        <TextBlock Grid.Row="1" Margin="10" Visibility="{Binding HasSounds, Converter={StaticResource BoolInversToVisibility}}">Their are no new songs to add!</TextBlock>
+        <!--<TextBlock Grid.Row="1" Margin="10" Visibility="{Binding HasSounds, Converter={StaticResource BoolInversToVisibility}}">Their are no new songs to add!</TextBlock>-->
 
         <!--Youtube-->
-        <GroupBox Grid.Row="2" Header="Youtube" Margin="5">
+        <GroupBox Grid.Row="2" Header="Youtube" Margin="5" Visibility="Collapsed">
             <Grid Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
