@@ -1,11 +1,8 @@
 ﻿using GoRadio.Logic.Database;
 using GoRadio.Logic.Database.Entities;
 using NAudio.Wave;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GoRadio.Logic.Services
 {
@@ -16,6 +13,12 @@ namespace GoRadio.Logic.Services
         public SoundService(DatabaseContext databaseContext)
         {
             _databaseContext = databaseContext;
+        }
+
+        public List<Sound> GetAll()
+        {
+            var sounds = _databaseContext.Sounds.ToList();
+            return sounds;
         }
 
         public void Play(int id)
