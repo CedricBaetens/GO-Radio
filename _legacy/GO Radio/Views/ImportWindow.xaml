@@ -1,0 +1,155 @@
+﻿<Window x:Class="GO_Radio.Views.ImportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:classes="clr-namespace:GO_Radio.Classes"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Import New Sound" Height="700" Width="450"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto" Closing="Window_Closing"
+        ResizeMode="NoResize">
+    <Window.Resources>
+        <ResourceDictionary>
+            <classes:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+            <classes:BooleanInversToVisibilityConverter x:Key="BoolInversToVisibility"/>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--Header-->
+        <materialDesign:ColorZone Mode="PrimaryMid" Grid.Row="0">
+            <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}" Margin="20,10,10,10">Import New Sounds</TextBlock>
+        </materialDesign:ColorZone>
+
+        <!--Has Songs-->
+        <Grid Grid.Row="1" Margin="10,10,10,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition  Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,0,0,5">
+                <Button Margin="0,0,5,0" Width="120" Command="{Binding CommandImport}">Import</Button>
+                <Button Margin="0,0,5,0" Width="120" Command="{Binding CommandSelectAll}">Select All</Button>
+                <Button Width="120" Command="{Binding CommandDeselectAll}">Deselect All</Button>
+            </StackPanel>
+            
+            <TextBlock Grid.Row="1" Margin="0,0,0,5">Select the song(s) you want to add.</TextBlock>
+            
+            <ListBox Name="lvNewSongs" Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding NewSounds}" SelectionMode="Multiple">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding Name}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <ComboBox Grid.Row="3" Grid.Column="0" ItemsSource="{Binding Data.Categories}" Name="cbCategories" SelectedIndex="0" materialDesign:TextFieldAssist.Hint="Category" materialDesign:TextFieldAssist.HintOpacity=".26">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"></TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right">
+                <Button Name="btnAdd" Width="80" Command="{Binding CommandAdd}" Margin="5,5,0,0">Add</Button>
+                <Button Name="btnDelete" Width="80"  Margin="5,5,0,0" Command="{Binding CommandDelete}">Delete</Button>
+            </StackPanel>
+           
+        </Grid>
+
+        <!--No Songs-->
+        <!--<TextBlock Grid.Row="1" Margin="10" Visibility="{Binding HasSounds, Converter={StaticResource BoolInversToVisibility}}">Their are no new songs to add!</TextBlock>-->
+
+        <!--Youtube-->
+        <GroupBox Grid.Row="2" Header="Youtube" Margin="5" Visibility="Collapsed">
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Enter youtube URL:"></TextBlock>
+                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding YoutubeUrl}"></TextBox>
+                <Button Grid.Row="2" Name="btnYt" HorizontalAlignment="Left" Margin="0,5,0,0" Width="150" Command="{Binding CommandYoutube}">Convert!</Button>
+
+                <ItemsControl Grid.Row="3" Name="lbQueue" Margin="0,5,0,0" ItemsSource="{Binding Queue}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Width="100" Text="{Binding StateString}"></TextBlock>
+                                <TextBlock Text="{Binding Name}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+            
+           
+        </GroupBox>
+        
+
+        <!---->
+
+
+        <!--<Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <ListBox Name="lvNewSongs" Grid.ColumnSpan="2" ItemsSource="{Binding Sounds}" SelectionMode="Multiple">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Name}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Button Grid.Row="1" Grid.Column="0" Name="btnAdd" Click="btnAdd_Click" Margin="5">Add</Button>
+
+        <ComboBox Grid.Row="1" Grid.Column="1" Margin="5" ItemsSource="{Binding Categories}" Name="cbCategories" SelectedIndex="0" materialDesign:TextFieldAssist.Hint="Category" materialDesign:TextFieldAssist.HintOpacity=".26">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"></TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <StackPanel  Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="2" Margin="5" >
+            <TextBlock Text="Enter youtube URL:"></TextBlock>
+            <TextBox Text="{Binding YoutubeUrl}"></TextBox>
+        </StackPanel>
+
+        <Button Grid.Row="3" Grid.Column="1" Name="btnYt" Margin="5" Click="btnYt_Click">Convert!</Button>-->
+    </Grid>
+</Window>
