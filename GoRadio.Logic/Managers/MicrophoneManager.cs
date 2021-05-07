@@ -6,23 +6,26 @@ namespace GoRadio.Logic.Managers
 {
     public class MicrophoneManager
     {
-        public bool Listen { get; set; } = true;
-
         // Audio devices
-        private WaveInEvent _microphone;
-        private WaveOut _virtualMicrophone;
-
-
+        private readonly WaveInEvent _microphone;
+        private readonly WaveOut _virtualMicrophone;
         private readonly BufferedWaveProvider _speakersWaveProvider;
-        //private readonly BufferedWaveProvider _virtualMicrophoneWaveProvider;
 
-        public MicrophoneManager(AudioDeviceService audioDeviceService)
+        public MicrophoneManager(AudioDeviceService audioDeviceService, SettingsService settingsService)
         {
+            // Get settings
+            var settings = settingsService.Get();
+
             // Initiate audio devices
-            _microphone = new WaveInEvent { BufferMilliseconds = 25, NumberOfBuffers = 5 };
-            _virtualMicrophone = new WaveOut() 
-            { 
-                DeviceNumber = audioDeviceService.GetOutputDevices().First(x => x.Item2.ProductName.Contains("VB-Audio")).Item1,
+            _microphone = new WaveInEvent
+            {
+                BufferMilliseconds = 25,
+                NumberOfBuffers = 5,
+                DeviceNumber = audioDeviceService.GetInputByName(settings.Microphone).DeviceNumber,
+            };
+            _virtualMicrophone = new WaveOut()
+            {
+                DeviceNumber = audioDeviceService.GetOutputByName(settings.VirtualCable).DeviceNumber,
                 DesiredLatency = 125,
             };
 

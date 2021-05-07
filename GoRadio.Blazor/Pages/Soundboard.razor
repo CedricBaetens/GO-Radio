@@ -1,0 +1,39 @@
+﻿@page "/"
+@inject GoRadio.Logic.Managers.SoundboardManager SoundboardManager
+@inject GoRadio.Logic.Services.SoundService SoundService
+
+<h1>Soudboard</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Play</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var sound in _sounds)
+        {
+            <tr>
+                <th scope="row">@sound.Name</th>
+                <td><button class="btn btn-primary" @onclick="Play">Play</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<GoRadio.Logic.Database.Entities.Sound> _sounds;
+
+    protected override Task OnInitializedAsync()
+    {
+        _sounds = SoundService.GetAll();
+        return base.OnInitializedAsync();
+    }
+
+    private void Play()
+    {
+        SoundboardManager.Play();
+    }
+}

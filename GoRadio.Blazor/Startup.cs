@@ -1,17 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ElectronNET.API;
+using ElectronNET.API.Entities;
+using GoRadio.Logic.Database;
+using GoRadio.Logic.Managers;
+using GoRadio.Logic.Services;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using GoRadio.Blazor.Data;
-using ElectronNET.API;
-using ElectronNET.API.Entities;
 
 namespace GoRadio.Blazor
 {
@@ -24,18 +20,30 @@ namespace GoRadio.Blazor
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
+
+            // Database
+            services.AddDbContext<DatabaseContext>();
+
+            // Services
+            services.AddTransient<SoundService>();
+            services.AddTransient<AudioDeviceService>();
+            services.AddTransient<SettingsService>();
+
+            // Managers
+            services.AddSingleton<MicrophoneManager>();
+            services.AddSingleton<SoundboardManager>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DatabaseContext databaseContext)
         {
+            databaseContext.Database.EnsureCreated();
+            databaseContext.Sounds.Add(new Logic.Database.Entities.Sound() { Name = "Sound 1" });
+            databaseContext.SaveChanges();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
