@@ -41,7 +41,10 @@ namespace GoRadio.Blazor
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DatabaseContext databaseContext)
         {
             databaseContext.Database.EnsureCreated();
-            databaseContext.Sounds.Add(new Logic.Database.Entities.Sound() { Name = "Sound 1" });
+            for (int i = 0; i < 100; i++)
+            {
+                databaseContext.Sounds.Add(new Logic.Database.Entities.Sound() { Name = "Sound 1" });
+            }
             databaseContext.SaveChanges();
 
             if (env.IsDevelopment())
@@ -65,13 +68,13 @@ namespace GoRadio.Blazor
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
-            
+
             if (HybridSupport.IsElectronActive)
             {
                 ElectronBootstrap();
             }
         }
-        
+
         public async void ElectronBootstrap()
         {
             var browserWindow = await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
