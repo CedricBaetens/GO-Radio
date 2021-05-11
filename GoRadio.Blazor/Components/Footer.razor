@@ -1,0 +1,12 @@
+﻿@inject GoRadio.Logic.Managers.SoundboardManager SoundboardManager
+
+<footer class="mt-auto bg-danger p-2">
+    <button class="btn btn-primary" @onclick="Stop">Stop</button>
+</footer>
+
+@code {
+    private void Stop()
+    {
+        SoundboardManager.Stop();
+    }
+}

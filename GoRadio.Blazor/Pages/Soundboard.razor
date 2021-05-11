@@ -4,6 +4,9 @@
 
 <h1>Soudboard</h1>
 
+<GoRadio.Blazor.Components.SoundModal @ref="Modal" OnSave="GetData"></GoRadio.Blazor.Components.SoundModal>
+<button class="btn btn-primary" @onclick="() => Modal.Open()">Add</button>
+
 <div class="row">
     @foreach (var sound in _sounds)
     {
@@ -11,7 +14,7 @@
             <div class="card m-2">
                 <div class="card-body text-center">
                     <h5 class="card-title">@sound.Name</h5>
-                    <a href="#" class="btn btn-primary btn-block" @onclick="Play">Play</a>
+                    <a href="#" class="btn btn-primary btn-block" @onclick="() => Play(sound.Data)">Play</a>
                 </div>
             </div>
         </div>
@@ -19,16 +22,24 @@
 </div>
 
 @code {
+
+    private Components.SoundModal Modal { get; set; }
     private List<GoRadio.Logic.Database.Entities.Sound> _sounds;
 
     protected override Task OnInitializedAsync()
     {
-        _sounds = SoundService.GetAll();
+        GetData();
         return base.OnInitializedAsync();
     }
 
-    private void Play()
+    private void GetData()
     {
+        _sounds = SoundService.GetAll();
+    }
+
+    private void Play(byte[] data)
+    {
+        SoundboardManager.Load(data);
         SoundboardManager.Play();
     }
 }

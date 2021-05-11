@@ -1,0 +1,70 @@
+﻿@using Microsoft.AspNetCore.Hosting
+@inject GoRadio.Logic.Services.SoundService SoundService
+@inject IWebHostEnvironment Environment
+
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Select a file</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="() => Close()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <InputFile OnChange="@LoadFiles" multiple accept=".mp3" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+
+@code {
+
+    [Parameter]
+    public EventCallback OnSave { get; set; }
+
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+
+    public void Open()
+    {
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        StateHasChanged();
+    }
+    public void Close()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+
+    private async Task LoadFiles(InputFileChangeEventArgs e)
+    {
+        foreach (var file in e.GetMultipleFiles())
+        {
+            var extension = System.IO.Path.GetExtension(file.Name);
+            if (extension != ".mp3")
+                continue;
+            var fileContent = new StreamContent(file.OpenReadStream());
+            var data = await fileContent.ReadAsByteArrayAsync();
+            SoundService.Add(file.Name, data);
+        }
+        Close();
+        await OnSave.InvokeAsync();
+    }
+}

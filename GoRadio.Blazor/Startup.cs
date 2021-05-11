@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.IO;
 
 namespace GoRadio.Blazor
 {
@@ -40,12 +41,14 @@ namespace GoRadio.Blazor
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DatabaseContext databaseContext)
         {
+            databaseContext.Database.EnsureDeleted();
             databaseContext.Database.EnsureCreated();
-            for (int i = 0; i < 100; i++)
-            {
-                databaseContext.Sounds.Add(new Logic.Database.Entities.Sound() { Name = "Sound 1" });
-            }
-            databaseContext.SaveChanges();
+            //for (int i = 0; i < 100; i++)
+            //{
+            //    var bytes = File.ReadAllBytes(@"D:\Source\CedricBaetens\GO-Radio\Sounds\tf_nemesis.mp3");
+            //    databaseContext.Sounds.Add(new Logic.Database.Entities.Sound() { Name = "Sound 1", Data = bytes });
+            //}
+            //databaseContext.SaveChanges();
 
             if (env.IsDevelopment())
             {

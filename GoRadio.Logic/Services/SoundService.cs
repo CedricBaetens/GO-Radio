@@ -1,7 +1,7 @@
 ﻿using GoRadio.Logic.Database;
 using GoRadio.Logic.Database.Entities;
-using NAudio.Wave;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace GoRadio.Logic.Services
@@ -19,6 +19,12 @@ namespace GoRadio.Logic.Services
         {
             var sounds = _databaseContext.Sounds.ToList();
             return sounds;
+        }
+
+        public void Add(string name, byte[] data)
+        {
+            _databaseContext.Sounds.Add(new Logic.Database.Entities.Sound() { Name = name, Data = data });
+            _databaseContext.SaveChanges();
         }
     }
 }
